@@ -1,7 +1,8 @@
 ---
-date: '2025-05-04T10:01:25+01:00'
+date: '2025-05-05T10:01:25+01:00'
 draft: true
-title: 'My First Post'
+title: 'My 1st Post'
+author: 'Jack'
 ---
 ## Introduction
 

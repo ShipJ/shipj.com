@@ -10,6 +10,12 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/categories/">
+
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon/favicon-16x16.png">
@@ -99,13 +105,33 @@
             </div>
         </div>
         <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archive/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
 
-            <div class="social-icons-stack" style="display: flex; flex-direction: row; align-items: center; margin-left: 0.5rem;">
+            <div class="social-icons-stack" style="display: flex; flex-direction: row; align-items: center; margin-left: 20rem;">
                 <a href="https://www.linkedin.com/in/jackshipway" target="_blank" rel="noopener">
-                    <img src="/social/linkedin.png" alt="LinkedIn" style="height: 22px; width: 22px; margin-right: 8px;" />
+                    <img src="/social/linkedin.png" alt="LinkedIn" style="height: 22px; width: 22px; margin-right: 8px;" class="h-6 w-6 object-contain;" />
                 </a>
                 <a href="https://github.com/wgsn-shipj" target="_blank" rel="noopener">
-                    <img src="/social/github.png" alt="GitHub" style="height: 22px; width: 22px;" />
+                    <img src="/social/github.png" alt="GitHub" style="height: 22px; width: 22px;" class="h-6 w-6 object-contain;" />
                 </a>
             </div>
         </ul>
@@ -124,11 +150,13 @@
     <hr style="border: none; border-top: 0.5px solid #ccc; margin: 1rem 0;" />
 <footer class="footer">
 
-    <div class="my-6 text-right">
-        <div class="flex items-center justify-center gap-3 my-6">
-            <img src="/social/github.png" alt="GitHub" class="h-6 w-6">
-            <h3 class="text-lg font-semibold underline">ShipJ's GitHub Contributions</h3>
+    <div class="w-full flex justify-center">
+        <div class="flex items-center gap-2 my-6 min-w-[250px]">
+          <h3 class="text-lg font-semibold underline">ShipJ's GitHub Contributions</h3>
         </div>
+      </div>
+
+    <div class="my-6 text-right">
         <img
           loading="lazy"
           src="https://ghchart.rshah.org/wgsn-shipj"

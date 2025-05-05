@@ -10,6 +10,12 @@
 <meta name="description" content="Posts - Hi, I’m Jack 👋">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/posts/">
+
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon/favicon-16x16.png">
@@ -99,8 +105,28 @@
             </div>
         </div>
         <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="Blog">
+                    <span class="active">Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archive/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
 
-            <div class="social-icons-stack" style="display: flex; flex-direction: row; align-items: center; margin-left: 0.5rem;">
+            <div class="social-icons-stack" style="display: flex; flex-direction: row; align-items: center; margin-left: 20rem;">
                 <a href="https://www.linkedin.com/in/jackshipway" target="_blank" rel="noopener">
                     <img src="/social/linkedin.png" alt="LinkedIn" style="height: 22px; width: 22px; margin-right: 8px;" />
                 </a>
@@ -113,41 +139,144 @@
 </header>
 
 <hr style="border: none; border-top: 0.1px solid #ccc; margin: 1rem 0;" />
-<main class="main"> 
-<header class="page-header">
-  <h1>
-    Posts
-  </h1>
-</header>
+<main class="main">
+  <div class="container mx-auto px-0 py-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
+        
+        
+        
+        <div class="border rounded-lg p-5 shadow hover:shadow-lg transition bg-white dark:bg-gray-800">
+          <a href="/posts/post-1/">
+            
+            
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">My First Post
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
-        </svg>
-      </span>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction This is bold text, and this is emphasized text.
-Visit the Hugo website!
-</p>
+            <h2 class="text-xl font-semibold mb-2">My 1st Post</h2>
+            
+            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                
+                
+                
+                
+                  <span class="text-sm text-gray-600 dark:text-gray-400">
+                    
+                      Today
+                    
+                  </span>
+                
+            </p>
+
+            
+
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+              <h2 id="introduction">Introduction</h2>
+<p>This is <strong>bold</strong> text, and this is <em>emphasized</em> text.</p>
+<p>Visit the <a href="https://gohugo.io">Hugo</a> website!</p>
+            </p>
+          </a>
+        </div>
+      
+        <div class="border rounded-lg p-5 shadow hover:shadow-lg transition bg-white dark:bg-gray-800">
+          <a href="/posts/post-2/">
+            
+            
+
+            <h2 class="text-xl font-semibold mb-2">My 2nd Post</h2>
+            
+            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                
+                
+                
+                
+                  <span class="text-sm text-gray-600 dark:text-gray-400">
+                    
+                      1 day ago
+                    
+                  </span>
+                
+            </p>
+
+            
+
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+              <h2 id="introduction">Introduction</h2>
+<p>This is <strong>bold</strong> text, and this is <em>emphasized</em> text.</p>
+<p>Visit the <a href="https://gohugo.io">Hugo</a> website!</p>
+            </p>
+          </a>
+        </div>
+      
+        <div class="border rounded-lg p-5 shadow hover:shadow-lg transition bg-white dark:bg-gray-800">
+          <a href="/posts/post-3/">
+            
+            
+
+            <h2 class="text-xl font-semibold mb-2">My 3rd Post</h2>
+            
+            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                
+                
+                
+                
+                  <span class="text-sm text-gray-600 dark:text-gray-400">
+                    
+                      3 days ago
+                    
+                  </span>
+                
+            </p>
+
+            
+
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+              <h2 id="introduction">Introduction</h2>
+<p>This is <strong>bold</strong> text, and this is <em>emphasized</em> text.</p>
+<p>Visit the <a href="https://gohugo.io">Hugo</a> website!</p>
+            </p>
+          </a>
+        </div>
+      
+        <div class="border rounded-lg p-5 shadow hover:shadow-lg transition bg-white dark:bg-gray-800">
+          <a href="/posts/post-4/">
+            
+            
+
+            <h2 class="text-xl font-semibold mb-2">My 4th Post</h2>
+            
+            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                
+                
+                
+                
+                  <span class="text-sm text-gray-600 dark:text-gray-400">
+                    Fri, Apr 4, 2025
+                  </span>
+                
+            </p>
+
+            
+
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+              <h2 id="introduction">Introduction</h2>
+<p>This is <strong>bold</strong> text, and this is <em>emphasized</em> text.</p>
+<p>Visit the <a href="https://gohugo.io">Hugo</a> website!</p>
+            </p>
+          </a>
+        </div>
+      
+    </div>
   </div>
-  <footer class="entry-footer"><span title='2025-05-04 10:01:25 +0100 BST'>May 4, 2025</span></footer>
-  <a class="entry-link" aria-label="post link to My First Post" href="http://localhost:1313/posts/my-first-post/"></a>
-</article>
+
     </main>
     <hr style="border: none; border-top: 0.5px solid #ccc; margin: 1rem 0;" />
 <footer class="footer">
 
-    <div class="my-6 text-right">
-        <div class="flex items-center justify-center gap-3 my-6">
-            <img src="/social/github.png" alt="GitHub" class="h-6 w-6">
-            <h3 class="text-lg font-semibold underline">ShipJ's GitHub Contributions</h3>
+    <div class="w-full flex justify-center">
+        <div class="flex items-center gap-2 my-6 min-w-[250px]">
+          <h3 class="text-lg font-semibold underline">ShipJ's GitHub Contributions</h3>
         </div>
+      </div>
+
+    <div class="my-6 text-right">
         <img
           loading="lazy"
           src="https://ghchart.rshah.org/wgsn-shipj"

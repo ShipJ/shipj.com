@@ -3,6 +3,27 @@ languageCode: en-us
 title: Hi, I’m Jack 👋
 theme: ["PaperMod"]
 
+menu:
+  main:
+    - identifier: blog
+      name: Blog
+      url: /posts/
+      weight: 10
+
+    - identifier: archive
+      name: Archive
+      url: /archive/
+      weight: 20
+
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 30  
+
+    - identifier: projects
+      name: Projects
+      url: /projects/
+      weight: 40  
 params:
 
   assets:
