@@ -1,0 +1,34 @@
+.rubik-container {
+    perspective: 800px;
+    width: 150px;
+    height: 150px;
+    margin: 2rem auto;
+  }
+  
+  .rubik-cube {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: spin 6s infinite linear;
+  }
+  
+  .face {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: #f00; /* front face red, change for each face below */
+    opacity: 0.9;
+  }
+  
+  .front  { transform: rotateY(  0deg) translateZ(50px); background: red;    }
+  .back   { transform: rotateY(180deg) translateZ(50px); background: blue;   }
+  .right  { transform: rotateY( 90deg) translateZ(50px); background: green;  }
+  .left   { transform: rotateY(-90deg) translateZ(50px); background: yellow; }
+  .top    { transform: rotateX( 90deg) translateZ(50px); background: white;  }
+  .bottom { transform: rotateX(-90deg) translateZ(50px); background: orange; }
+  
+  @keyframes spin {
+    0%   { transform: rotateX(0deg) rotateY(0deg); }
+    100% { transform: rotateX(360deg) rotateY(360deg); }
+  }

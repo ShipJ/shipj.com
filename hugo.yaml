@@ -4,15 +4,10 @@ title: Hi, I’m Jack 👋
 theme: ["PaperMod"]
 
 params:
-  profileMode:
-    enabled: true
-    title: "Hi, I'm Jack 👋"
-    subtitle: "Fashion Model(er)"
-    imageUrl: "images/avatar.jpg"
-    showRecent: true
 
-  socialIcons:
-    - name: "linkedin"
-      url: "https://www.linkedin.com/in/jackshipway"
-    - name: "github"
-      url: "https://github.com/wgsn-shipj"
+  assets:
+    favicon: "favicon/favicon.ico"
+    favicon16x16: "favicon/favicon-16x16.png"
+    favicon32x32: "favicon/favicon-32x32.png"
+    apple_touch_icon: "favicon/apple-touch-icon.png"
+    safari_pinned_tab: "favicon/safari-icon.svg"
