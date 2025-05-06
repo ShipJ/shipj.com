@@ -1,55 +1,20 @@
 {{ define "main" }}
-  <div class="container mx-auto px-0 py-8">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
-        {{ $posts := where .Site.RegularPages "Section" "posts" }}
-        {{ $sorted := sort $posts ".Params.author" }}
-        {{ range $sorted }}
-        <div class="border rounded-lg p-5 shadow hover:shadow-lg transition bg-white dark:bg-gray-800">
-          <a href="{{ .RelPermalink }}">
-            
-            {{ with .Params.image }}
-              <img src="{{ . | relURL }}" alt="{{ $.Title }}" class="rounded mb-3">
-            {{ end }}
+  {{ partial "page-header" . }}
 
-            <h2 class="text-xl font-semibold mb-2">{{ .Title }}</h2>
-            
-            <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                {{ $postDate := .Date }}
-                {{ $daysOld := div (sub now.Unix $postDate.Unix) 86400 }}
-                
-                {{ if lt $daysOld 7 }}
-                  <span class="text-sm text-gray-600 dark:text-gray-400">
-                    {{ if eq $daysOld 0 }}
-                      Today
-                    {{ else if eq $daysOld 1 }}
-                      1 day ago
-                    {{ else }}
-                      {{ $daysOld }} days ago
-                    {{ end }}
-                  </span>
-                {{ else }}
-                  <span class="text-sm text-gray-600 dark:text-gray-400">
-                    {{ $postDate.Format "Mon, Jan 2, 2006" }}
-                  </span>
-                {{ end }}
-            </p>
 
-            {{ with .Params.tags }}
-              <div class="flex flex-wrap gap-2 mb-2">
-                {{ range . }}
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 px-2 py-0.5 rounded">
-                    #{{ . }}
-                  </span>
-                {{ end }}
-              </div>
-            {{ end }}
-
-            <p class="text-sm text-gray-700 dark:text-gray-300">
-              {{ .Summary }}
-            </p>
-          </a>
-        </div>
-      {{ end }}
+  <section class="section">
+    <div class="container">
+      <ul class="text-center">
+        {{ range .RegularPages }}
+          <li class="m-3">
+            <a
+              href="{{ .Permalink }}"
+              class="text-text-dark dark:text-darkmode-text-dark block text-xl">
+              {{ .Title }}
+            </a>
+          </li>
+        {{ end }}
+      </ul>
     </div>
-  </div>
+  </section>
 {{ end }}
