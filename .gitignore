@@ -178,3 +178,4 @@ cython_debug/
 node_modules/
 public/
 hugo_stats.json
+resources/*
