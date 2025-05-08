@@ -1,0 +1,34 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+
+  <section class="section pt-10">
+    <div class="container">
+      
+      <!-- git contribution chart-->
+      <div class="flex items-center justify-center pb-10">
+        <img loading="lazy" src="https://ghchart.rshah.org/wgsn-shipj" alt="GitHub chart for ShipJ" width="75%" height="auto">
+      </div>
+      
+      <div class="row gx-5">
+        <!-- portfolio-->
+        <div class="lg:col-8">
+          <div class="row">
+            {{ $paginator:= .Paginate .RegularPages }}
+            {{ range $paginator.Pages }}
+              <div class="md:col-6 mb-14">
+                {{ partial "components/blog-card" . }}
+              </div>
+            {{ end }}
+          </div>
+          {{ partial "components/pagination.html" . }}
+        </div>
+        <!-- sidebar -->
+        <div class="lg:col-4">
+          <!-- widget -->
+          {{ $widget:= site.Params.widgets.sidebar }}
+          {{ partialCached "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
+        </div>
+      </div>
+    </div>
+  </section>
+{{ end }}
