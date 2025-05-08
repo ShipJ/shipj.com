@@ -2,7 +2,7 @@
 title: "Hi, I'm Jack 👋"
 meta_title: "About"
 description: "this is meta description"
-image: "/images/headshot.png"
+image: "/images/favicon.png"
 draft: false
 ---
 
