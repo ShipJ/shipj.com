@@ -1,0 +1,19 @@
+<script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    let wasMobile = window.innerWidth < 1024;
+
+    window.addEventListener('resize', () => {
+        const isMobile = window.innerWidth < 1024;
+
+        if (!isMobile && wasMobile && navToggle.checked) {
+        navToggle.checked = false;
+        if (navMenu.classList.contains('hidden') === false) {
+            navMenu.classList.add('hidden');
+        }
+        }
+
+        wasMobile = isMobile;
+    });
+</script>
