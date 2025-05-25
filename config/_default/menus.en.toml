@@ -2,7 +2,7 @@
 
 # main menu
 [[main]]
-name = "Home"
+name = "Work with Me"
 url = "/"
 weight = 1
 
@@ -21,6 +21,16 @@ name = "Portfolio"
 url = "/portfolio"
 weight = 4
 
+#[[main]]
+#name = "Network"
+#url = "/network"
+#weight = 5
+
+#[[main]]
+#name = "Postcard"
+#url = "/postcard"
+#weight = 6
+
 # footer menu
 [[footer]]
 name = "About"
@@ -36,8 +46,3 @@ weight = 2
 name = "Elements"
 url = "/elements"
 weight = 3
-
-[[footer]]
-name = "Privacy Policy"
-url = "/privacy-policy"
-weight = 4
