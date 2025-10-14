@@ -20,7 +20,7 @@ I haven't deployed yet, but these are some options:
 ## 🚀 Getting Started
 
 First I cloned this [repo](https://github.com/zeon-studio/hugoplate) and installed the prerequisites below.
-
+Added a comment
 ### ⚙️ Prerequisites
 - [Hugo Extended v0.144+](https://gohugo.io/installation/)
 - [Node v22+](https://nodejs.org/en/download/)
