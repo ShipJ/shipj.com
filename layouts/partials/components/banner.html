@@ -1,0 +1,51 @@
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .marquee-wrapper {
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: #bffec9; /* Tailwind's yellow-100 */
+    color: #1a202c; /* Tailwind's gray-900 */
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .marquee-content {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 60s linear infinite;
+  }
+
+  .marquee-content a {
+    margin: 0 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: text-decoration 0s;
+  }
+
+  .marquee-wrapper:hover .marquee-content {
+    animation-play-state: paused;
+  }
+
+  .marquee-content a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="marquee-wrapper">
+  <div class="marquee-content">
+    {{ $pages := first 10 (sort (where .Site.RegularPages "Params.draft" "ne" true) "Date" "desc") }}
+    {{ range $pages }}
+      <a href="{{ .RelPermalink }}">
+        {{ .Title }}
+        <span class="text-sm text-gray-600 ml-2">
+            <i class="fa-solid fa-code-merge mr-2" aria-hidden="true"></i>
+                {{ if .PublishDate }}{{ .PublishDate.Format "Jan 2, 2006" }}{{ else }}{{ .Date.Format "Jan 2, 2006" }}{{ end }}
+        </span>
+      </a>
+    {{ end }}
+  </div>
+</div>

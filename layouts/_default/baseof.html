@@ -28,10 +28,8 @@
       <!-- {{ partial "components/tw-size-indicator.html" . }} -->
     {{ end }}
 
-
     <!-- announcement -->
     {{ partialCached "announcement.html" . }}
-
 
     <!-- header (don't cache it) -->
     {{ partial "essentials/header.html" . }}
@@ -40,6 +38,7 @@
     <!-- header resize menu -->
     {{ partial "essentials/header_script.html" . }}
 
+    {{ partial "components/banner.html" . }}
 
     <main>
       {{ block "main" . }}{{ end }}

@@ -1,8 +1,8 @@
 ---
-title: "Working from home in a post-covid world"
+title: "📝 Working from home in a post-covid world"
 meta_title: ""
 description: "this is meta description"
-date: 2025-05-25T09:00:00Z
+date: 2025-10-17T09:00:00Z
 image: "/images/service-1.png"
 categories: ["Application", "Data"]
 author: "Jack"
