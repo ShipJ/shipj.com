@@ -1,8 +1,8 @@
 <header
-  class="header {{ if site.Params.navbar_fixed }}sticky top-0{{ end }} z-30 border-b border-gray-100 dark:border-darkmode-border">
+  class="header {{ if site.Params.navbar_fixed }}sticky top-0{{ end }} border-b border-gray-100 dark:border-darkmode-border py-1">
   
-  <nav class="navbar container">
-    <div class="order-0">
+  <nav class="navbar container pl-0 lg:pl-0">
+    <div class="order-0 pl-0 lg:pl-0">
       <!-- navbar brand/logo -->
       <a class="navbar-brand block" href="{{ site.Home.RelPermalink }}">
         Hi, I'm Jack 👋
@@ -29,7 +29,7 @@
     <!-- main navbar -->
     <ul
       id="nav-menu"
-      class="navbar-nav order-3 hidden lg:flex w-full lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 lg:pl-28">
+      class="navbar-nav order-3 hidden lg:flex w-full lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-16 lg:pl-0">
       {{ $currentPage := . }}
       {{ range site.Menus.main }}
         {{ $menuURL := .URL | absLangURL }}
@@ -107,7 +107,7 @@
       {{ end }}
     </ul>
 
-    <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
+    <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0 pl-20 lg:pl-20">
       {{ with site.Params.search }}
         {{ if .enable }}
           <button
