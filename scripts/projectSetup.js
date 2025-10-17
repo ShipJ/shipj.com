@@ -88,7 +88,7 @@ const setupProject = () => {
       {
         filepath: path.join(
           rootFolder,
-          "exampleSite/config/_default/module.toml",
+          "exampleSite/config/module.toml",
         ),
         regex: /\[\[imports\]\]\s*\r?\npath = "([^"]+)"/,
       },

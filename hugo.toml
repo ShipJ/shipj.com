@@ -1,22 +1,25 @@
 ######################## default configuration ####################
 # The base URL of your site (required). This will be prepended to all relative URLs.
 baseURL = "/"
+
 # Title of your website (required).
 title = "I'm Jack 👋"
+
 # Your theme name
 theme = "hugoplate"
+
 # Default time zone for time stamps; use any valid tz database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 timeZone = "Europe/London"
+
 # post excerpt
 summaryLength = 10 # see https://gohugo.io/content-management/excerpts/
+
 # disable language
-disableLanguages = [
-] # example: ["fr"] for disable french language. see https://gohugo.io/content-management/multilingual/
+disableLanguages = ["fr"] # added fr to its own content folder, and all works fine! Just remove this to enable
+
 hasCJKLanguage = false #  If hasCJKLanguage true, auto-detect Chinese/Japanese/Korean Languages in the content. see: https://gohugo.io/getting-started/configuration/#hascjklanguage
-# default language
 defaultContentLanguage = 'en'
-# defaultContentLanguageInSubdir need to be true if you want to use the language code as a subdirectory and language specific 404 page
-defaultContentLanguageInSubdir = false
+defaultContentLanguageInSubdir = true # must be true if you want to use the language code as a subdirectory and language specific 404 page
 
 ########################### Services #############################
 [services]
@@ -30,13 +33,11 @@ shortname = 'themefisher-template' # we use disqus to show comments in blog post
 [permalinks.page]
 "pages" = "/:slugorcontentbasename/"
 
-
 ########################## Pagination ############################
 [pagination]
 disableAliases = false
 pagerSize = 10
 path = 'page'
-
 
 ############################# Build ##############################
 [build]
@@ -55,7 +56,6 @@ target = 'assets'
 disableWatch = true
 source = 'hugo_stats.json'
 target = 'assets/notwatching/hugo_stats.json'
-
 
 ############################# Outputs ############################
 [outputs]
@@ -78,7 +78,6 @@ maxAge = "720h"
 dir = ":resourceDir/_gen"
 maxAge = "720h"
 
-
 ############################ Markup ##############################
 [markup]
 [markup.goldmark.renderer]
@@ -93,12 +92,10 @@ startLevel = 2
 endLevel = 5
 ordered = true
 
-
 ########################### Media types ###########################
 [mediaTypes]
 [mediaTypes."application/manifest+json"]
 suffixes = ["webmanifest"]
-
 
 ########################### Output Format ##########################
 [outputFormats]
@@ -111,7 +108,6 @@ mediaType = "application/json"
 baseName = "searchindex"
 isPlainText = true
 notAlternative = true
-
 
 ############################# Plugins ##############################
 

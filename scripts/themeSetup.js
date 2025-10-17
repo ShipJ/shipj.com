@@ -79,7 +79,7 @@ const setupTheme = () => {
     // remove this part if you don't using theme demo as a module
     [
       {
-        filepath: path.join(rootFolder, "config/_default/module.toml"),
+        filepath: path.join(rootFolder, "config/module.toml"),
         regex: /# \[\[imports\]\]\s*\r?\n# path = "([^"]+)"/,
       },
       {

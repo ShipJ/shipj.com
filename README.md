@@ -62,7 +62,7 @@ You can change the site title, base URL, language, theme, plugins, and more from
 
 ### 👉 Site Params
 
-You can customize all the parameters from the `config/_default/params.toml` file. This includes the logo, favicon, search, SEO metadata, and more.
+You can customize all the parameters from the `config/params.toml` file. This includes the logo, favicon, search, SEO metadata, and more.
 
 ### 👉 Colors and Fonts
 
