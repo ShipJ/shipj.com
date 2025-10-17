@@ -1,0 +1,48 @@
+############# French navigation ##############
+
+# main menu
+[[main]]
+name = "Work with Moi"
+url = "/"
+weight = 1
+
+[[main]]
+name = "About"
+url = "/about"
+weight = 2
+
+[[main]]
+name = "Blog"
+url = "/blog"
+weight = 3
+
+[[main]]
+name = "Portfolio"
+url = "/portfolio"
+weight = 4
+
+#[[main]]
+#name = "Network"
+#url = "/network"
+#weight = 5
+
+#[[main]]
+#name = "Postcard"
+#url = "/postcard"
+#weight = 6
+
+# footer menu
+[[footer]]
+name = "About"
+url = "/about"
+weight = 1
+
+[[footer]]
+name = "Contact"
+url = "/contact"
+weight = 2
+
+[[footer]]
+name = "Elements"
+url = "/elements"
+weight = 3
