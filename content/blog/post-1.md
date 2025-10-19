@@ -1,12 +1,11 @@
 ---
-title: "Project: How to build an Application with modern Technology"
+title: "📝 Working from home in a post-covid world"
 meta_title: ""
 description: "this is meta description"
-date: 2022-04-04T05:00:00Z
-image: "/images/image-placeholder.png"
-categories: ["Software"]
+date: 2025-10-17T09:00:00Z
+categories: ["Application", "Data"]
 author: "Jack"
-tags: ["software", "tailwind"]
+tags: ["first-post", "background"]
 draft: false
 ---
 

@@ -68,7 +68,7 @@
                       {{- end }}
                       {{- .URL -}}
                     {{- else -}}
-                      {{- .URL | relLangURL -}}
+                      {{- .URL | relURL -}}
                     {{- end -}}">
                     {{ .Name }}
                   </a>
@@ -89,7 +89,7 @@
                   {{- site.Home.RelPermalink -}}
                 {{- end }}{{- .URL -}}
               {{- else -}}
-                {{- .URL | relLangURL -}}
+                {{- .URL | relURL -}}
               {{- end -}}"
               >{{ .Name }}
             </a>
@@ -100,7 +100,7 @@
         <li class="mt-4 inline-block lg:hidden">
           <a
             class="btn btn-outline-primary btn-sm"
-            href="{{ site.Params.navigation_button.link | relLangURL }}">
+            href="{{ site.Params.navigation_button.link | relURL }}">
             {{ site.Params.navigation_button.label }}
           </a>
         </li>
@@ -131,7 +131,7 @@
       <!-- navigation btn -->
       {{ if site.Params.navigation_button.enable }}
         <a
-          href="{{ site.Params.navigation_button.link | relLangURL }}"
+          href="{{ site.Params.navigation_button.link | relURL }}"
           class="btn btn-outline-primary btn-sm hidden lg:inline-block">
           {{ site.Params.navigation_button.label }}
         </a>

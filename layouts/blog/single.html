@@ -15,7 +15,7 @@
           <ul class="mb-4">
             <li class="mr-4 inline-block">
               <a
-                href="{{ `authors/` | relLangURL }}{{ .Params.Author | urlize }}/">
+                href="{{ `authors/` | relURL }}{{ .Params.Author | urlize }}/">
                 <i class="fa-regular fa-circle-user mr-2"></i
                 >{{ .Params.author }}
               </a>
@@ -30,7 +30,7 @@
                 <i class="fa-regular fa-folder"></i>
                 {{ range $i,$p:= $categories }}
                   <a
-                    href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/"
+                    href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/"
                     class=""
                     >{{ . | humanize }}{{ if ne $i (sub (len $categories) 1) }}
                       {{ "|" }}
@@ -44,7 +44,7 @@
               <li class="mr-4 inline-block">
                 <i class="fa-regular fa-tag"></i>
                 {{ range $i,$p:= $tags }}
-                  <a href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/" class="">
+                  <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="">
                     #{{ . }}{{ if ne $i (sub (len $tags) 1) }}
                     {{ end }}
                   </a>
@@ -66,7 +66,7 @@
                     <li class="inline-block">
                       <a
                         class="bg-light hover:bg-primary dark:bg-darkmode-light dark:hover:bg-darkmode-primary dark:hover:text-text-dark m-1 block rounded px-3 py-1 hover:text-white"
-                        href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/">
+                        href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/">
                         {{ . | humanize }}
                       </a>
                     </li>

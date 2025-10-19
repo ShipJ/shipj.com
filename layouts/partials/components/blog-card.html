@@ -10,7 +10,7 @@
   </h4>
   <ul class="mb-4">
     <li class="mr-4 inline-block mr-2">
-      <a href="{{ `authors/` | relLangURL }}{{ .Params.Author | urlize }}/">
+      <a href="{{ `authors/` | relURL }}{{ .Params.Author | urlize }}/">
         <i class="fa-regular fa-circle-user mr-2"></i>{{ .Params.author }}
       </a>
     </li>
@@ -24,7 +24,7 @@
       <i class="fa-regular fa-folder"></i>
       {{ range $i,$p:= $categories }}
         <a
-          href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/"
+          href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/"
           class="ms-1"
           >{{ . | humanize }}{{ if ne $i (sub (len $categories) 1) }}
           {{ "|" }}
@@ -38,7 +38,7 @@
     <li class="mr-4 inline-block">
       <i class="fa-regular fa-tag"></i>
       {{ range $i,$p:= $tags }}
-        <a href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/" class="ms-1">
+        <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="ms-1">
           #{{ . }}{{ if ne $i (sub (len $tags) 1) }}
           {{ end }}
         </a>
