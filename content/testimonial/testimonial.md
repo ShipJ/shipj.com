@@ -2,6 +2,7 @@
 enable: true
 title: "What do my clients say?"
 description: "Don't just take my word for it - check out some of the testimonials below to "
+draft: true
 
 # Testimonials
 testimonials:

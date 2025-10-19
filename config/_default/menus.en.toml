@@ -43,6 +43,6 @@ url = "/contact"
 weight = 2
 
 [[footer]]
-name = "Elements"
-url = "/elements"
+name = "Format"
+url = "/format"
 weight = 3

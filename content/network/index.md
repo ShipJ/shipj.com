@@ -1,6 +1,7 @@
 ---
-title: "Postcard"
-layout: "postcard"
+title: "Network"
+layout: "network"
+draft: true
 ---
 
-This is the interactive postcard
+This is the interactive network
