@@ -1,23 +1,26 @@
 {{ define "main" }}
-  {{ partial "page-header" . }}
-  <section class="section">
-    <div>
-      {{ $widget:= site.Params.widgets.sidebar }}
-      {{ partialCached "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
-    </div>
+{{ partial "page-header" . }}
+
+  <section class="section pt-8">
     <div class="container">
-      <div class="row justify-center">
-        <!-- blog posts -->
+      <div class="row">
+        <!-- Blog Content (Left Column) -->
         <div class="lg:col-8">
-          <div class="space-y-14">  <!-- Changed to vertical spacing -->
-            {{ $paginator:= .Paginate .RegularPages }}
+          <div class="space-y-4">
+            {{ $paginator := .Paginate .RegularPages }}
             {{ range $paginator.Pages }}
-              <div class="w-full">  <!-- Changed to full width -->
+              <div class="w-full">
                 {{ partial "components/blog-card" . }}
               </div>
             {{ end }}
           </div>
           {{ partial "components/pagination.html" . }}
+        </div>
+
+        <!-- Sidebar Widget (Right Column) -->
+        <div class="lg:col-4">
+          {{ $widget := site.Params.widgets.sidebar }}
+          {{ partialCached "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) }}
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 ---
-title: "📝 Working from home in a post-covid world"
+title: "📝 Post 1: Working from home in a post-covid world"
 meta_title: ""
 description: "this is meta description"
 date: 2025-10-17T09:00:00Z
 categories: ["Application", "Data"]
-author: "Jack"
+author: "fabia"
 tags: ["first-post", "background"]
 draft: false
 ---

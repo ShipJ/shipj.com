@@ -3,7 +3,6 @@ title: "💼 Why to build an Application with modern Technology"
 meta_title: ""
 description: "this is meta description"
 date: 2025-10-04T05:00:00Z
-image: "/images/image-placeholder.png"
 categories: ["Software"]
 author: "Jack"
 tags: ["software", "tailwind"]

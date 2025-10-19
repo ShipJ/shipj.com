@@ -1,8 +1,6 @@
 {{ $context := .Context }}
 {{ $class := .Class }}
 {{ $base := site.Home.Permalink }}
-
-
 <ul class="{{ $class }} inline-flex space-x-1 capitalize">
   <li>
     <a class="text-primary dark:text-darkmode-primary" href="{{ $base }}">
@@ -18,7 +16,7 @@
           href="{{ .RelPermalink }}">
           {{ T (printf "%s" (lower .Title)) | default .Title }}
         </a>
-        <span class="inlin-block mr-1">/</span>
+        <span class="inline-block mr-1">/</span>
       </li>
     {{ end }}
   {{ end }}

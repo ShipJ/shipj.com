@@ -1,3 +1,18 @@
-{{ range .Widgets }}
-  {{ partial ( print "widgets/" . ) $.Scope }}
-{{ end }}
+<div class="w-full">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="bg-light dark:bg-darkmode-light rounded-2xl p-6 space-y-2"> <!-- Added space-y-4 -->
+      <!-- Categories -->
+      {{ range .Widgets }}
+        {{ if eq . "categories" }}
+          {{ partial (print "widgets/" .) $.Scope }}
+        {{ end }}
+      {{ end }}
+      <!-- Tags -->
+      {{ range .Widgets }}
+        {{ if eq . "tags" }}
+          {{ partial (print "widgets/" .) $.Scope }}
+        {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</div>
