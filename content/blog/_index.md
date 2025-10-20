@@ -1,5 +1,5 @@
 ---
 title: "Blog"
-meta_title: "Test"
-description: "this is meta description"
+meta_title: "Blog"
+description: "Main long-form blog page"
 ---

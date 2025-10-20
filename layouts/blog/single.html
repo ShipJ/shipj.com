@@ -1,6 +1,6 @@
 {{ define "main" }}
   <section class="section pt-7">
-    <div class="container">
+    <div class="container py-8">
       <div class="row justify-center">
         <article class="lg:col-10">
           {{ $image:= .Params.image }}
@@ -52,7 +52,7 @@
               </li>
             {{ end }}
           </ul>
-          <div class="content mb-10">
+          <div class="content mb-10 py-8">
             {{ partial "toc.html" (dict "Class" "blog" "Collapsed" false "TableOfContents" .TableOfContents ) }}
             {{ .Content }}
           </div>
@@ -67,7 +67,7 @@
                       <a
                         class="bg-light hover:bg-primary dark:bg-darkmode-light dark:hover:bg-darkmode-primary dark:hover:text-text-dark m-1 block rounded px-3 py-1 hover:text-white"
                         href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/">
-                        {{ . | humanize }}
+                        #{{ . | humanize }}
                       </a>
                     </li>
                   {{ end }}
