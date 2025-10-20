@@ -21,6 +21,11 @@ name = "Portfolio"
 url = "/portfolio"
 weight = 4
 
+[[main]]
+name = "Contact"
+url = "/contact"
+weight = 5
+
 #[[main]]
 #name = "Network"
 #url = "/network"
