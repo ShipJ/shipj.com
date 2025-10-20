@@ -21,7 +21,7 @@
     {{ $categories:= .Params.categories }}
     {{ if $categories }}
     <li class="mr-4 inline-block">
-      <i class="fa-regular fa-folder"></i>
+      <i class="fa-regular fa-layer-group"></i>
       {{ range $i,$p:= $categories }}
         <a
           href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/"
