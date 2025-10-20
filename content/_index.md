@@ -1,7 +1,7 @@
 ---
 # Banner
 banner:
-  title: "Turn Your Data Into Your Competitive Advantage"
+  title: "Turn Data Into Your Competitive Advantage"
   content: "I'm a data science and engineering consultant specializing in helping brands unlock actionable insights from their data. Whether you need forecasting, personalization, analytics, or a full data strategy — I build solutions that drive real business impact.<br><br>No data team? No problem. I work alongside you to deliver results without the overhead."
   image: "/images/banner.png"
   button:
@@ -22,9 +22,9 @@ features:
       - "**Data Infrastructure & Pipelines** — Build scalable, production-ready data systems"
       - "**Rapid Prototyping & Validation** — Test ideas quickly before committing to full builds"
     button:
-      enable: false
+      enable: true
       label: "Get Started Now"
-      link: "#"
+      link: "portfolio"
 
   - title: "Demand Forecasting & Predictive Analytics"
     image: "/images/service-2.png"
@@ -37,7 +37,7 @@ features:
     button:
       enable: true
       label: "See my work"
-      link: "/portfolio/"
+      link: "portfolio"
 
   - title: "Data Engineering & Analytics Infrastructure"
     image: "/images/service-2.png"
@@ -50,7 +50,7 @@ features:
     button:
       enable: true
       label: "See my work"
-      link: "/portfolio/"
+      link: "portfolio"
 
   - title: "How Can We Work Together?"
     image: "/images/service-3.png"
@@ -60,9 +60,9 @@ features:
       - "**Ongoing Retainer**: Monthly support for your data team, product roadmap, or technical strategy. Perfect for scaling businesses."
       - "**Workshops & Audits**: Want to identify opportunities in your data stack? I'll run a diagnostic and deliver an actionable roadmap."
     button:
-      enable: false
-      label: ""
-      link: ""
+      enable: true
+      label: "Tailwind Projects"
+      link: "tags/tailwind"
 
   - title: "Why Work With Me?"
     image: "/images/service-2.png"
@@ -74,7 +74,7 @@ features:
       - "**Fast & adaptable** — Whether you're a scaling startup or an established brand, I integrate quickly and deliver results"
     button:
       enable: true
-      label: "See my work"
-      link: "/portfolio/"
+      label: "Data Projects"
+      link: "categories/data"
 
 ---
