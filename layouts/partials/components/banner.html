@@ -40,7 +40,7 @@
 
 <div class="marquee-wrapper">
   <div class="marquee-content">
-    📣 Latest Posts 📣
+    <b>📣 Latest Posts 📣 </b>
     {{ $pages := first 10 (sort (where .Site.RegularPages "Params.draft" "ne" true) "Date" "desc") }}
     {{ range $pages }}
       <a href="{{ .RelPermalink }}">

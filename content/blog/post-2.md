@@ -1,7 +1,7 @@
 ---
 title: "📝 How to build an Application with modern Technology"
-meta_title: ""
-description: "this is meta description"
+meta_title: "Post 2"
+description: "how to build an application with modern Technology"
 date: 2025-10-13T05:00:00Z
 categories: ["Technology", "Data"]
 author: "Jack"

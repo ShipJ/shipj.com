@@ -1,7 +1,7 @@
 ---
 title: "💼 Why to build an Application with modern Technology"
-meta_title: ""
-description: "this is meta description"
+meta_title: "Project 3"
+description: "why to build an application with modern technology"
 date: 2025-10-04T05:00:00Z
 categories: ["Software"]
 author: "Jack"

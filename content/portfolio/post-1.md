@@ -1,7 +1,7 @@
 ---
 title: "💼 How to build an Application with modern Technology"
-meta_title: "Home"
-description: "Main home page for my site"
+meta_title: "Project 1"
+description: "how to build an application with modern technology"
 date: 2025-10-17T05:00:00Z
 categories: ["Application", "Data"]
 author: "Jack"
