@@ -4,7 +4,14 @@
   <section class="section pt-8">
     <div class="container">
       <div class="row gx-5">
-        <!-- Blog Content (Left Column) -->
+
+        <!-- Sidebar Widget (Left Column) -->
+        <div class="lg:col-4">
+          {{ $widget := site.Params.widgets.sidebar }}
+          {{ partialCached "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) }}
+        </div>
+
+        <!-- Blog Content (Right Column) -->
         <div class="lg:col-8">
           <div class="row">
             {{ range .Data.Pages }}
@@ -13,12 +20,6 @@
               </div>
             {{ end }}
           </div>
-        </div>
-
-        <!-- Sidebar Widget (Right Column) -->
-        <div class="lg:col-4">
-          {{ $widget := site.Params.widgets.sidebar }}
-          {{ partialCached "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) }}
         </div>
       </div>
     </div>
