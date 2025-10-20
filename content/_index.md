@@ -6,8 +6,8 @@ banner:
   image: "/images/banner.png"
   button:
     enable: true
-    label: "Let's schedule a virtual coffee ☕️"
-    link: "/contact/"
+    label: "☕️ Book a virtual coffee with me"
+    link: "https://calendar.app.google/iHkbXL2D9FykuWjq9"
 
 # Features
 features:
