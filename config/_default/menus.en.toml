@@ -46,8 +46,3 @@ weight = 1
 name = "Contact"
 url = "/contact"
 weight = 2
-
-[[footer]]
-name = "Format"
-url = "/format"
-weight = 3
