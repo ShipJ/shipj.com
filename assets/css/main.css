@@ -32,3 +32,16 @@
 
 @import "module-overrides.css";
 @import "custom.css";
+
+/* If using .content class */
+.content a:not(.btn),
+.prose a:not(.btn) {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Dark mode versions */
+.dark .content a:not(.btn),
+.dark .prose a:not(.btn) {
+  color: #60a5fa;
+}
