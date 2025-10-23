@@ -32,7 +32,7 @@
                   <a
                     href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/"
                     class=""
-                    >{{ . | humanize }}{{ if ne $i (sub (len $categories) 1) }}
+                    >{{ . }}{{ if ne $i (sub (len $categories) 1) }}
                       {{ "|" }}
                     {{ end }}
                   </a>
@@ -52,8 +52,8 @@
               </li>
             {{ end }}
           </ul>
-          <div class="content mb-10">
-            {{ partial "toc.html" (dict "Class" "blog" "Collapsed" false "TableOfContents" .TableOfContents ) }}
+          <div class="content mb-10 mt-10">
+            {{ partial "toc.html" (dict "Class" "blog" "Collapsed" true "TableOfContents" .TableOfContents ) }}
             {{ .Content }}
           </div>
           
