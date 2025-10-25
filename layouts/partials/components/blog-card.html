@@ -9,7 +9,7 @@
     </a>
   </h4>
   <ul class="mb-4">
-    <li class="mr-4 inline-block mr-2">
+    <li class="mr-4 inline-block mr-2 hover:underline">
       <a href="{{ `authors/` | relURL }}{{ .Params.Author | urlize }}/">
         <i class="fa-regular fa-circle-user mr-2"></i>{{ .Params.author }}
       </a>
@@ -20,30 +20,28 @@
     </li>
     {{ $categories:= .Params.categories }}
     {{ if $categories }}
-    <li class="mr-4 inline-block">
-      <i class="fa-regular fa-layer-group"></i>
-      {{ range $i,$p:= $categories }}
-        <a
-          href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/"
-          class="ms-1"
-          >{{ . }}{{ if ne $i (sub (len $categories) 1) }}
-          {{ "|" }}
+      <li class="mr-4 inline-block">
+        <i class="fa-regular fa-layer-group mr-2"></i>
+        {{ range $i, $p := $categories }}
+          <a href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/" class="hover:underline">
+          {{ . }}
+          </a>
+          {{ if ne $i (sub (len $categories) 1) }}
+            <span class="mx-1 text-gray-400">|</span>
           {{ end }}
-        </a>
-      {{ end }}
-    </li>
+        {{ end }}
+      </li>
     {{ end }}
     {{ $tags:= .Params.tags }}
     {{ if $tags }}
-    <li class="mr-4 inline-block">
-      <i class="fa-regular fa-tag"></i>
-      {{ range $i,$p:= $tags }}
-        <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="ms-1">
-          #{{ . }}{{ if ne $i (sub (len $tags) 1) }}
+      <li class="mr-4 inline-block">
+        <i class="fa-regular fa-tag"></i>
+        {{ range $i, $p := $tags }}
+          <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="hover:underline">
+          #{{ . }} </a>{{ if ne $i (sub (len $tags) 1) }}
           {{ end }}
-        </a>
-      {{ end }}
-    </li>
+        {{ end }}
+      </li>
     {{ end }}
   </ul>
   <p class="mb-6">{{ .Summary | plainify }}</p>
