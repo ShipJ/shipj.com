@@ -4,16 +4,28 @@
       <div class="bg-light dark:bg-darkmode-light rounded p-6">
         <h5 class="mb-6">{{ T "tags" }}</h5>
         <ul>
-          {{ range $name, $items := sort site.Taxonomies.tags "Count" "desc"}}
-            <li class="inline-block">
+          {{ $tags := slice }}
+          {{ range $name, $pages := site.Taxonomies.tags }}
+            {{ $termPage := site.GetPage (printf "/tags/%s" $name) }}
+            {{ $displayName := cond (ne $termPage nil) $termPage.Title $name }}
+            {{ $tags = $tags | append (dict
+              "name" $displayName
+              "nameLower" (lower $displayName)
+              "count" (len $pages)
+              "page" $termPage
+            ) }}
+          {{ end }}
+          {{ $sorted := sort (sort $tags "nameLower") "count" "desc" }}
+          {{ range $sorted }}
+            <li class="inline-block m-1">
               <a
-                class="hover:bg-primary dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark {{ if (and (eq $.Page.Kind `term`) (eq $.Page.Type `tags`) (eq $.Page.Title .Page.Title)) }}
-                  active
-                {{ end }} m-1 block rounded bg-white px-3 py-1 hover:text-white"
-                href="{{ .Page.RelPermalink }}">
-                <i class="fa-solid fa-tag mr-1"></i> {{ .Page.Title }} <span>({{len $items}})</span>
+                href="{{ .page.RelPermalink }}"
+                class="block rounded bg-white px-2 py-1 text-[12px] hover:bg-primary hover:text-white dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark
+                {{ if (and (eq $.Page.Kind `term`) (eq $.Page.Type `tags`) (eq $.Page.Title .name)) }} active {{ end }}"
+              >
+                <i class="fa-solid fa-tag mr-2"></i>{{ .name }} <span>({{ .count }})</span>
               </a>
-            </li>
+          </li>
           {{ end }}
         </ul>
       </div>
