@@ -44,7 +44,8 @@
                 <i class="fa-regular fa-tag"></i>
                 {{ range $i, $p := $tags }}
                   <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="hover:underline">
-                  #{{ . }} {{ if ne $i (sub (len $tags) 1) }}
+                  #{{ . }} 
+                  </a>{{ if ne $i (sub (len $tags) 1) }}
                   {{ end }}
                 {{ end }}
               </li>
