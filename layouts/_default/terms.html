@@ -5,6 +5,21 @@
   <section class="section">
     <div class="container">
       <ul class="text-center">
+        {{/* author */}}
+        {{ if eq .Permalink (`author/` | absLangURL) }}
+          {{ range site.Taxonomies.author.ByCount }}
+            <li class="m-3 inline-block">
+              <a
+                href="{{ .Page.Permalink }}"
+                class="bg-light text-text-dark dark:bg-darkmode-light dark:text-darkmode-text-dark block rounded px-4 py-2 text-xl">
+                {{ .Page.Title }}
+                <span class="bg-body dark:bg-darkmode-body ml-2 rounded px-2">
+                  {{ .Count }}
+                </span>
+              </a>
+            </li>
+          {{ end }}
+        {{ end }}
         {{/* length */}}
         {{ if eq .Permalink (`length/` | absLangURL) }}
           {{ range site.Taxonomies.length.ByCount }}

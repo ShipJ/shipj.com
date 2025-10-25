@@ -9,7 +9,7 @@ title = "I'm Jack 👋"
 timeZone = "Europe/London"
 
 # post excerpt
-summaryLength = 10 # see https://gohugo.io/content-management/excerpts/
+summaryLength = 20 # see https://gohugo.io/content-management/excerpts/
 
 # disable language
 disableLanguages = ["fr"] # added fr to its own content folder, and all works fine! Just remove this to enable
@@ -153,3 +153,9 @@ lazy = true
 [[params.plugins.js]]
 link = "plugins/youtube-lite.js"
 lazy = true
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+author = "author"
+length = "length"
