@@ -6,18 +6,23 @@ image: "/images/favicon.png"
 draft: false
 ---
 
+**Current Status**  
+- 💍 Planning a wedding Aussie Style
+- ⚽ Watching Arsenal religiously  
+- 🏃 Chasing another sub-20min 5k (see my efforts)
+- 🔧 Building side projects no one asked for  
+- 📊 Available for consulting/tutoring
+
 **TL;DR**  
 
-I'd never have predicted that I'd become a *Trend Forecaster*. Yet after 8+ years at WGSN, I'm still figuring out how to be cool.
+I'd never have predicted that I'd become a *Trend Forecaster*. Yet after 8 years with WGSN, I'm still figuring out how to be cool.
 
-I lead the Data Science and Engineering teams at the world's leading trend authority, transforming it from publishing house -> data-driven powerhouse. I solve messy problems in scrappy teams, delicately balancing leading from the front-line, while convincing those above me that what I'm doing is valuable.
-
-I'm brought into every vaguely data-related discussion: from business strategy, tech migrations, image recognition, trend prediction, KPI-discussion, and mentoring.
+I've led the Data Science and Engineering teams at the world's leading trend authority, transforming it from publishing house -> data-driven powerhouse. I solve messy problems in scrappy teams, delicately balancing leading from the front, with convincing those above me that what I'm doing is value-generating.
 
 When I'm not knee-deep in dbt models or Looker dashboards, I'm playing football or watching my beloved Arsenal, beating my 5k PB, or planning a wedding.
 
 <details>
-<summary><b>Full Story</b></summary>
+<summary><b>Director's Cut</b></summary>
 
 It began at Ascential (WGSN's parent company), where I joined as its first Data Scientist in May 2017. My boss had left by the end of the year and I was left to fend for myself. 10+ acquisitions later, Ascential had positioned itself as. This is where I got my first experience of Looker, building it with Edge/Flywheel Devs.
 
