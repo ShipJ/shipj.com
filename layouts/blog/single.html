@@ -16,8 +16,8 @@
             <li class="mr-4 inline-block">
               <a
                 href="{{ `authors/` | relURL }}{{ .Params.Author | urlize }}/">
-                <i class="fa-regular fa-circle-user mr-2"></i
-                >{{ .Params.author }}
+                <i class="fa-regular fa-circle-user mr-2 hover:underline"></i>
+                {{ .Params.author }}
               </a>
             </li>
             <li class="mr-4 inline-block">
@@ -27,15 +27,14 @@
             {{ $categories:= .Params.categories }}
             {{ if $categories }}
               <li class="mr-4 inline-block">
-                <i class="fa-regular fa-layer-group"></i>
-                {{ range $i,$p:= $categories }}
-                  <a
-                    href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/"
-                    class=""
-                    >{{ . }}{{ if ne $i (sub (len $categories) 1) }}
-                      {{ "|" }}
-                    {{ end }}
+                <i class="fa-regular fa-layer-group mr-2"></i>
+                {{ range $i, $p := $categories }}
+                  <a href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/" class="hover:underline">
+                  {{ . }}
                   </a>
+                  {{ if ne $i (sub (len $categories) 1) }}
+                    <span class="mx-1 text-gray-400">|</span>
+                  {{ end }}
                 {{ end }}
               </li>
             {{ end }}
@@ -43,11 +42,10 @@
             {{ if $tags }}
               <li class="mr-4 inline-block">
                 <i class="fa-regular fa-tag"></i>
-                {{ range $i,$p:= $tags }}
-                  <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="">
-                    #{{ . }}{{ if ne $i (sub (len $tags) 1) }}
-                    {{ end }}
-                  </a>
+                {{ range $i, $p := $tags }}
+                  <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="hover:underline">
+                  #{{ . }} {{ if ne $i (sub (len $tags) 1) }}
+                  {{ end }}
                 {{ end }}
               </li>
             {{ end }}
