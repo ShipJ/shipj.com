@@ -2,11 +2,10 @@
 # Banner
 banner:
   title: "Turn Data Into Your Competitive Advantage"
-  content: "I'm a <u>Data Science and Engineering consultant</u> specialised in helping brands unlock actionable insights from their data. Whether you need forecasting, analytics, or a full data strategy, I build solutions focused on <u>impact</u>.
+  content: "Hi, I'm Jack and I'm a <u>Data Science and Engineering consultant</u> specialised in helping you figure out your data stack - and what to do with it. Whether it's ingestion, transformation, analytics, forecasting, or an end-to-end data strategy, I build solutions that <u>impact</u>.
   <br><br>
-  No data team? No problem.
+  No data team? No problem. I'll work alongside you to deliver results without the overhead. I offer light-touch mentoring services for teams and individuals who want a fresh perspective on everything from where culture, technology, and data collide.
   <br><br>
-  I'll work alongside you to deliver results without the overhead. I offer light-touch consulting and mentoring services for teams and individuals who want a fresh perspective on everything from where culture, technology, and data collide.<br><br>
   If that sounds interesting, let's set up some time!"
   image: "/images/banner.png"
   button:
