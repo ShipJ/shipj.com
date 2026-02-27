@@ -7,7 +7,20 @@ date: 2023-06-01T05:00:00Z
 length: "Short Term (1-3m)"
 categories: ["Data Engineering", "Data Science", "Data Governance"]
 author: "Jack"
-tags: ["Databricks", "MLFlow", "Hyperopt", "Spark", "python", "SQL", "Vendor Management", "Databricks", "Machine Learning", "MLOps", "Distributed Computing"]
+tags:
+  [
+    "Databricks",
+    "MLFlow",
+    "Hyperopt",
+    "Spark",
+    "python",
+    "SQL",
+    "Vendor Management",
+    "Databricks",
+    "Machine Learning",
+    "MLOps",
+    "Distributed Computing",
+  ]
 image: "/images/gallery/02.jpg"
 draft: false
 ---

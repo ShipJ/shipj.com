@@ -79,8 +79,7 @@ jobs:
         with:
           path: ${{ runner.temp }}/hugo_cache
           key: hugo-${{ github.run_id }}
-          restore-keys:
-            hugo-
+          restore-keys: hugo-
       - name: Build the site
         run: |
           hugo \
@@ -98,7 +97,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
-          
+
   deploy:
     environment:
       name: github-pages

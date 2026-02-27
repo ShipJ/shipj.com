@@ -7,7 +7,18 @@ date: 2023-03-01T05:00:00Z
 length: "Short Term (1-3m)"
 categories: ["Data Engineering", "Data Analytics", "Data Governance"]
 author: "Jack"
-tags: ["dbt", "Snowflake", "Looker", "LookML", "BigQuery", "SQL", "Business Intelligence", "Mentoring", "Monitoring"]
+tags:
+  [
+    "dbt",
+    "Snowflake",
+    "Looker",
+    "LookML",
+    "BigQuery",
+    "SQL",
+    "Business Intelligence",
+    "Mentoring",
+    "Monitoring",
+  ]
 image: "/images/gallery/03.jpg"
 draft: false
 ---

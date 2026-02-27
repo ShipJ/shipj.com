@@ -86,10 +86,7 @@ const setupProject = () => {
         regex: /^.*theme\s*=\s*("[^"\]]+"|\S+)/m,
       },
       {
-        filepath: path.join(
-          rootFolder,
-          "exampleSite/config/module.toml",
-        ),
+        filepath: path.join(rootFolder, "exampleSite/config/module.toml"),
         regex: /\[\[imports\]\]\s*\r?\npath = "([^"]+)"/,
       },
     ].forEach(toggleComment);

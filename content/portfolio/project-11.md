@@ -7,7 +7,22 @@ date: 2022-11-01T05:00:00Z
 length: "Short Term (1-3m)"
 categories: ["Data Science", "Data Analytics"]
 author: "Jack"
-tags: ["A/B Testing", "clean-rooms", "datarobot", "decision trees", "XGBoost", "Marketo", "git", "GCP", "Databricks", "python", "Machine Learning", "Analytics", "Strategy"]
+tags:
+  [
+    "A/B Testing",
+    "clean-rooms",
+    "datarobot",
+    "decision trees",
+    "XGBoost",
+    "Marketo",
+    "git",
+    "GCP",
+    "Databricks",
+    "python",
+    "Machine Learning",
+    "Analytics",
+    "Strategy",
+  ]
 image: "/images/gallery/05.jpg"
 draft: false
 ---

@@ -1,34 +1,28 @@
-{{ if isset site.Taxonomies "categories" }}
-  {{ if not (eq (len site.Taxonomies.categories) 0) }}
-    <div class="mb-0">
-      <div class="bg-light dark:bg-darkmode-light rounded p-6">
-        <h5 class="mb-6">{{ T "categories" }}</h5>
-        <ul>
-          {{ $categories := slice }}
-          {{ range $name, $pages := site.Taxonomies.categories }}
-            {{ $termPage := site.GetPage (printf "/categories/%s" $name) }}
-            {{ $displayName := cond (ne $termPage nil) $termPage.Title $name }}
-            {{ $categories = $categories | append (dict
-              "name" $displayName
-              "nameLower" (lower $displayName)
-              "count" (len $pages)
-              "page" $termPage
-            ) }}
-          {{ end }}
-          {{ $sorted := sort (sort $categories "nameLower") "count" "desc" }}
-          {{ range $sorted }}
-          <li class="inline-block m-1">
-            <a
-              href="{{ .page.RelPermalink }}"
-              class="block rounded bg-white px-2 py-1 text-[14px] hover:bg-primary hover:text-white dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark
+{{ if isset site.Taxonomies "categories" }} {{ if not (eq (len
+site.Taxonomies.categories) 0) }}
+<div class="mb-0">
+  <div class="bg-light dark:bg-darkmode-light rounded p-6">
+    <h5 class="mb-6">{{ T "categories" }}</h5>
+    <ul>
+      {{ $categories := slice }} {{ range $name, $pages :=
+      site.Taxonomies.categories }} {{ $termPage := site.GetPage (printf
+      "/categories/%s" $name) }} {{ $displayName := cond (ne $termPage nil)
+      $termPage.Title $name }} {{ $categories = $categories | append (dict
+      "name" $displayName "nameLower" (lower $displayName) "count" (len $pages)
+      "page" $termPage ) }} {{ end }} {{ $sorted := sort (sort $categories
+      "nameLower") "count" "desc" }} {{ range $sorted }}
+      <li class="inline-block m-1">
+        <a
+          href="{{ .page.RelPermalink }}"
+          class="block rounded bg-white px-2 py-1 text-[14px] hover:bg-primary hover:text-white dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark
               {{ if (and (eq $.Page.Kind `term`) (eq $.Page.Type `categories`) (eq $.Page.Title .name)) }} active {{ end }}"
-            >
-              <i class="fa-solid fa-layer-group mr-2"></i>{{ .name }} <span>({{ .count }})</span>
-            </a>
-          </li>
-          {{ end }}
-        </ul>
-      </div>
-    </div>
-  {{ end }}
-{{ end }}
+        >
+          <i class="fa-solid fa-layer-group mr-2"></i>{{ .name }}
+          <span>({{ .count }})</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</div>
+{{ end }} {{ end }}

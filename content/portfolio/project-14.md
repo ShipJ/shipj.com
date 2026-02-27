@@ -7,7 +7,18 @@ date: 2022-11-01T05:00:00Z
 length: "Long Term (6-12m)"
 categories: ["Data Science", "Data Architecture", "Data Analytics"]
 author: "Jack"
-tags: ["Churn Modeling", "Customer Lifetime Value", "GCP", "BigQuery", "Machine Learning", "Anomaly Detection", "Sales", "Reporting", "APIs"]
+tags:
+  [
+    "Churn Modeling",
+    "Customer Lifetime Value",
+    "GCP",
+    "BigQuery",
+    "Machine Learning",
+    "Anomaly Detection",
+    "Sales",
+    "Reporting",
+    "APIs",
+  ]
 image: "/images/gallery/08.jpg"
 draft: false
 ---
