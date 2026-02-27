@@ -1,11 +1,13 @@
 ---
-title: "📝 How to build an Application with modern Technology"
-meta_title: "Post 4"
-description: "how to build an application with modern technology"
+title: "📝 Chasing a sub-20m 5k"
+meta_title: "Chasing a sub-20m 5k - Training and Data"
+description: "Chasing a sub-20m 5k - Training and Data"
+slug: "4-chasing-sub-20-5k"
 date: 2025-09-04T05:00:00Z
-categories: ["Architecture"]
+categories: ["Sport"]
 author: "Jack"
-tags: ["silicon", "technology"]
+tags: ["running", "5k", "training"]
+image: "/images/gallery/01.jpg"
 draft: false
 ---
 

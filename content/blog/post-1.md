@@ -1,50 +1,61 @@
 ---
-title: "📝 Working from home in a post-covid world"
-meta_title: "Post 1"
-description: "working from home in a post-covid world"
+title: "📝 About me - Director's cut"
+meta_title: "About me - Director's cut"
+description: "About me - Director's cut"
+slug: "1-about-me-directors-cut"
 date: 2025-10-17T09:00:00Z
-categories: ["Work", "Management", "Technology", "Development"]
+categories: ["General", "Management"]
 author: "Jack"
-tags: ["wfh", "remote-work", "team-management", "relationships", "productivity", "tech-stack", "development"]
+tags: ["WFH", "remote-work", "team-management", "networking", "productivity", "tech-stack"]
+image: "/images/gallery/01.jpg"
 draft: false
 ---
 
-The shift to remote work has fundamentally changed how we approach both professional relationships and technical collaboration. As someone deeply invested in both the human and technological aspects of work, I've observed that success in this new paradigm requires intentional effort across multiple dimensions.
+It began at Ascential (WGSN's parent company), where I joined as its first Data Scientist in May 2017. My boss had left by the end of the year and I was left to fend for myself. 10+ acquisitions later, Ascential had positioned itself as. This is where I got my first experience of Looker, building it with Edge/Flywheel Devs.
 
-The post-COVID workplace isn't just about location flexibility—it's about reimagining how we build trust, maintain team cohesion, and leverage technology to enable rather than hinder genuine human connection. The teams that thrive are those that treat remote work not as a temporary accommodation, but as a strategic advantage requiring purposeful relationship-building and robust technical infrastructure.
+At our annual conference, I was asked to join WGSN to . What had I done... Here I was, squinting at prints and patterns, trying to make sense of what gingham was as opposed to . 
 
-## Building and Maintaining Relationships
+Outside of that, I like slow books, odd maps, and trying to learn things the hard way.
 
-Remote work demands more intentional relationship management than traditional office environments. Without casual hallway conversations and spontaneous coffee breaks, we must create deliberate touchpoints:
+##### Redundancy
+"My role" was made redundant in September 2025, and was the [greatest gift(s) I have ever received](../blog/post-2)
 
-- **Regular one-on-ones** that go beyond status updates to genuinely understand team members' challenges and growth aspirations
-- **Virtual social spaces** that replicate the informal bonding that happens naturally in offices
-- **Async communication practices** that respect different working styles and time zones while maintaining connection
-- **Video-first culture** for meaningful discussions, reserving text for information sharing
+**TL;DR**
 
-The key insight: relationships don't happen by accident in remote settings. They require the same level of planning and investment we give to project delivery.
+I don't take that likely, and know that others would baulk at me for saying it, but I was ready to pack it in. The thought of handing in my notice and reluctantly working for 3 months in a job I was not enjoying makes me quiver. 
 
-## Management in a Distributed World
+As a keen follower of personal finance and FIRE 
 
-> "The best managers in remote environments are those who focus on outcomes rather than activity, and who create psychological safety through consistent, transparent communication."
+It makes me ever more grateful for being *loyal* - my partner insists that job-hopping is more fruitful, and she is probably right so I won't argue it. We are getting married in Australia in November, and the thought of
 
-Effective remote management requires evolving from oversight to enablement. This means:
+The final gift is my time back. Weekends, evenings, holidays, sickness were spent prepping 1-1 notes, monitoring pipelines, adding one extra feature, learning a new tool - getting the nth crazy project over the line because Y will be on annual leave from Wednesday.
 
-- **Trust by default** - Moving from measuring hours to measuring impact and outcomes
-- **Clear expectations** - Documenting processes, decisions, and goals with precision
-- **Overcommunication** - What felt like "enough" communication in the office is rarely sufficient remotely
-- **Empathy and flexibility** - Recognizing that home offices come with unique challenges and distractions
+In 8.5 years across WGSN and its parent company Ascential, I had never taken a sick day. 
 
-The transition from traditional management to remote leadership isn't just a shift in tools—it's a fundamental change in mindset about what drives productivity and engagement.
+##### Skills
+My skillset ranges from database management (cloud and on-prem) to data science workflows. 
+- **Languages**: python, SQL, javascript
+- **Tools**: jfrwf
+- **Soft**: Jira, Miro, Google Sheets
+  
+##### Management
+I am a **servant-leader** and always will be. I hate *telling* others how to do something. This probably didn't resonate with leaders around me, and would often be used against me "in your role, you should be ____". 
 
-## Technology and Development Infrastructure
+I think this stems from being a technical leader - one who prefers to understand a technology before professing to use it. *Every* manager I've ever had has told me I cannot be both - I must. Yet, my team of staff engineers and PhD-honed researchers compliment me for it. I've always found it to be a delicate balance. I am skeptical towards every shiny new tool, and really want to understand what problem it solves before implementing it.
 
-From a technical perspective, remote work has accelerated the need for robust, cloud-native development practices. The infrastructure that enables distributed teams includes:
+I value appreciation culture and was often left frustrated at the lack of support despite (in my view) over-achieving. 
 
-- **Cloud-based development environments** that ensure consistency across team members
-- **Collaborative coding tools** like VS Code Live Share, pair programming platforms, and code review systems
-- **CI/CD pipelines** that provide rapid feedback and reduce dependency on specific individuals
-- **Documentation-first culture** where code, architecture decisions, and processes are thoroughly documented
-- **Async-friendly communication tools** that balance real-time collaboration with deep work time
+It is a delicate balance between knowing that you are learning, and simply being taken advantage of. If there is one lesson I've learned - this was not worth it. 
 
-The best remote development teams I've worked with treat their tooling and processes as first-class products, continuously iterating and improving them based on team feedback.
+##### Transformation
+At times I felt like a consultant, solving any data-related problem that came by my desk - from company acquisitions, to salesforce migrations, to churn models, to implementing new tools from scratch. The difference is not having an end-date. 
+
+I am responsible for transforming WGSN into a company that used Microsoft Access for Finance Reporting, Powerpoint and Excel, to supporting *every* department.
+
+##### Lessons from University
+I knew as soon as , I didn't get it. How could anyone. I think I (vaguely) do now, but it wasn't for me. That taught me a lot about humility. I cared about relationships, ways of doing things quickly, cleverly. I listened in awe explaining bitwise operators a. After hours of thenewboston (whatever happened to Bucky Roberts?), KhanAcademy and using Wolfram Alpha to *help* with maths coursework. I am very much a throw myself at the hardest problem kind of person, knowing that everyone around me is 100000x more intelligent. 
+
+##### Lessons from Jury service
+Jury service taught me about imposter syndrome. I am not one to bullsh* my way through conversations, and will always say when I don't know (or don't know enough) to form an opinion, but this was something else. 
+
+I have never felt so unqualified. My interpretation of 50+ pages of criminal law, and words by competing barristers, was the deciding factor of whether someone's life would change forever. But I did it and we had a beer afterwards.

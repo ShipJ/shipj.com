@@ -55,3 +55,18 @@
 #TableOfContents ol ol {
   list-style-type: lower-roman; /* i, ii, iii, ... */
 }
+
+.note {
+  background-color: #bffec9;
+  border-left: 6px solid #707070;
+  padding: 0.5em 1em;
+  margin: 0.5em 0;
+  border-radius: 4px;
+  font-style: italic;
+  font-size: small;
+}
+
+.note summary {
+  font-weight: bold;
+  cursor: pointer;
+}

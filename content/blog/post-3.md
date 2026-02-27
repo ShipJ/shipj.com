@@ -1,11 +1,13 @@
 ---
-title: "📝 How to build an Application with modern Technology"
-meta_title: "Post 3"
+title: "📝 How to build an application with modern technology"
+meta_title: "How to build an application with modern technology"
 description: "how to build an application with modern technology"
+slug: "3-how-to-build-an-app-with-modern-tech"
 date: 2025-10-09T05:00:00Z
-categories: ["Software"]
+categories: ["General"]
 author: "Jack"
-tags: ["software", "tailwind"]
+tags: ["software", "tech-stack"]
+image: "/images/gallery/01.jpg"
 draft: false
 ---
 
