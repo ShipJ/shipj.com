@@ -7,7 +7,20 @@ date: 2020-09-01T05:00:00Z
 length: "Very Long Term (>12m)"
 categories: ["Data Engineering", "Data Analytics", "Data Governance"]
 author: "Jack"
-tags: ["Salesforce", "clean-rooms", "Looker", "BigQuery", "Jira", "Marketo", "git", "GCP", "Databricks", "Business Intelligence", "Due Diligence"]
+tags:
+  [
+    "Salesforce",
+    "clean-rooms",
+    "Looker",
+    "BigQuery",
+    "Jira",
+    "Marketo",
+    "git",
+    "GCP",
+    "Databricks",
+    "Business Intelligence",
+    "Due Diligence",
+  ]
 image: "/images/gallery/04.jpg"
 draft: false
 ---

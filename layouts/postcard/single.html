@@ -1,20 +1,64 @@
 {{ define "main" }}
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Image to ChatGPT</title>
 </head>
 <body>
   <h2>Upload an image to ask ChatGPT what's in it</h2>
-  <input type="file" id="imageInput" accept="image/*">
+  <input type="file" id="imageInput" accept="image/*" />
   <button onclick="handleImage()">Analyze</button>
   <p id="responseText"></p>
 
-<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/177842775&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/thomasjackmusic" title="Thomas Jack." target="_blank" style="color: #cccccc; text-decoration: none;">Thomas Jack.</a> · <a href="https://soundcloud.com/thomasjackmusic/thomas-jack-presents-tropical-house-vol6-with-kygo" title="Thomas Jack Presents: Kygo - Tropical House Vol.6" target="_blank" style="color: #cccccc; text-decoration: none;">Thomas Jack Presents: Kygo - Tropical House Vol.6</a></div>
+  <iframe
+    width="100%"
+    height="166"
+    scrolling="no"
+    frameborder="no"
+    allow="autoplay"
+    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/177842775&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+  ></iframe>
+  <div
+    style="
+      font-size: 10px;
+      color: #cccccc;
+      line-break: anywhere;
+      word-break: normal;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-family:
+        Interstate,
+        Lucida Grande,
+        Lucida Sans Unicode,
+        Lucida Sans,
+        Garuda,
+        Verdana,
+        Tahoma,
+        sans-serif;
+      font-weight: 100;
+    "
+  >
+    <a
+      href="https://soundcloud.com/thomasjackmusic"
+      title="Thomas Jack."
+      target="_blank"
+      style="color: #cccccc; text-decoration: none"
+      >Thomas Jack.</a
+    >
+    ·
+    <a
+      href="https://soundcloud.com/thomasjackmusic/thomas-jack-presents-tropical-house-vol6-with-kygo"
+      title="Thomas Jack Presents: Kygo - Tropical House Vol.6"
+      target="_blank"
+      style="color: #cccccc; text-decoration: none"
+      >Thomas Jack Presents: Kygo - Tropical House Vol.6</a
+    >
+  </div>
 
   <script>
     async function handleImage() {
-      const input = document.getElementById('imageInput');
+      const input = document.getElementById("imageInput");
       const file = input.files[0];
       if (!file) return alert("Please select an image.");
 
@@ -25,11 +69,12 @@
       const response = await fetch("/analyze-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: base64 })
+        body: JSON.stringify({ image: base64 }),
       });
 
       const data = await response.json();
-      document.getElementById("responseText").innerText = data.result || "No result.";
+      document.getElementById("responseText").innerText =
+        data.result || "No result.";
     }
 
     function toBase64(file) {
@@ -37,8 +82,9 @@
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+        reader.onerror = (error) => reject(error);
       });
     }
   </script>
-{{ end }}
+  {{ end }}
+</body>

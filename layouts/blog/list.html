@@ -1,30 +1,26 @@
-{{ define "main" }}
-{{ partial "page-header" . }}
+{{ define "main" }} {{ partial "page-header" . }}
 
-  <section class="section pt-16">
-    <div class="container">
-      <div class="row gap-x-16">
+<section class="section pt-16">
+  <div class="container">
+    <div class="row gap-x-16">
+      <!-- Sidebar Widget (Left Column) -->
+      <div class="lg:col-3 text-sm">
+        {{ $widget := site.Params.widgets.sidebar }} {{ partialCached
+        "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) }}
+      </div>
 
-        <!-- Sidebar Widget (Left Column) -->
-        <div class="lg:col-3 text-sm">
-          {{ $widget := site.Params.widgets.sidebar }}
-          {{ partialCached "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) }}
+      <!-- Blog Content (Right Column) -->
+      <div class="lg:col-8">
+        <div class="space-y-16">
+          {{ $paginator := .Paginate .RegularPages }} {{ range $paginator.Pages
+          }}
+          <div class="w-full">{{ partial "components/blog-card" . }}</div>
+          {{ end }}
         </div>
-
-        <!-- Blog Content (Right Column) -->
-        <div class="lg:col-8">
-          <div class="space-y-16">
-            {{ $paginator := .Paginate .RegularPages }}
-            {{ range $paginator.Pages }}
-              <div class="w-full">
-                {{ partial "components/blog-card" . }}
-              </div>
-            {{ end }}
-          </div>
-          {{ partial "components/pagination.html" . }}
-        </div>
+        {{ partial "components/pagination.html" . }}
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 {{ end }}

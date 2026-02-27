@@ -7,7 +7,19 @@ date: 2022-11-01T05:00:00Z
 length: "Long Term (6-12m)"
 categories: ["Data Analytics", "Data Architecture"]
 author: "Jack"
-tags: ["Looker", "LookML", "dbt", "BigQuery", "Snowflake", "Excel", "Business Intelligence", "Dashboarding", "Training", "Reporting"]
+tags:
+  [
+    "Looker",
+    "LookML",
+    "dbt",
+    "BigQuery",
+    "Snowflake",
+    "Excel",
+    "Business Intelligence",
+    "Dashboarding",
+    "Training",
+    "Reporting",
+  ]
 image: "/images/gallery/06.jpg"
 draft: false
 ---

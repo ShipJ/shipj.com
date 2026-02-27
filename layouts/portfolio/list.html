@@ -1,38 +1,39 @@
-{{ define "main" }}
-  {{ partial "page-header" . }}
+{{ define "main" }} {{ partial "page-header" . }}
 
-  <section class="section pt-16">
-    <div class="container">
-      
-      <!-- git contribution chart-->
-      <a href="https://github.com/wgsn-shipj">
+<section class="section pt-16">
+  <div class="container">
+    <!-- git contribution chart-->
+    <a href="https://github.com/wgsn-shipj">
       <div class="flex items-center justify-center pb-16">
-        <img loading="lazy" src="https://ghchart.rshah.org/wgsn-shipj" alt="GitHub chart for ShipJ" width="75%" height="auto">
+        <img
+          loading="lazy"
+          src="https://ghchart.rshah.org/wgsn-shipj"
+          alt="GitHub chart for ShipJ"
+          width="75%"
+          height="auto"
+        />
       </div>
-      </a>
-      
-      <div class="row gap-x-16">
+    </a>
 
-        <!-- sidebar -->
-        <div class="lg:col-3 text-sm">
-          <!-- widget -->
-          {{ $widget:= site.Params.widgets.sidebar }}
-          {{ partialCached "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
-        </div>
+    <div class="row gap-x-16">
+      <!-- sidebar -->
+      <div class="lg:col-3 text-sm">
+        <!-- widget -->
+        {{ $widget:= site.Params.widgets.sidebar }} {{ partialCached
+        "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
+      </div>
 
-        <!-- portfolio-->
-        <div class="lg:col-8">
-          <div class="space-y-16">
-            {{ $paginator:= .Paginate .RegularPages }}
-            {{ range $paginator.Pages }}
-              <div class="w-full">
-                {{ partial "components/portfolio-card" . }}
-              </div>
-            {{ end }}
-          </div>
-          {{ partial "components/pagination.html" . }}
+      <!-- portfolio-->
+      <div class="lg:col-8">
+        <div class="space-y-16">
+          {{ $paginator:= .Paginate .RegularPages }} {{ range $paginator.Pages
+          }}
+          <div class="w-full">{{ partial "components/portfolio-card" . }}</div>
+          {{ end }}
         </div>
+        {{ partial "components/pagination.html" . }}
       </div>
     </div>
-  </section>
+  </div>
+</section>
 {{ end }}

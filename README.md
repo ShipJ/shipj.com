@@ -13,6 +13,7 @@
 - [Jshint](https://jshint.com/)
 
 I haven't deployed yet, but these are some options:
+
 - [Netlify](https://www.netlify.com/) / [Vercel](https://vercel.com/) / [Github Actions](https://github.com/features/actions), [Gitlab Ci](https://docs.gitlab.com/ee/ci/), [AWS Amplify](https://aws.amazon.com/amplify/)
 
 ---
@@ -21,7 +22,9 @@ I haven't deployed yet, but these are some options:
 
 First I cloned this [repo](https://github.com/zeon-studio/hugoplate) and installed the prerequisites below.
 Added a comment
+
 ### ⚙️ Prerequisites
+
 - [Hugo Extended v0.144+](https://gohugo.io/installation/)
 - [Node v22+](https://nodejs.org/en/download/)
 - [Go v1.24+](https://go.dev/doc/install)
