@@ -51,7 +51,7 @@ It contains thoughts, blog posts, tutorials, and a [portfolio](../portfolio/) of
 **What else am I working on?**
 
 - 💍 [Planning a wedding Aussie Style]()
-- 🏃 [Chasing a sub-20 min 5k]()
+- 🏃 [Chasing a sub-20 5k]()
 - ⚽ [Watching Arsenal religiously]()
 - 🔧 [Side projects no one asked for]()
 - 📊 [Building a consulting/tutoring/mentoring brand]()

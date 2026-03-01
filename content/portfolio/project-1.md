@@ -31,66 +31,60 @@ draft: false
 
 ## Project Overview
 
-["TrendCurve AI"](https://www.wgsn.com/en/trading/fashion-buying) is the culmination of WGSN's first step into data-driven forecasting - a product designed to anticipate consumer trends using time-series modeling, deep learning, and hierarchical data structures across a range of proprietary datasets.
+["TrendCurve AI"](https://www.wgsn.com/en/trading/fashion-buying) was WGSN's first large‑scale step into data‑driven forecasting — a product designed to anticipate consumer trends using time‑series modelling, deep learning, and hierarchical data structures across a range of proprietary datasets.
 
-{{< note title="Thoughts on this section" >}}
-I initially tried a grid layout, but a flexbox approach was more flexible for mobile.
-{{< /note >}}
-
-As the lead data scientist and engineer, I architected the systems and frameworks that transformed early prototypes into a production-grade forecasting engine, sold to hundreds of clients. This arduous process validated the long-term value of data-led insights in trend intelligence.
+As the lead data scientist and engineer, I was responsible for taking early prototypes and turning them into a production‑grade forecasting engine used by hundreds of fashion and retail clients. The work spanned product definition, model design, data architecture, and the organisational change required to embed data‑led decision‑making into an established trend‑forecasting business.
 
 <br>
 
 ### Technologies and Approach
 
-**Classical vs. Modern Approaches:** leveraged [Prophet](https://facebook.github.io/prophet/) by Meta in early iterations, then transitioned to Hierarchical Forecasting to improve top-down and bottom-up accuracy across product categories and regions.
+**Classical vs modern approaches:** Early iterations used [Prophet](https://facebook.github.io/prophet/) and classical statistical baselines to establish reliable benchmarks and build trust with stakeholders. As the product matured, we moved to hierarchical forecasting to capture both top‑down and bottom‑up behaviour across categories, regions, and time horizons.
 
-**Deep Learning Expansion:** Implemented LSTM and Transformer architectures for multi-step forecasting and cross-series correlation learning, improving robustness to seasonality and sparse signals.
+**Deep learning expansion:** We introduced LSTM and Transformer‑based architectures (leveraging open‑source tooling such as Nixtla and Chronos) to handle multi‑step forecasts, cross‑series correlations, and sparse seasonal signals. This allowed us to model complex product life‑cycles and promotional effects that were difficult to capture with classical methods alone.
 
-**Feature Engineering & Drift Monitoring:** Maintained over 90% predictive accuracy through continuous feature pipeline optimization and proactive drift detection in model performance.
+**Feature engineering & drift monitoring:** We invested heavily in feature pipelines — combining proprietary trend signals, sell‑through data, macro indicators, and calendar effects — and paired this with automated drift monitoring. Retraining cadence and feature selection were driven by monitored performance rather than fixed schedules, helping maintain >90% accuracy across key segments.
 
 <br>
 
 ### Engineering Foundations
 
-- Built a modular data pipeline supporting real-time ingestion, transformation, and feature computation.
-- Established CI/CD workflows for model retraining and deployment, integrating drift alerts and performance dashboards for non-technical stakeholders.
-- Developed API endpoints and documentation for seamless integration into WGSN’s client platforms.
+- Built a modular data platform to support ingestion, transformation, and feature computation across multiple internal and external data sources.
+- Established CI/CD workflows for model retraining and deployment, including automated evaluation gates, drift alerts, and audit trails.
+- Developed internal APIs and integration layers so that TrendCurve AI forecasts could be surfaced directly in WGSN’s client‑facing products, without duplicating logic across teams.
 
-(Add diagram here — e.g. data flow / model architecture visualization)
+From a systems perspective, the architecture was designed to be resilient to upstream schema changes, cost‑aware at scale, and simple enough for non‑ML engineers to extend.
 
 <br>
 
 ### Team Enablement, R&D & Leadership
 
-Beyond technical delivery, I focused on building capability and sustaining innovation:
+Beyond technical delivery, a significant part of the work was making sure the organisation could understand, trust, and continually improve the product:
 
-- Upskilled 10+ non-technical team members to manage and interpret data-heavy workflows confidently.
-- Founded an internal <u>Research Hub</u>, coordinating R&D into scalable forecast automation, hierarchical modeling, and transformer-based architectures.
-- Secured cross-functional buy-in by aligning data science outputs with design, editorial, and commercial teams.
-
-(You can expand here with examples of training materials, internal workshops, or metrics showing adoption.)
+- Designed and ran internal training for 10+ non‑technical colleagues (editors, merchandisers, product managers) so they could interpret forecasts, understand confidence intervals, and give structured feedback.
+- Founded an internal <u>Research Hub</u> to coordinate R&D into scalable forecast automation, hierarchical modelling, and transformer‑based architectures, ensuring experimentation fed back into the product roadmap.
+- Worked with design, editorial, and commercial leaders to define how TrendCurve AI would show up in client‑facing experiences, aligning metrics and narratives so that “AI” features were understandable and actionable.
+- Introduced lightweight governance around experiment tracking, evaluation standards, and documentation so future teams could build on the foundations rather than start from scratch.
 
 <br>
 
 ### Impact & Outcomes
 
-Test
+TrendCurve AI shifted forecasting from a largely manual, expert‑driven process to a repeatable, data‑driven capability:
 
 - £3m+ annual recurring revenue directly attributable to the TrendCurve AI product line.
-- > 90% model accuracy maintained over production lifecycle.
-- Reduced manual workload by automating insight generation, freeing editorial teams for strategic analysis.
-- Created a sustainable R&D pipeline, enabling continuous improvement and innovation in WGSN’s forecasting capabilities.
-  (Optionally add visuals like before/after process charts or KPI dashboards.)
+- >90% model accuracy maintained over the production lifecycle across priority categories.
+- Significant reduction in manual workload by automating routine insight generation, freeing editorial teams to focus on strategic analysis and storytelling.
+- A sustainable R&D pipeline and technical foundation that allowed WGSN to continue evolving its forecasting capabilities without rebuilding the stack each time.
 
 <br>
 
 ### Future Expansion
 
-test
+The foundations laid by TrendCurve AI opened several clear avenues for future work:
 
-- The foundation laid by TrendCurve AI opens several avenues for future development:
-- Integrating multimodal models combining text, image, and time-series data.
-- Deploying explainability frameworks (SHAP, LIME) to enhance stakeholder trust.
-- Exploring real-time trend nowcasting powered by transformer encoders and diffusion-based architectures.
-  (Leave space here for your commentary on next steps, experiments, or reflections.)
+- Integrating multimodal models combining text, image, and time‑series inputs to better capture trend narratives, visual signals, and quantitative performance in a single system.
+- Deploying explainability frameworks (e.g. SHAP) to make drivers of change more transparent for commercial decision‑makers, not just data teams.
+- Exploring real‑time trend “nowcasting” powered by transformer encoders, allowing clients to react faster to shifts in demand, sentiment, and competitive activity.
+
+In other words: this was not just a one‑off forecasting project, but the backbone for a broader data and AI strategy inside a global trend‑forecasting business.
