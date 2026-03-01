@@ -1,10 +1,10 @@
 ---
 # Banner
 banner:
-  title: "Turn Data Into Your Competitive Advantage"
-  content: "Hi, I'm Jack and I'm a <u>Data Science and Engineering consultant</u> specialised in helping you figure out your data stack - and what to do with it. Whether it's ingestion, transformation, analytics, forecasting, or an end-to-end data strategy, I build solutions that <u>impact</u>.
+  title: "Bring a Senior Data Partner Into Your Team"
+  content: "Hi, I'm Jack — a <u>Data Science and Engineering consultant</u> for retail, fashion, and e‑commerce brands. I specialise in fixing messy data stacks and shipping production‑ready forecasting, analytics, and decision tools that actually get used.
   <br><br>
-  No data team? No problem. I'll work alongside you to deliver results without the overhead. I offer light-touch mentoring services for teams and individuals who want a fresh perspective on everything from where culture, technology, and data collide.
+  If you're a scaling team without a dedicated data function — or your current setup isn't delivering — I can step in as a senior partner: scope the right problems, design the architecture, and help you execute.
   <br><br>
   If that sounds interesting, let's set up some time!"
   image: "/images/banner.png"
@@ -17,14 +17,14 @@ banner:
 features:
   - title: "How can I help you?"
     image: "/images/service-1.png"
-    content: "I specialize in turning complex data challenges into practical, scalable solutions. From predictive models to end-to-end analytics platforms, I help businesses make smarter decisions faster."
+    content: "I specialise in turning complex data challenges into practical, scalable solutions for consumer and e‑commerce businesses. From predictive models to end‑to‑end analytics platforms, I help you make better decisions faster."
     bulletpoints:
-      - "**Demand Forecasting** — Predict inventory needs, optimize supply chains, and reduce waste"
-      - "**Product & Pricing Intelligence** — Data-driven insights for SKU performance and pricing strategy"
-      - "**AI-Powered Personalization** — Recommendation systems and customer segmentation"
-      - "**Retail & E-commerce Analytics** — Track conversion, retention, and customer lifetime value"
-      - "**Data Infrastructure & Pipelines** — Build scalable, production-ready data systems"
-      - "**Rapid Prototyping & Validation** — Test ideas quickly before committing to full builds"
+      - "**Demand forecasting** — Anticipate demand, optimise stock, and reduce lost sales"
+      - "**Product & pricing intelligence** — Understand SKU performance and price sensitivity"
+      - "**Customer analytics & personalisation** — Segmentation, recommendations, and lifecycle insights"
+      - "**Retail & e‑commerce analytics** — Track conversion, retention, and customer lifetime value"
+      - "**Data infrastructure & pipelines** — Build scalable, production‑ready data systems"
+      - "**Rapid prototyping & validation** — Test ideas quickly before committing to full builds"
     button:
       enable: true
       label: "Get Started Now"
@@ -58,27 +58,41 @@ features:
 
   - title: "How Can We Work Together?"
     image: "/images/service-3.png"
-    content: "I offer flexible engagement models to fit your needs and budget. Whether you have a specific project in mind or need ongoing support, I'll work with you to find the right approach."
+    content: "I offer a few simple ways to start — from focused sprints to ongoing partnership. We’ll pick the shape that fits your stage, team, and budget."
     bulletpoints:
-      - "**Project-Based**: You have a clear goal — I'll scope it, build it, and deliver. Fixed timeline and budget."
-      - "**Ongoing Retainer**: Monthly support for your data team, product roadmap, or technical strategy. Perfect for scaling businesses."
-      - "**Workshops & Audits**: Want to identify opportunities in your data stack? I'll run a diagnostic and deliver an actionable roadmap."
+      - "**Data Strategy Sprint (2 weeks)** — Align stakeholders, audit your stack, and leave with a prioritised 90‑day roadmap."
+      - "**Forecasting Accelerator (4–6 weeks)** — Ship a production‑ready demand forecast for your key SKUs or categories."
+      - "**Fractional Head of Data (1–3 days/month)** — Senior guidance for your team, roadmap reviews, and decision support."
+      - "**Workshops & audits** — Deep‑dive sessions to stress‑test your approach and uncover quick wins."
     button:
       enable: true
-      label: "Tailwind Projects"
-      link: "tags/tailwind"
+      label: "Book a discovery call"
+      link: "https://calendar.app.google/iHkbXL2D9FykuWjq9"
 
   - title: "Why Work With Me?"
     image: "/images/service-2.png"
-    content: "I bring deep expertise in data science and engineering, combined with hands-on experience across retail, fashion, and e-commerce. I understand both the technical complexity and the business impact — and I know how to bridge the two."
+    content: "I bring deep expertise in data science and engineering, combined with hands‑on experience across retail, fashion, and e‑commerce. I understand both the technical complexity and the commercial reality — and I know how to bridge the two."
     bulletpoints:
-      - "**Domain expertise** — Years of experience in retail, fashion, and trend analysis, not just generic consulting"
-      - "**Full-stack capability** — From ML models to data pipelines to production dashboards, I handle it end-to-end"
-      - "**Business-first mindset** — I focus on ROI, not just technical elegance. Every solution is built with commercial goals in mind"
-      - "**Fast & adaptable** — Whether you're a scaling startup or an established brand, I integrate quickly and deliver results"
+      - "**E‑commerce & retail focus** — Years of experience working with brands, retail calendars, and product lifecycles."
+      - "**Full‑stack data capability** — From strategy and architecture through models, pipelines, and dashboards."
+      - "**Operator mindset** — I’ve led in‑house teams, so I care about adoption, reliability, and measurable impact."
+      - "**Hands‑on partner** — I plug into your team, write the code, review decisions, and help you ship."
     button:
       enable: true
       label: "Data Projects"
       link: "categories/data"
+
+  - title: "How It Works"
+    image: "/images/service-3.png"
+    content: "Getting started should feel simple and low‑risk. Here’s what working together typically looks like."
+    bulletpoints:
+      - "**1. Intro call (30 mins)** — We clarify your goals, constraints, and whether I’m the right fit."
+      - "**2. Diagnostic & proposal** — I review your current setup and propose a concrete plan with scope, timelines, and investment."
+      - "**3. Build & iterate** — We ship in small, testable slices with regular check‑ins and clear owners."
+      - "**4. Handover & support** — Your team gets documentation, training, and options for ongoing help."
+    button:
+      enable: true
+      label: "Schedule an intro call"
+      link: "https://calendar.app.google/iHkbXL2D9FykuWjq9"
 
 ---

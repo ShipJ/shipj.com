@@ -21,6 +21,11 @@
             <i class="fa-regular fa-code-merge"></i>
             {{ .PublishDate.Format "2 Jan 2006" }}
           </li>
+          <li class="mr-4 inline-block hover:underline">
+            <a href="{{ `length/` | relURL }}{{ .Params.length | urlize }}/">
+              <i class="fa-regular fa-clock mr-2"></i>{{ .Params.length }}
+            </a>
+          </li>
           {{ $categories:= .Params.categories }} {{ if $categories }}
           <li class="mr-4 inline-block">
             <i class="fa-regular fa-layer-group mr-2"></i>
