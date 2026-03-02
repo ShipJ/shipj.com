@@ -1,0 +1,17 @@
+<!-- Configure MathJax to render LaTeX-style math in blog content -->
+<script>
+  window.MathJax = {
+    // Load the AMS math extension for additional symbols/environments
+    loader: { load: ['[tex]/ams'] },
+    tex: {
+      // Treat single dollar signs and \( \) as inline math delimiters
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      // Treat double dollar signs and \[ \] as display/block math delimiters
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      // Merge AMS into the default TeX packages
+      packages: { '[+]': ['ams'] }
+    }
+  };
+</script>
+<!-- Load MathJax from CDN using the TeX-to-HTML (chtml) renderer -->
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>

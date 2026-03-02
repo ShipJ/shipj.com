@@ -9,6 +9,10 @@
     <!-- head (don't cache it) -->
     {{ partial "essentials/head.html" . }}
 
+    {{ if .Params.math }}
+    {{ partial "MathJax.html" . }}
+    {{ end }}
+
     <!-- style (always cache it) -->
     {{ partialCached "essentials/style.html" . }}
   </head>
