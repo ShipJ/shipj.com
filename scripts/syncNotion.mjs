@@ -390,7 +390,7 @@ function mapNotionToFrontMatter(page) {
     image: "",
 
     draft,
-    type,
+    type: pageType,
     length,
 
     notion_id: notionPageUrlToId(page),
