@@ -265,7 +265,7 @@ function plannedRelPathFromFrontMatter(fm) {
   const datePrefix = `${yyyy}-${mm}-${dd}`;
   const filename = `${datePrefix}-${fm.slug}.md`;
 
-  const dir = fm.type === "project" ? "portfolio" : "blog";
+  const dir = fm.type;
   return `${dir}/${filename}`;
 }
 
@@ -350,7 +350,7 @@ function mapNotionToFrontMatter(page) {
 
   if (pageType === "blog" && !rawTitle.startsWith("📝 ")) {
     title = `📝 ${rawTitle}`;
-  } else if (pageType === "project" && !rawTitle.startsWith("💼 ")) {
+  } else if (pageType === "portfolio" && !rawTitle.startsWith("💼 ")) {
     title = `💼 ${rawTitle}`;
   }
 
@@ -407,7 +407,7 @@ function mapNotionToFrontMatter(page) {
 
 function dirForType(type) {
   if (type === "blog") return BLOG_DIR;
-  if (type === "project") return PORTFOLIO_DIR;
+  if (type === "portfolio") return PORTFOLIO_DIR;
   return DEFAULT_DIR;
 }
 
