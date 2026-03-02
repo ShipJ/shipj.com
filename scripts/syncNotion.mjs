@@ -343,17 +343,28 @@ function renderRichText(richTextArr, notionIdToContentPath) {
 function mapNotionToFrontMatter(page) {
   const props = page.properties;
 
-  const title = pickTitle(props) || "Untitled";
+  const pageType = (pickSelectName(getProp(props, "type")) || "").toLowerCase();
+
+  const rawTitle = pickTitle(props) || "Untitled";
+  let title = rawTitle;
+
+  if (pageType === "blog" && !rawTitle.startsWith("📝 ")) {
+    title = `📝 ${rawTitle}`;
+  } else if (pageType === "project" && !rawTitle.startsWith("💼 ")) {
+    title = `💼 ${rawTitle}`;
+  }
+
   const meta_title = pickRichText(getPropNormalized(props, "meta_title"));
   const description = pickRichText(getProp(props, "description"));
   const slugProp = pickRichText(getProp(props, "slug"));
-  const slug = slugProp || safeSlugFromTitle(title);
+
+  // optional: slugify from rawTitle to avoid emojis affecting slug
+  const slug = slugProp || safeSlugFromTitle(rawTitle);
 
   const date = pickDate(getProp(props, "date")) || new Date().toISOString();
 
   const categories = pickMultiSelect(getProp(props, "categories"));
   const tags = pickMultiSelect(getProp(props, "tags"));
-
   const author = pickAuthor(getProp(props, "author"));
 
   const mainImageFile = pickNotionFile(getProp(props, "main_image"));
@@ -361,7 +372,6 @@ function mapNotionToFrontMatter(page) {
   const isPublished = pickCheckbox(getProp(props, "is_published"));
   const draft = !isPublished;
 
-  const type = pickSelectName(getProp(props, "type")).toLowerCase();
   const length = pickSelectName(getProp(props, "length"));
 
   const created_at = getNotionCreatedAt(page) || new Date().toISOString();
@@ -387,10 +397,8 @@ function mapNotionToFrontMatter(page) {
 
     created_at,
     last_edited_at,
-
     last_synced: new Date().toISOString(),
 
-    // Hugo: load math library when true (you still must wire it in your theme)
     math: true,
 
     _mainImageFile: mainImageFile,

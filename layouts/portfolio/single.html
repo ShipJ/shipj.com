@@ -1,12 +1,11 @@
-{{ define "main" }}
+{{ define "main" }} 
 <section class="section pt-7">
   <div class="container">
     <div class="row justify-center">
       <article class="lg:col-10">
         {{ $image:= .Params.image }} {{ if $image }}
         <div class="mb-10">
-          {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title
-          "Class" "w-full rounded") }}
+          {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title "Class" "w-full rounded") }}
         </div>
         {{ end }}
         <h1 class="h2 mb-4">{{ .Title }}</h1>
@@ -54,8 +53,7 @@
           {{ end }}
         </ul>
         <div class="content mb-10 mt-10">
-          {{ partial "toc.html" (dict "Class" "blog" "Collapsed" true
-          "TableOfContents" .TableOfContents ) }} {{ .Content }}
+          {{ partial "toc.html" (dict "Class" "portfolio" "Collapsed" true "TableOfContents" .TableOfContents ) }} {{ .Content }}
         </div>
 
         <!-- comments -->
@@ -66,14 +64,13 @@
     </div>
 
     <!-- Related posts -->
-    {{ $related := .Site.RegularPages.Related . | first 10 }} {{ $related =
-    $related | shuffle | first 3 }} {{ with $related }}
+    {{ $related := .Site.RegularPages.Related . | first 10 }} {{ $related = $related | shuffle | first 3 }} {{ with $related }}
     <div class="section pb-0">
       <h2 class="h3 mb-12">{{ T "related_posts" }}</h2>
       <div class="row">
         {{ range . }}
         <div class="lg:col-4 md:col-6 mb-14">
-          {{ partial "components/blog-card" . }}
+          {{ partial "components/portfolio-card" . }}
         </div>
         {{ end }}
       </div>
