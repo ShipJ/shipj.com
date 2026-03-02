@@ -11,19 +11,19 @@
         <h1 class="h2 mb-4">{{ .Title }}</h1>
         <ul class="mb-4">
           <li class="mr-4 inline-block">
-            <i class="fa-regular fa-circle-user"></i><span class="ml-1"></span>
+            <i class="fa-regular fa-circle-user" title="Author"></i><span class="ml-1"></span>
             <a href="{{ `author/` | relURL }}{{ .Params.Author | urlize }}/" class="hover:underline">
               {{ .Params.author }}
             </a>
           </li>
 
           <li class="mr-4 inline-block">
-            <i class="fa-regular fa-code-merge"></i><span class="ml-1"></span>
+            <i class="fa-regular fa-code-merge" title="Publish Date"></i><span class="ml-1"></span>
             {{ .PublishDate.Format "2 Jan 2006" }}
           </li>
 
           <li class="mr-4 inline-block">
-            <i class="fa-regular fa-clock"></i><span class="ml-1"></span>
+            <i class="fa-regular fa-clock" title="Project Duration"></i><span class="ml-1"></span>
             <a href="{{ `length/` | relURL }}{{ .Params.length | urlize }}/" class="hover:underline">
               {{ .Params.length }}
             </a>
@@ -31,7 +31,7 @@
 
           {{ $categories := .Params.categories }} {{ if $categories }}
           <li class="mr-4 inline-block">
-            <i class="fa-regular fa-layer-group"></i><span class="ml-1"></span>
+            <i class="fa-regular fa-layer-group" title="Categories"></i><span class="ml-1"></span>
             {{ range $i, $p := $categories }}
               <a href="{{ `categories/` | relURL }}{{ . | urlize | lower }}/" class="hover:underline">
                 {{ . }}
@@ -45,7 +45,7 @@
 
           {{ $tags := .Params.tags }} {{ if $tags }}
           <li class="mr-4 inline-block">
-            <i class="fa-regular fa-tag"></i><span class="ml-1"></span>
+            <i class="fa-regular fa-tag" title="Tags"></i><span class="ml-1"></span>
             {{ range $i, $p := $tags }}
               <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="hover:underline">
                 #{{ . }}
