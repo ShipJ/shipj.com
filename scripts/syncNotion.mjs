@@ -21,7 +21,7 @@ const PORTFOLIO_DIR = path.join(CONTENT_DIR, "portfolio");
 // Where you want images stored:
 const ASSETS_GALLERY_DIR = path.join(process.cwd(), "assets", "images", "gallery");
 
-// Ensure folders exist (remove the blog/portfolio mkdirSync calls if you don’t want empty dirs)
+// Ensure folders exist
 fs.mkdirSync(DEFAULT_DIR, { recursive: true });
 fs.mkdirSync(BLOG_DIR, { recursive: true });
 fs.mkdirSync(PORTFOLIO_DIR, { recursive: true });
@@ -68,6 +68,16 @@ function getProp(properties, name) {
   return properties?.[name];
 }
 
+function getPropNormalized(properties, targetName) {
+  if (!properties) return undefined;
+  const normalize = (s) => String(s).toLowerCase().replace(/[\s_]+/g, "");
+  const target = normalize(targetName);
+  for (const [key, value] of Object.entries(properties)) {
+    if (normalize(key) === target) return value;
+  }
+  return undefined;
+}
+
 function safeSlugFromTitle(title) {
   return slugify(title, { lower: true, strict: true, trim: true });
 }
@@ -89,9 +99,11 @@ function pickNotionFile(prop) {
   if (!f) return null;
 
   const url =
-    f.type === "external" ? f.external?.url :
-    f.type === "file" ? f.file?.url :
-    "";
+    f.type === "external"
+      ? f.external?.url
+      : f.type === "file"
+        ? f.file?.url
+        : "";
 
   const name = f.name || "";
   if (!url) return null;
@@ -170,49 +182,7 @@ async function fetchPublishedPages() {
   return pages;
 }
 
-async function fetchPageMarkdownContent(pageId) {
-  const lines = [];
-  let cursor = undefined;
-
-  while (true) {
-    const res = await notion.blocks.children.list({
-      block_id: pageId,
-      start_cursor: cursor,
-    });
-
-    for (const b of res.results) {
-      const t = b.type;
-      const r = b[t];
-      const rt = (r?.rich_text ?? []).map((x) => x.plain_text).join("");
-
-      if (t === "paragraph") lines.push(rt);
-      else if (t === "heading_1") lines.push(`# ${rt}`);
-      else if (t === "heading_2") lines.push(`## ${rt}`);
-      else if (t === "heading_3") lines.push(`### ${rt}`);
-      else if (t === "bulleted_list_item") lines.push(`- ${rt}`);
-      else if (t === "numbered_list_item") lines.push(`1. ${rt}`);
-      else if (t === "quote") lines.push(`> ${rt}`);
-      else if (t === "code") {
-        const lang = r.language || "";
-        lines.push(`\`\`\`${lang}\n${rt}\n\`\`\``);
-      } else if (t === "divider") lines.push(`---`);
-      else if (t === "image") {
-        const url =
-          b.image.type === "external" ? b.image.external.url : b.image.file.url;
-        lines.push(`![](${url})`);
-      }
-
-      lines.push("");
-    }
-
-    if (!res.has_more) break;
-    cursor = res.next_cursor;
-  }
-
-  return lines.join("\n").trim() + "\n";
-}
-
-// ---- NEW: unchanged detection helpers ----
+// ---- unchanged detection helpers ----
 function parseIsoToMs(v) {
   const ms = Date.parse(v);
   return Number.isFinite(ms) ? ms : NaN;
@@ -250,17 +220,131 @@ function buildExistingIndexByNotionId(rootDir) {
   return index;
 }
 
+function getNotionCreatedAt(page) {
+  return page?.created_time || null;
+}
+
 function getNotionLastEditedAt(page) {
-  // Notion API uses last_edited_time
   return page?.last_edited_time || null;
 }
-// -----------------------------------------
+
+// ---- Link + Math support ----
+function escapeMdText(s) {
+  // Escape [ ] so markdown link text stays sane, and escape $ so currency doesn't become math.
+  return (s ?? "")
+    .replaceAll("[", "\\[")
+    .replaceAll("]", "\\]")
+    .replaceAll("$", "\\$");
+}
+
+function applyAnnotations(md, ann) {
+  if (!ann) return md;
+  let out = md;
+  if (ann.code) out = "`" + out.replaceAll("`", "\\`") + "`";
+  if (ann.bold) out = `**${out}**`;
+  if (ann.italic) out = `*${out}*`;
+  if (ann.strikethrough) out = `~~${out}~~`;
+  if (ann.underline) out = `<u>${out}</u>`;
+  return out;
+}
+
+// Marker link that Hugo render hook will rewrite using relref.
+function hugoRefMarker(contentPath) {
+  return `hugo-ref:${contentPath}`;
+}
+
+function contentRelPath(absFile) {
+  return path.relative(CONTENT_DIR, absFile).replaceAll(path.sep, "/");
+}
+
+function plannedRelPathFromFrontMatter(fm) {
+  const rawDate = fm.date ? new Date(fm.date) : new Date();
+  const yyyy = rawDate.getFullYear();
+  const mm = String(rawDate.getMonth() + 1).padStart(2, "0");
+  const dd = String(rawDate.getDate()).padStart(2, "0");
+  const datePrefix = `${yyyy}-${mm}-${dd}`;
+  const filename = `${datePrefix}-${fm.slug}.md`;
+
+  const dir = fm.type === "project" ? "portfolio" : "blog";
+  return `${dir}/${filename}`;
+}
+
+function normalizeNotionId(id) {
+  if (!id) return null;
+  const raw = String(id).replaceAll("-", "").toLowerCase();
+  if (!/^[0-9a-f]{32}$/.test(raw)) return null;
+  return `${raw.slice(0, 8)}-${raw.slice(8, 12)}-${raw.slice(12, 16)}-${raw.slice(16, 20)}-${raw.slice(20)}`;
+}
+
+function extractNotionPageIdFromUrl(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (!u.hostname.includes("notion.so")) return null;
+
+    const m =
+      u.pathname.match(/([0-9a-fA-F]{32})/) || u.pathname.match(/([0-9a-fA-F-]{36})/);
+    if (!m) return null;
+
+    return normalizeNotionId(m[1]);
+  } catch {
+    return null;
+  }
+}
+
+function renderRichText(richTextArr, notionIdToContentPath) {
+  return (richTextArr ?? [])
+    .map((rt) => {
+      const ann = rt.annotations;
+
+      // Inline equations -> $...$ (do NOT apply code annotation)
+      if (rt.type === "equation") {
+        const expr = rt.equation?.expression ?? "";
+        const annNoCode = ann ? { ...ann, code: false } : ann;
+        return applyAnnotations(`$${expr}$`, annNoCode);
+      }
+
+      // Page mentions -> internal hugo-ref marker
+      if (rt.type === "mention" && rt.mention?.type === "page") {
+        const targetId = normalizeNotionId(rt.mention.page.id);
+        const text = escapeMdText(rt.plain_text || "link");
+        const targetPath = targetId ? notionIdToContentPath.get(targetId) : null;
+
+        if (targetPath) {
+          return applyAnnotations(`[${text}](${hugoRefMarker(targetPath)})`, ann);
+        }
+        return applyAnnotations(text, ann);
+      }
+
+      // Text with optional href (rewrite Notion URLs to internal hugo-ref marker)
+      if (rt.type === "text") {
+        const text = escapeMdText(rt.plain_text || "");
+        const href = rt.href || rt.text?.link?.url;
+
+        if (!href) return applyAnnotations(text, ann);
+
+        const maybeId = extractNotionPageIdFromUrl(href);
+        if (maybeId) {
+          const targetPath = notionIdToContentPath.get(maybeId);
+          if (targetPath) {
+            return applyAnnotations(`[${text}](${hugoRefMarker(targetPath)})`, ann);
+          }
+        }
+
+        return applyAnnotations(`[${text}](${href})`, ann);
+      }
+
+      // Fallback
+      return applyAnnotations(escapeMdText(rt.plain_text || ""), ann);
+    })
+    .join("");
+}
 
 function mapNotionToFrontMatter(page) {
   const props = page.properties;
 
   const title = pickTitle(props) || "Untitled";
-  const meta_title = pickRichText(getProp(props, "meta_title"));
+  const meta_title = pickRichText(getPropNormalized(props, "meta_title"));
   const description = pickRichText(getProp(props, "description"));
   const slugProp = pickRichText(getProp(props, "slug"));
   const slug = slugProp || safeSlugFromTitle(title);
@@ -280,6 +364,7 @@ function mapNotionToFrontMatter(page) {
   const type = pickSelectName(getProp(props, "type")).toLowerCase();
   const length = pickSelectName(getProp(props, "length"));
 
+  const created_at = getNotionCreatedAt(page) || new Date().toISOString();
   const last_edited_at = getNotionLastEditedAt(page) || new Date().toISOString();
 
   return {
@@ -300,11 +385,13 @@ function mapNotionToFrontMatter(page) {
 
     notion_id: notionPageUrlToId(page),
 
-    // NEW: store Notion edit timestamp
+    created_at,
     last_edited_at,
 
-    // existing behavior
     last_synced: new Date().toISOString(),
+
+    // Hugo: load math library when true (you still must wire it in your theme)
+    math: true,
 
     _mainImageFile: mainImageFile,
   };
@@ -340,26 +427,97 @@ function writePostFile(slug, frontMatterObj, contentMd, preferredPath = null) {
   return filepath;
 }
 
+async function fetchPageMarkdownContent(pageId, notionIdToContentPath) {
+  const lines = [];
+  let cursor = undefined;
+
+  while (true) {
+    const res = await notion.blocks.children.list({
+      block_id: pageId,
+      start_cursor: cursor,
+    });
+
+    for (const b of res.results) {
+      const t = b.type;
+      const r = b[t];
+
+      const rt = renderRichText(r?.rich_text ?? [], notionIdToContentPath);
+
+      if (t === "paragraph") lines.push(rt);
+      else if (t === "heading_1") lines.push(`# ${rt}`);
+      else if (t === "heading_2") lines.push(`## ${rt}`);
+      else if (t === "heading_3") lines.push(`### ${rt}`);
+      else if (t === "bulleted_list_item") lines.push(`- ${rt}`);
+      else if (t === "numbered_list_item") lines.push(`1. ${rt}`);
+      else if (t === "quote") lines.push(`> ${rt}`);
+      else if (t === "code") {
+        const lang = r.language || "";
+        const codeText = (r?.rich_text ?? []).map((x) => x.plain_text).join("");
+        lines.push(`\`\`\`${lang}\n${codeText}\n\`\`\``);
+      } else if (t === "divider") lines.push(`---`);
+      else if (t === "image") {
+        const url =
+          b.image.type === "external" ? b.image.external.url : b.image.file.url;
+        lines.push(`![](${url})`);
+      } else if (t === "equation") {
+        const expr = b.equation?.expression ?? "";
+        lines.push(`$$\n${expr}\n$$`);
+      }
+
+      lines.push("");
+    }
+
+    if (!res.has_more) break;
+    cursor = res.next_cursor;
+  }
+
+  return lines.join("\n").trim() + "\n";
+}
+
 async function main() {
-  const existingIndex = buildExistingIndexByNotionId(CONTENT_DIR);
+  const existingIndexRaw = buildExistingIndexByNotionId(CONTENT_DIR);
+
+  // Normalize keys so URL-extracted IDs match
+  const existingIndex = new Map();
+  for (const [nid, info] of existingIndexRaw.entries()) {
+    const norm = normalizeNotionId(nid);
+    if (norm) existingIndex.set(norm, info);
+  }
 
   const pages = await fetchPublishedPages();
   console.log(`Notion: found ${pages.length} published page(s).`);
 
+  // Build notion_id -> content path map
+  const notionIdToContentPath = new Map();
+
+  // 1) Prefer existing paths (stable)
+  for (const [nid, info] of existingIndex.entries()) {
+    notionIdToContentPath.set(nid, contentRelPath(info.filepath));
+  }
+
+  // 2) Add planned paths for pages that aren't on disk yet
   for (const page of pages) {
-    const pageId = page.id;
+    const nid = normalizeNotionId(page.id);
+    if (!nid) continue;
+    if (notionIdToContentPath.has(nid)) continue;
+
+    const fmPlan = mapNotionToFrontMatter(page);
+    notionIdToContentPath.set(nid, plannedRelPathFromFrontMatter(fmPlan));
+  }
+
+  for (const page of pages) {
+    const pageId = normalizeNotionId(page.id);
     const notionLastEditedAt = getNotionLastEditedAt(page);
     const notionEditedMs = notionLastEditedAt ? parseIsoToMs(notionLastEditedAt) : NaN;
 
-    const existing = existingIndex.get(pageId);
+    const existing = pageId ? existingIndex.get(pageId) : undefined;
 
-    // NEW: Skip if last_synced >= last_edited_at
+    // Skip if last_synced >= last_edited_at
     if (existing?.data?.last_synced && Number.isFinite(notionEditedMs)) {
       const lastSyncedMs = parseIsoToMs(existing.data.last_synced);
-
       if (Number.isFinite(lastSyncedMs) && lastSyncedMs >= notionEditedMs) {
         console.log(
-          `Skipped (unchanged): ${pageId} | last_synced=${existing.data.last_synced} >= last_edited_at=${notionLastEditedAt}`
+          `Skipped (unchanged): ${page.id} | last_synced=${existing.data.last_synced} >= last_edited_at=${notionLastEditedAt}`
         );
         continue;
       }
@@ -367,17 +525,16 @@ async function main() {
 
     const fm = mapNotionToFrontMatter(page);
 
-    // Download main_image (if present) to /assets/images/gallery/...
+    // Download main_image (if present)
     if (fm._mainImageFile?.url) {
       const { publicPath } = await downloadToAssetsGallery(fm._mainImageFile, fm.slug);
       fm.image = publicPath;
     } else {
       fm.image = "";
     }
-
     delete fm._mainImageFile;
 
-    const md = await fetchPageMarkdownContent(page.id);
+    const md = await fetchPageMarkdownContent(page.id, notionIdToContentPath);
 
     // Prefer overwriting the existing file if we found it by notion_id
     const preferredPath = existing?.filepath ?? null;
