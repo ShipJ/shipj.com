@@ -1,0 +1,8 @@
+{{- $dest := .Destination -}}
+{{- if strings.HasPrefix $dest "hugo-ref:" -}}
+  {{- $p := strings.TrimPrefix "hugo-ref:" $dest -}}
+  {{- $url := relref .Page $p -}}
+  <a href="{{ $url | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- else -}}
+  <a href="{{ $dest | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- end -}}
