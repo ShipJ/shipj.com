@@ -1,7 +1,9 @@
 <div class="w-full">
   <div class="max-w-screen-2xl mx-auto">
     <div class="bg-light dark:bg-darkmode-light rounded-2xl p-6 px-0 space-y-2">
-      <!-- Added space-y-4 -->
+      <!-- Highlights -->
+      {{ range .Widgets }} {{ if eq . "highlights" }} {{ partial (print
+      "widgets/" .) $.Scope }} {{ end }} {{ end }}
       <!-- Categories -->
       {{ range .Widgets }} {{ if eq . "categories" }} {{ partial (print
       "widgets/" .) $.Scope }} {{ end }} {{ end }}
