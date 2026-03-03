@@ -48,10 +48,9 @@
     true) "Date" "desc") }} {{ range $pages }}
     <a href="{{ .RelPermalink }}">
       {{ .Title }}
-      <span class="text-sm text-gray-600 ml-2">
-        <i class="fa-solid fa-code-merge mr-2" aria-hidden="true"></i>
-        {{ if .PublishDate }}{{ .PublishDate.Format "Jan 2, 2006" }}{{ else }}{{
-        .Date.Format "Jan 2, 2006" }}{{ end }}
+      <span class="text-sm text-gray-600">
+        <i class="fa-solid fa-code-merge ml-3" aria-hidden="true"></i>
+        {{ if .PublishDate }}{{ .PublishDate.Format "Jan 2, 2006" }}{{ else }}{{ .Date.Format "Jan 2, 2006" }}{{ end }}
       </span>
     </a>
     {{ end }}
