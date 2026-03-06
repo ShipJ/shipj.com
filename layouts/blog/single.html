@@ -29,8 +29,8 @@
           </li>
         </ul>
 
-        <!-- Row 2: Duration + Categories + Tags -->
         <ul class="ml-[0.1rem] mb-4 text-sm text-gray-600">
+          <!--
            {{ with .Params.length }}
             <li class="mr-4 inline-block">
               <i class="fa-regular fa-calendar-check mr-1" title="Project Duration"></i>
@@ -38,7 +38,7 @@
                 {{ . }}
               </a>
             </li>
-          {{ end }}
+          {{ end }} -->
 
           {{ $categories := .Params.categories }}
           {{ if $categories }}

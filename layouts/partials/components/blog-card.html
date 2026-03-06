@@ -25,15 +25,15 @@
     </li>
   </ul>
 
-  <!-- Row 2: Duration + Categories + Tags -->
   <ul class="mb-4 text-xs text-gray-600">
+    <!-- Row 2: Duration + Categories + Tags
     {{ with .Params.length }}
       <li class="mr-4 inline-block hover:underline">
         <a href="{{ `length/` | relURL }}{{ . | urlize }}/">
           <i class="ml-[0.1rem] fa-regular fa-calendar-check mr-2" title="Project Duration"></i>{{ . }}
         </a>
       </li>
-    {{ end }}
+    {{ end }} -->
 
     {{ $categories := .Params.categories }}
     {{ if $categories }}
@@ -52,7 +52,7 @@
 
     {{ $tags := .Params.tags }}
     {{ if $tags }}
-      <li class="inline-block">
+      <li class="inline-block mb-2">
         <i class="fa-regular fa-tag mr-1" title="Tags"></i>
         {{ range $t := $tags }}
           <a href="{{ `tags/` | relURL }}{{ $t | urlize | lower }}/" class="hover:underline">

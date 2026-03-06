@@ -10,8 +10,5 @@ pre,
 body,
 p {
   font-family: "Fira Code", monospace;
+  line-height: 1.5;
 }
-
-/* body, p {
-    font-family: 'Inter', sans-serif;
-} */

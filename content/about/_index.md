@@ -22,13 +22,13 @@ I most recently led the Data Science and Engineering teams at the world's leadin
 
 **Leadership style**
 
-I align most closely with [servant leadership](https://www.forbes.com/advisor/business/management-styles/) because its the fastest way to achieve the multiplier effect.
+I align with the [servant leadership](https://www.forbes.com/advisor/business/management-styles/) style because it is the most effective way to achieve a multiplier effect.
 
-Every manager I've ever had has told me to _choose_ between managerial and technical pathways - but I don't see it as a binary choice. We've all seen the career chart showing this inevitable divergence, and with it, the loss of talented engineers to better pay yet, and exceptional leaders to technical shoehorning.
+Throughout my career, managers have encouraged me to choose between managerial and technical tracks, as though the two are mutually exclusive. The conventional career ladder suggests an inevitable divergence, where strong engineers move toward higher compensation by leaving management behind, and capable leaders are pressured away from technical depth.
 
-I've spent the best part of 10 years proving that this doesn't have to be the case. The best leaders insist on being hands‑on, leadubg from the front,
+I do not see such a binary decision.
 
-However, you can only do this by honing the fundamentals, getting the basics right, and not getting complacent.
+Over the past decade, I have worked to demonstrate that leadership and technical excellence can reinforce each other. The strongest leaders remain hands-on, lead from the front, maintain technical credibility, and stay close to the work. Sustaining this balance requires discipline though - getting the basics right, and resisting complacency.
 
 **Preferred tools**
 
@@ -50,8 +50,8 @@ It contains thoughts, blog posts, tutorials, and a [portfolio](../portfolio/) of
 
 **What else am I working on?**
 
-- 💍 [Planning a wedding Aussie Style]()
-- 🏃 [Chasing a sub-20 5k]()
-- ⚽ [Watching Arsenal religiously]()
-- 🔧 [Side projects no one asked for]()
-- 📊 [Building a consulting/tutoring/mentoring brand]()
+- 💍 [Planning a wedding Aussie Style](../tags/wedding)
+- 🏃 [Chasing a sub-20 minute 5k](../tags/5k)
+- ⚽ [Watching Arsenal religiously](../tags/football)
+- 🔧 [Side projects no one asked for](../tags/side-project)
+- 📊 [Building a consulting/tutoring/mentoring brand](../tags/mentoring)

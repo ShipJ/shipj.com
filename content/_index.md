@@ -1,12 +1,12 @@
 ---
 # Banner
 banner:
-  title: "Bring a Senior Data Partner Into Your Team"
-  content: "Hi, I'm Jack — a <u>Data Science and Engineering consultant</u> for retail, fashion, and e‑commerce brands. I specialise in fixing messy data stacks and shipping production‑ready forecasting, analytics, and decision tools that actually get used.
+  title: "Looking to bring a leader to your Data Team?"
+  content: "Hi, I'm Jack — a Data Science and Engineering specialist in fixing messy data stacks and shipping production‑ready forecasting, analytics, and data products that drive value.
   <br><br>
   If you're a scaling team without a dedicated data function — or your current setup isn't delivering — I can step in as a senior partner: scope the right problems, design the architecture, and help you execute.
   <br><br>
-  If that sounds interesting, let's set up some time!"
+  Sound interesting? Let's set up some time!"
   image: "/images/banner.png"
   button:
     enable: true

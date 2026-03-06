@@ -2,7 +2,7 @@
 0) }}
 <div class="mb-0">
   <div class="bg-light dark:bg-darkmode-light rounded p-6">
-    <h5 class="mb-6">{{ T "tags" }}</h5>
+    <h5 class="mb-6 text-base">{{ T "tags" }}</h5>
     <ul>
       {{ $tags := slice }} {{ range $name, $pages := site.Taxonomies.tags }} {{
       $termPage := site.GetPage (printf "/tags/%s" $name) }} {{ $displayName :=

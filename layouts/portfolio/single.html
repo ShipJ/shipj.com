@@ -28,18 +28,18 @@
             <i class="fa-regular fa-code-merge mr-1" title="Publish Date"></i>
             {{ time.Format ":date_long" .PublishDate }}
           </li>
+          {{ with .Params.length }}
+          <li class="mr-4 inline-block hover:underline">
+            <a href="{{ `length/` | relURL }}{{ . | urlize }}/">
+              <i class="fa-regular fa-calendar-check mr-1" title="Project Duration"></i>
+              {{ . }}
+            </a>
+          </li>
+        {{ end }}
         </ul>
 
         <!-- Row 2: Duration + Categories + Tags -->
         <ul class="ml-[0.1rem] mb-4 text-sm text-gray-600">
-          {{ with .Params.length }}
-            <li class="mr-4 inline-block hover:underline">
-              <a href="{{ `length/` | relURL }}{{ . | urlize }}/">
-                <i class="fa-regular fa-calendar-check mr-1" title="Project Duration"></i>
-                {{ . }}
-              </a>
-            </li>
-          {{ end }}
 
           {{ $categories := .Params.categories }}
           {{ if $categories }}
