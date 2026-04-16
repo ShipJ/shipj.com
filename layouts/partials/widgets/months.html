@@ -1,0 +1,51 @@
+{{ $scopePages := .ScopePages | default (where site.RegularPages "Section" "in" (slice "blog" "portfolio")) }}
+{{ $monthMap := dict }}
+{{ range $scopePages }}
+  {{ $key := .Date.Format "2006-01" }}
+  {{ $existing := index $monthMap $key }}
+  {{ if $existing }}
+    {{ $monthMap = merge $monthMap (dict $key (dict
+      "key" ($existing.key)
+      "title" ($existing.title)
+      "count" (add ($existing.count) 1)
+      "page" ($existing.page)
+    )) }}
+  {{ else }}
+    {{ $monthPage := site.GetPage (printf "/date/%s" $key) }}
+    {{ $title := cond (ne $monthPage nil) $monthPage.Title (.Date.Format "January 2006") }}
+    {{ $monthMap = merge $monthMap (dict $key (dict
+      "key" $key
+      "title" $title
+      "count" 1
+      "page" $monthPage
+    )) }}
+  {{ end }}
+{{ end }}
+{{ $monthPages := slice }}
+{{ range $key, $value := $monthMap }}
+  {{ $monthPages = $monthPages | append $value }}
+{{ end }}
+{{ if gt (len $monthPages) 0 }}
+{{ $monthPages = sort $monthPages "key" "desc" }}
+<div class="flex items-start gap-3">
+  <div class="min-w-[5.5rem] pt-1 text-sm font-semibold text-text-dark/70 dark:text-darkmode-text-dark/70">
+    Published
+  </div>
+  <ul class="flex min-w-0 flex-1 flex-wrap gap-2">
+    {{ range $monthPages }}
+      {{ $isActive := and (ne .page nil) (eq $.Page.RelPermalink .page.RelPermalink) }}
+      <li>
+        <a
+          href="{{ if $isActive }}{{ $.ClearURL }}{{ else if .page }}{{ .page.RelPermalink }}{{ else }}#{{ end }}"
+          data-filter-kind="months"
+          data-filter-value="{{ .key }}"
+          class="ui-chip ui-chip-meta !text-[9px] {{ if $isActive }}border-primary text-text-dark dark:border-darkmode-primary dark:text-darkmode-text-dark{{ end }}"
+        >
+          <i class="fa-solid fa-calendar-days mr-2"></i>{{ .title }}
+          <span>({{ .count }})</span>
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

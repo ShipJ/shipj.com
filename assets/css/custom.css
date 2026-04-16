@@ -1,17 +1,29 @@
-/* Main font for everything */
-h1,
-h2,
-h3,
-h4,
-h5,
 code,
 pre,
-.code-block,
-body,
-p {
-  font-family: "Fira Code", monospace;
+.code-block {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
-/* body, p {
-    font-family: 'Inter', sans-serif;
-} */
+.content :not(pre) > code,
+.prose :not(pre) > code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9em;
+  line-height: 1;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.35rem;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.dark .content :not(pre) > code,
+.dark .prose :not(pre) > code {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.content :not(pre) > code::before,
+.content :not(pre) > code::after,
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none;
+}

@@ -2,13 +2,14 @@
 
 # main menu
 [[main]]
-name = "Work with Me"
+name = "Home"
 url = "/"
 weight = 1
 
+# main menu
 [[main]]
-name = "About"
-url = "/about"
+name = "Work with Me"
+url = "/work-with-me"
 weight = 2
 
 [[main]]
@@ -22,9 +23,14 @@ url = "/portfolio"
 weight = 4
 
 [[main]]
-name = "Contact"
-url = "/contact"
+name = "About"
+url = "/about"
 weight = 5
+
+# [[main]]
+# name = "Contact"
+# url = "/contact"
+# weight = 5
 
 #[[main]]
 #name = "Network"

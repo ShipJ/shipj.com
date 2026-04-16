@@ -8,5 +8,5 @@
 }
 
 @utility form-label {
-  @apply mb-4 block font-secondary text-xl font-normal text-text-dark dark:text-darkmode-text-light;
+  @apply mb-4 block font-primary text-xl font-medium text-text-dark dark:text-darkmode-text-light;
 }

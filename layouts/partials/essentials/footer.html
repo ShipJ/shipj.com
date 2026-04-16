@@ -1,20 +1,24 @@
-<footer class="bg-light dark:bg-darkmode-light">
-  <div class="container">
-    <div class="row items-center py-2 lg:py-2">
-      <div class="lg:col-3 mb-8 text-center lg:mb-0 lg:text-left">
+<footer id="site-footer" class="border-t border-gray-100 py-4 dark:border-darkmode-border">
+  <div class="site-container">
+    <div class="row items-center gap-y-4">
+      <div class="xl:col-3 text-center xl:text-left">
         <!-- navbar brand/logo -->
         <a
-          class="navbar-brand inline-block"
+          class="navbar-brand inline-block opacity-80"
           href="{{ site.Home.RelPermalink }}"
         >
-          Hi, I'm Jack 👋
+          Hi, I'm Jack
         </a>
+        <p class="mx-auto mt-2 max-w-xs font-primary text-[clamp(0.72rem,0.82vw,0.875rem)] font-normal tracking-wide text-text-light dark:text-darkmode-text-light xl:mx-0">
+          Data scientist, engineer, forecaster.
+        </p>
       </div>
-      <div class="lg:col-6 mb-8 text-center lg:mb-0">
-        <ul>
+      <div class="xl:col-6 text-center">
+        <ul class="flex flex-wrap items-center justify-center gap-3">
           {{ range site.Menus.footer }}
-          <li class="m-3 inline-block">
+          <li>
             <a
+              class="ui-chip font-primary !text-[clamp(0.72rem,0.82vw,0.875rem)] !font-normal tracking-wide hover:border-primary hover:text-text-dark dark:hover:border-darkmode-primary dark:hover:text-darkmode-text-dark"
               {{
               if
               findRE
@@ -39,7 +43,7 @@
           {{ end }}
         </ul>
       </div>
-      <div class="lg:col-3 mb-4 text-center lg:mb-0 lg:mt-0 lg:text-right">
+      <div class="xl:col-3 text-center xl:text-right">
         <ul class="social-icons">
           {{ range site.Data.social.main }}
           <li>
@@ -56,11 +60,7 @@
         </ul>
       </div>
     </div>
-  </div>
-  <div class="border-border dark:border-darkmode-border border-t py-7">
-    <div
-      class="text-xs text-text-light dark:text-darkmode-text-light container text-center"
-    >
+    <div class="pt-4 text-center text-xs text-text-light dark:text-darkmode-text-light">
       <p>{{ site.Params.copyright | markdownify }}</p>
     </div>
   </div>

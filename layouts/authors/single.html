@@ -1,45 +1,32 @@
 {{ define "main" }}
-<section class="section-sm pb-0">
-  <div class="container">
+{{ partial "page-header" . }}
+{{ $filterByAuthor := where site.RegularPages "Params.author" "==" .Title }}
+{{ $hasBlog := gt (len (where $filterByAuthor "Section" "blog")) 0 }}
+{{ $hasPortfolio := gt (len (where $filterByAuthor "Section" "portfolio")) 0 }}
+{{ $clearURL := site.Home.RelPermalink }}
+{{ if and $hasBlog (not $hasPortfolio) }}
+  {{ $clearURL = (`blog/` | relURL) }}
+{{ else if and $hasPortfolio (not $hasBlog) }}
+  {{ $clearURL = (`portfolio/` | relURL) }}
+{{ end }}
+
+<section class="section pt-4">
+  <div class="site-container">
     <div
-      class="row border-border dark:border-darkmode-border justify-center border-b pb-14"
+      data-filter-root
+      data-filter-clear-url="{{ $clearURL }}"
+      data-filter-initial-authors="{{ .Title | urlize }}"
+      class="pt-0"
     >
-      <div class="lg:col-4 text-center">
-        {{ $image:= .Params.image }} {{ if $image }} {{ partial "image" (dict "Src" .Params.image "Context" .Page "Alt" .Title "Class" "mx-auto mb-6 rounded-full object-cover w-48 h-auto" "Size" "") }} {{ else if .Params.Email }}
-        <img
-          class="mx-auto"
-          alt="{{ .Title }}"
-          height="200"
-          width="200"
-          src="https://www.gravatar.com/avatar/{{ md5 .Params.email }}?s=128&pg&d=identicon"
-        />
-        {{ end }}
-        <h1 class="h3 mt-10">{{ .Title }}</h1>
-        <div class="content mt-6">{{ .Content }}</div>
-        <ul class="social-icons ml-4 mt-10 text-center">
-          {{ range .Params.social }}
-          <li>
-            <a
-              href="{{ .link | safeURL }}"
-              target="_blank"
-              rel="noopener nofollow"
-            >
-              <span class="sr-only">{{ .title }}</span>
-              <i class="{{ .icon }}"></i>
-            </a>
-          </li>
-          {{ end }}
-        </ul>
+    {{ partial "widgets/filters-panel" (dict "Page" . "ClearURL" $clearURL "ScopePages" $filterByAuthor) }}
+    <div class="pt-6" data-filter-results>
+      <div class="space-y-5">
+        {{ partial "components/dated-card-list" (dict "Pages" $filterByAuthor) }}
+      </div>
+      <div class="ui-shell hidden text-center" data-filter-empty>
+        <p class="text-text-light dark:text-darkmode-text-light">No items match the selected filters.</p>
       </div>
     </div>
-
-    <div class="row pb-16 pt-14">
-      {{ $filterByAuthor := where site.RegularPages "Params.author" "==" .Title
-      }} {{ range $filterByAuthor }}
-      <div class="md:col-6 lg:col-4 mb-12">
-        {{ partial "components/blog-card" . }}
-      </div>
-      {{ end }}
     </div>
   </div>
 </section>

@@ -1,74 +1,52 @@
-<div class="bg-body dark:bg-darkmode-body">
-  {{ $image := .Params.image }}
-  {{ if $image }}
-    {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title "Class" "mb-6 w-full rounded") }}
-  {{ end }}
+<article class="ui-card-compact ui-card-hover !p-4 flex h-full flex-col cursor-pointer" data-card-link="{{ .RelPermalink }}">
+  <div class="min-w-0 flex flex-1 flex-col">
+    <div class="mb-2">
+      <h4 class="card-title-row flex items-center text-base font-semibold leading-snug text-text-dark dark:text-darkmode-text-dark md:text-lg">
+        <a class="card-title text-text-dark hover:text-text-dark dark:text-darkmode-text-dark dark:hover:text-darkmode-text-dark transition" href="{{ .RelPermalink }}">
+          {{ .Title }}
+        </a>
+      </h4>
+    </div>
 
-  <h4 class="mb-3">
-    <a href="{{ .RelPermalink }}">
-      {{ .Title }}
-    </a>
-  </h4>
-
-  <!-- Row 1: Author + Publish date -->
-  <ul class="mb-2">
-    {{ with .Params.author }}
-      <li class="mr-4 inline-block hover:underline">
-        <a href="{{ `author/` | relURL }}{{ . | urlize }}/">
-          <i class="fa-regular fa-circle-user mr-1" title="Author"></i>
+    <div class="ui-meta mb-2 text-xs">
+      {{ with .Params.author }}
+      <a class="ui-chip ui-chip-meta" href="{{ `author/` | relURL }}{{ . | urlize }}/" data-filter-kind="authors" data-filter-value="{{ . | urlize }}">
+        <i class="fa-regular fa-circle-user mr-2" title="Author"></i>{{ . }}
+      </a>
+      {{ end }}
+      {{ with .Params.length }}
+        <a href="{{ `length/` | relURL }}{{ . | urlize }}/" data-filter-kind="lengths" data-filter-value="{{ . | urlize }}" class="ui-chip ui-chip-meta">
+          <i class="fa-regular fa-calendar-check mr-2" title="Project Duration"></i>
           {{ . }}
         </a>
-      </li>
-    {{ end }}
+      {{ end }}
 
-    <li class="mr-4 inline-block">
-      <i class="fa-regular fa-code-merge mr-1" title="Publish Date"></i>
-      {{ .Date.Format "2 Jan 2006" }}
-    </li>
-  </ul>
-
-  <!-- Row 2: Duration + Categories + Tags -->
-  <ul class="ml-[0.1rem] mb-4 text-xs text-gray-600">
-    {{ with .Params.length }}
-      <li class="mr-4 inline-block hover:underline">
-        <a href="{{ `length/` | relURL }}{{ . | urlize }}/">
-          <i class="fa-regular fa-calendar-check mr-1" title="Project Duration"></i>
-          {{ . }}
-        </a>
-      </li>
-    {{ end }}
-
-    {{ $categories := .Params.categories }}
-    {{ if $categories }}
-      <li class="mr-4 inline-block">
-        <i class="fa-regular fa-layer-group mr-1" title="Categories"></i>
-        {{ range $i, $c := $categories }}
-          <a href="{{ `categories/` | relURL }}{{ $c | urlize | lower }}/" class="hover:underline">
-            {{ $c }}
-          </a>
-          {{ if ne $i (sub (len $categories) 1) }}
-            <span class="mx-1 text-gray-400">|</span>
-          {{ end }}
+      {{ $categories := .Params.categories }}
+      {{ if $categories }}
+        {{ range first 1 $categories }}
+          {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) ) }}
         {{ end }}
-      </li>
-    {{ end }}
+      {{ end }}
+    </div>
 
     {{ $tags := .Params.tags }}
     {{ if $tags }}
-      <li class="inline-block whitespace-nowrap">
-        <i class="fa-regular fa-tag mr-1" title="Tags"></i>
-        {{ range $t := $tags }}
-          <a href="{{ `tags/` | relURL }}{{ $t | urlize | lower }}/" class="hover:underline">
-            #{{ $t }}
-          </a>
-        {{ end }}
-      </li>
+    <div class="ui-meta mb-2 gap-x-1 gap-y-1 text-xs">
+      {{ range $tags }}
+        <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" data-filter-kind="tags" data-filter-value="{{ . | urlize | lower }}" class="ui-chip ui-chip-meta !px-2.5 !pt-[9px] !pb-[7px] !text-xs !leading-none">
+          <i class="fa-regular fa-tag mr-2" title="Tags"></i>
+          #{{ . }}
+        </a>
+      {{ end }}
+    </div>
     {{ end }}
-  </ul>
 
-  <p class="mb-6">{{ .Summary | plainify }}</p>
+    <a class="card-summary-link block w-full text-sm text-text transition hover:text-text-dark dark:text-darkmode-text dark:hover:text-darkmode-text-dark" href="{{ .RelPermalink }}">
+      <span class="block truncate">{{ .Summary | plainify }}</span>
+    </a>
 
-  <a class="btn btn-outline-primary btn-sm" href="{{ .RelPermalink }}">
-    {{ T "read_more" }}
-  </a>
-</div>
+    <div class="card-date-footer mt-auto pt-3 text-left text-xs text-text-light dark:text-darkmode-text-light">
+      {{ .Date.Format "2 Jan 2006" }}
+    </div>
+  </div>
+</article>

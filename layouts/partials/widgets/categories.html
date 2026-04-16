@@ -1,28 +1,51 @@
-{{ if isset site.Taxonomies "categories" }} {{ if not (eq (len
-site.Taxonomies.categories) 0) }}
-<div class="mb-0">
-  <div class="bg-light dark:bg-darkmode-light rounded p-6">
-    <h5 class="mb-6">{{ T "categories" }}</h5>
-    <ul>
-      {{ $categories := slice }} {{ range $name, $pages :=
-      site.Taxonomies.categories }} {{ $termPage := site.GetPage (printf
-      "/categories/%s" $name) }} {{ $displayName := cond (ne $termPage nil)
-      $termPage.Title $name }} {{ $categories = $categories | append (dict
-      "name" $displayName "nameLower" (lower $displayName) "count" (len $pages)
-      "page" $termPage ) }} {{ end }} {{ $sorted := sort (sort $categories
-      "nameLower") "count" "desc" }} {{ range $sorted }}
-      <li class="inline-block m-1">
-        <a
-          href="{{ .page.RelPermalink }}"
-          class="block rounded bg-white px-2 py-1 text-[12px] hover:bg-primary hover:text-white dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark
-              {{ if (and (eq $.Page.Kind `term`) (eq $.Page.Type `categories`) (eq $.Page.Title .name)) }} active {{ end }}"
-        >
-          <i class="fa-solid fa-layer-group mr-2"></i>{{ .name }}
-          <span>({{ .count }})</span>
-        </a>
-      </li>
-      {{ end }}
-    </ul>
+{{ $scopePages := .ScopePages | default site.RegularPages }}
+{{ $categoryMap := dict }}
+{{ range $scopePages }}
+  {{ range .Params.categories }}
+    {{ $key := lower . }}
+    {{ $existing := index $categoryMap $key }}
+    {{ if $existing }}
+      {{ $categoryMap = merge $categoryMap (dict $key (dict
+        "name" ($existing.name)
+        "nameLower" ($existing.nameLower)
+        "count" (add ($existing.count) 1)
+        "page" ($existing.page)
+      )) }}
+    {{ else }}
+      {{ $termPage := site.GetPage (printf "/categories/%s" (. | urlize | lower)) }}
+      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
+      {{ $categoryMap = merge $categoryMap (dict $key (dict
+        "name" $displayName
+        "nameLower" (lower $displayName)
+        "count" 1
+        "page" $termPage
+      )) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $categories := slice }}
+{{ range $key, $value := $categoryMap }}
+  {{ $categories = $categories | append $value }}
+{{ end }}
+{{ if gt (len $categories) 0 }}
+{{ $sorted := sort (sort $categories "nameLower") "count" "desc" }}
+<div class="flex items-start gap-2">
+  <div class="min-w-[6.5rem] pt-1 text-sm font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
+    {{ T "categories" }}
   </div>
+  <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+    {{ range $sorted }}
+    {{ $isActive := and (ne .page nil) (eq $.Page.RelPermalink .page.RelPermalink) }}
+    <li>
+      {{ partial "components/category-chip" (dict
+        "Name" .name
+        "Href" (cond $isActive $.ClearURL .page.RelPermalink)
+        "Active" $isActive
+        "Class" "!text-sm"
+        "Suffix" (printf "<span class=\"ml-1\">(%d)</span>" .count)
+      ) }}
+    </li>
+    {{ end }}
+  </ul>
 </div>
-{{ end }} {{ end }}
+{{ end }}

@@ -1,0 +1,28 @@
+<details class="group" data-filter-panel>
+  <summary class="flex cursor-pointer list-none items-center gap-2 border-b border-border pb-2 font-primary text-sm font-normal tracking-wide text-text-light dark:border-darkmode-border dark:text-darkmode-text-light">
+    <span>Filters</span>
+    <span class="flex min-w-0 items-center gap-1.5">
+      <span
+        data-active-filters-summary
+        class="hidden max-w-[24rem] truncate text-sm font-normal text-text-light underline underline-offset-2 dark:text-darkmode-text-light"
+      ></span>
+      <button
+        type="button"
+        aria-label="Reset filters"
+        data-clear-filters
+        class="hidden items-center text-sm transition"
+      >
+        <i class="fa-solid fa-xmark relative top-px left-0.5"></i>
+      </button>
+    </span>
+    <i class="fa-solid fa-chevron-down ml-auto text-sm transition duration-200 group-open:rotate-180"></i>
+  </summary>
+  {{ $scopePages := .ScopePages | default site.RegularPages }}
+  {{ $hasPortfolio := gt (len (where $scopePages "Section" "portfolio")) 0 }}
+  <div class="mt-3 space-y-3">
+    {{ partial "widgets/authors" . }}
+    {{ if $hasPortfolio }}{{ partial "widgets/lengths" . }}{{ end }}
+    {{ partial "widgets/categories" . }}
+    {{ partial "widgets/tags" . }}
+  </div>
+</details>

@@ -1,0 +1,26 @@
+{{ with site.Params.buttondown_username }}
+<div class="mb-0">
+  <div class="ui-card-compact">
+    <h5 class="mb-1">Stay in the loop</h5>
+    <p class="text-sm mb-4 opacity-80">New posts on data, engineering, and building things that work — direct to your inbox. No spam.</p>
+    <form
+      action="https://buttondown.com/api/emails/embed-subscribe/{{ . }}"
+      method="post"
+      target="_blank"
+      class="space-y-2"
+    >
+      <input type="hidden" name="tag" value="website" />
+      <input
+        type="email"
+        name="email"
+        placeholder="your@email.com"
+        required
+        class="w-full rounded-2xl border border-border bg-body px-4 py-3 text-sm dark:border-darkmode-border dark:bg-darkmode-body focus:border-primary focus:outline-none"
+      />
+      <button type="submit" class="btn btn-primary btn-sm w-full">
+        Subscribe
+      </button>
+    </form>
+  </div>
+</div>
+{{ end }}

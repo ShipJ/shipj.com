@@ -47,7 +47,7 @@ enable = true
 primary_color = "#121212"
 include_sections = ["blog", "categories", "authors", "about", "pages", "tags", "portfolio", "contact"]
 include_list_pages = true
-show_image = true
+show_image = false
 show_description = true
 show_tags = true
 show_categories = true
@@ -87,9 +87,12 @@ button = "I Accept"
 [mermaid]
 js_url = 'https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.esm.min.mjs'
 
+# buttondown newsletter username (leave empty to hide newsletter widget)
+buttondown_username = "" # e.g. "jackshipsmith"
+
 # widgets
 [widgets]
-sidebar = ["highlights", "categories", "tags"]
+sidebar = ["newsletter", "categories", "tags"]
 
 # google map
 [google_map]

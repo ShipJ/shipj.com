@@ -1,5 +1,5 @@
 ---
 title: "Portfolio"
 meta_title: ""
-description: "this is meta description"
+description: "Applications of data science and engineering."
 ---

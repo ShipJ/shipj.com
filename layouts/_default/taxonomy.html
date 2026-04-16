@@ -1,24 +1,36 @@
 {{ define "main" }} {{ partial "page-header" . }}
+{{ $pages := .Pages }}
+{{ $hasBlog := gt (len (where $pages "Section" "blog")) 0 }}
+{{ $hasPortfolio := gt (len (where $pages "Section" "portfolio")) 0 }}
+{{ $clearURL := site.Home.RelPermalink }}
+{{ if and $hasBlog (not $hasPortfolio) }}
+  {{ $clearURL = (`blog/` | relURL) }}
+{{ else if and $hasPortfolio (not $hasBlog) }}
+  {{ $clearURL = (`portfolio/` | relURL) }}
+{{ end }}
 
-<section class="section pt-8">
-  <div class="container">
-    <div class="row gx-5">
-      <!-- Sidebar Widget (Left Column) -->
-      <div class="lg:col-4">
-        {{ $widget := site.Params.widgets.sidebar }} {{ partialCached
-        "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) }}
+<section class="section pt-4">
+  <div class="site-container">
+    {{ $initialCategories := "" }}
+    {{ $initialTags := "" }}
+    {{ if eq .Data.Plural "categories" }}{{ $initialCategories = .Title | urlize | lower }}{{ end }}
+    {{ if eq .Data.Plural "tags" }}{{ $initialTags = .Title | urlize | lower }}{{ end }}
+    <div
+      data-filter-root
+      data-filter-clear-url="{{ $clearURL }}"
+      data-filter-initial-categories="{{ $initialCategories }}"
+      data-filter-initial-tags="{{ $initialTags }}"
+      class="pt-0"
+    >
+    {{ partial "widgets/filters-panel" (dict "Page" . "ClearURL" $clearURL "ScopePages" .Pages) }}
+    <div class="pt-6" data-filter-results>
+      <div class="space-y-5">
+        {{ partial "components/dated-card-list" (dict "Pages" .Pages) }}
       </div>
-
-      <!-- Blog Content (Right Column) -->
-      <div class="lg:col-8">
-        <div class="row">
-          {{ range .Data.Pages }}
-          <div class="md:col-6 mb-14">
-            {{ partial "components/blog-card" . }}
-          </div>
-          {{ end }}
-        </div>
+      <div class="ui-shell hidden text-center" data-filter-empty>
+        <p class="text-text-light dark:text-darkmode-text-light">No items match the selected filters.</p>
       </div>
+    </div>
     </div>
   </div>
 </section>

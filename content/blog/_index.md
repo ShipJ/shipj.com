@@ -1,5 +1,5 @@
 ---
 title: "Blog"
 meta_title: "Blog"
-description: "Main long-form blog page"
+description: "Thoughts on data science and engineering."
 ---

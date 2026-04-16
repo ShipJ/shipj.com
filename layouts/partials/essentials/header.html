@@ -1,18 +1,18 @@
 <header
-  class="header {{ if site.Params.navbar_fixed }}sticky top-0{{ end }} z-10 border-b border-gray-100 dark:border-darkmode-border py-1"
+  class="header {{ if site.Params.navbar_fixed }}sticky top-0{{ end }} z-10 border-b border-gray-100 dark:border-darkmode-border"
 >
-  <nav class="navbar container pl-4 pr-0">
-    <div class="order-0 lg:pl-0">
+  <nav class="navbar site-container">
+    <div class="order-0 lg:order-none lg:justify-self-start">
       <!-- navbar brand/logo -->
-      <a class="navbar-brand block" href="{{ site.Home.RelPermalink }}">
-        Hi, I'm Jack 👋
+      <a class="navbar-brand block opacity-80" href="{{ site.Home.RelPermalink }}">
+        Hi, I'm Jack
       </a>
     </div>
     <!-- navbar toggler -->
     <input id="nav-toggle" type="checkbox" class="hidden" />
     <label
       for="nav-toggle"
-      class="order-3 cursor-pointer flex items-center lg:hidden text-text-dark dark:text-white lg:order-1"
+      class="order-3 ml-3 cursor-pointer flex items-center lg:hidden text-text-dark dark:text-white lg:order-1"
     >
       <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20">
         <title>Menu Open</title>
@@ -31,18 +31,12 @@
     <!-- main navbar -->
     <ul
       id="nav-menu"
-      class="navbar-nav order-3 hidden lg:flex w-full lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-16 lg:pl-0"
+      class="navbar-nav order-3 hidden w-full pt-2 lg:order-none lg:flex lg:w-auto lg:items-center lg:justify-self-center lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none xl:gap-6"
     >
-      {{ $currentPage := . }} {{ range site.Menus.main }} {{ $menuURL := .URL |
-      absLangURL }} {{ $pageURL:= $currentPage.Permalink | absLangURL }} {{
-      $active := eq $menuURL $pageURL }} {{ if .HasChildren }}
+      {{ $currentPage := . }} {{ $homePath := strings.TrimSuffix "/" site.Home.RelPermalink }} {{ $pagePath := strings.TrimSuffix "/" $currentPage.RelPermalink }} {{ range site.Menus.main }} {{ $isExternal := gt (len (findRE `^http` .URL)) 0 }} {{ $menuPath := strings.TrimSuffix "/" (.URL | relURL) }} {{ $active := false }} {{ if not $isExternal }} {{ if eq $menuPath $homePath }} {{ $active = eq $pagePath $homePath }} {{ else }} {{ $active = or (eq $pagePath $menuPath) (hasPrefix $pagePath (printf "%s/" $menuPath)) }} {{ end }} {{ end }} {{ if .HasChildren }}
       <li class="nav-item nav-dropdown group relative">
         <span
-          class="nav-link {{ range .Children }}
-                {{ $childURL := .URL | absLangURL }}
-                {{ $active := eq $childURL $pageURL }}
-                {{ if $active }}active underline font-semibold{{ end }}
-              {{ end }} inline-flex items-center"
+          class="nav-link {{ if $active }}active{{ end }} inline-flex items-center"
         >
           {{ .Name }}
           <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
@@ -54,12 +48,11 @@
         <ul
           class="nav-dropdown-list lg:group-hover:visible lg:group-hover:opacity-100"
         >
-          {{ range .Children }} {{ $childURL := .URL | absLangURL }} {{ $active
-          := eq $childURL $pageURL }}
+          {{ range .Children }} {{ $childExternal := gt (len (findRE `^http` .URL)) 0 }} {{ $childPath := strings.TrimSuffix "/" (.URL | relURL) }} {{ $active := false }} {{ if not $childExternal }} {{ if eq $childPath $homePath }} {{ $active = eq $pagePath $homePath }} {{ else }} {{ $active = or (eq $pagePath $childPath) (hasPrefix $pagePath (printf "%s/" $childPath)) }} {{ end }} {{ end }}
           <li class="nav-dropdown-item">
             <a
               class="nav-dropdown-link {{ if $active }}
-                      active underline font-semibold
+                      active
                     {{- end -}}"
               {{
               if
@@ -87,11 +80,10 @@
           {{ end }}
         </ul>
       </li>
-      {{ else }} {{ $active := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent
-      "main" .) }}
+      {{ else }}
       <li class="nav-item">
         <a
-          class="nav-link hover:underline transition {{ if $active }}underline font-semibold text-primary{{ end }}"
+          class="nav-link transition {{ if $active }}active{{ end }}"
           {{
           if
           findRE
@@ -126,24 +118,19 @@
     </ul>
 
     <div
-      class="order-1 ml-auto flex items-center md:order-2 lg:ml-0 pl-20 lg:pl-20"
+      class="order-1 ml-auto flex items-center gap-3 md:order-2 lg:order-none lg:ml-0 lg:justify-self-end"
     >
       {{ with site.Params.search }} {{ if .enable }}
       <button
         aria-label="search"
-        class="border-border text-text-dark hover:text-primary
-            dark:border-darkmode-border mr-5 inline-block border-r pr-5
-            text-xl dark:text-white cursor-pointer dark:hover:text-darkmode-primary
-            {{ if not (or site.Params.navigation_button.enable site.Params.theme_switcher) }}
-              lg:border-r-0 lg:pr-0
-            {{ end }}"
+        class="inline-flex h-[32px] w-[32px] items-center justify-center rounded-full border border-border bg-light text-text-dark transition hover:border-text-light/30 dark:border-darkmode-border dark:bg-darkmode-light dark:text-darkmode-text-dark dark:hover:border-darkmode-text-light/30"
         data-target="search-modal"
       >
-        <i class="fa-solid fa-search"></i>
+        <i class="fa-solid fa-search text-m"></i>
       </button>
       {{ end }} {{ end }} {{ partial "components/language-switcher" (dict
-      "Context" . "Class" "mr-5 pl-2 py-1 dark:bg-darkmode-light rounded") }} {{
-      partial "components/theme-switcher" (dict "Class" "mr-5") }}
+      "Context" . "Class" "rounded-full border border-border bg-light px-4 text-sm text-text-light transition hover:text-text-dark dark:border-darkmode-border dark:bg-darkmode-light dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark") }} {{
+      partial "components/theme-switcher" (dict "Class" "") }}
 
       <!-- navigation btn -->
       {{ if site.Params.navigation_button.enable }}

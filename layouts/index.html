@@ -1,36 +1,46 @@
 {{ define "main" }}
 <!-- Banner -->
 {{ with .Params.banner }}
-<section class="section pt-14">
-  <div class="container">
-    <div class="row justify-center">
-      <div class="lg:col-7 md:col-9 mb-8 text-center">
-        <h1 class="mb-4 text-h3 lg:text-h1">{{ .title | markdownify }}</h1>
-        <p class="mb-8 text-left">{{ .content | markdownify }}</p>
-        {{ with .button }} {{ if .enable }}
-        <a
-          class="btn btn-primary"
-          href="{{ .link | absURL }}"
-          {{
-          if
-          strings.HasPrefix
-          .link
-          `http`
-          }}
-          target="_blank"
-          rel="noopener"
-          {{
-          end
-          }}
-        >
-          {{ .label }}
-          <i class="fa fa-arrow-right pl-2"></i>
-        </a>
-        {{ end }} {{ end }}
+<section class="section pt-6 pb-0">
+  <div class="site-container">
+    <div class="flex min-h-[72vh] items-start pt-6 pb-0 md:min-h-[76vh] md:pt-8">
+      <div class="row justify-center">
+      <div class="lg:col-12 text-left">
+        <div class="mx-auto w-full sm:w-[90%] md:w-[80%] lg:w-[70%]">
+        <!-- <p class="ui-kicker mb-3">Welcome</p> -->
+        <h1 class="mb-8 text-h3 lg:text-[clamp(1.9rem,5.1vw,5.1rem)]">{{ .title | markdownify }}</h1>
+        <p class="mb-6 lg:text-lg">{{ .content | markdownify }}</p>
+        </div>
+        <div class="mt-8 mb-8 flex flex-col items-center gap-4 lg:flex-row lg:flex-wrap lg:justify-center md:mt-10 md:mb-12">
+          {{ with .button }} {{ if .enable }}
+          <a
+            class="btn btn-primary w-full max-w-sm px-6 py-3 text-base lg:w-auto lg:max-w-none"
+            href="{{ strings.TrimPrefix `/` .link | absURL }}"
+            {{
+            if
+            strings.HasPrefix
+            .link
+            `http`
+            }}
+            target="_blank"
+            rel="noopener"
+            {{
+            end
+            }}
+          >
+            {{ .label }}
+            <i class="fa fa-arrow-right pl-2"></i>
+          </a>
+          {{ end }} {{ end }}
+          {{ range .secondary_buttons }}
+          <a class="btn btn-outline-primary w-full max-w-sm px-6 py-3 text-base lg:w-auto lg:max-w-none" href="{{ strings.TrimPrefix `/` .link | relURL }}">
+            {{ .label }}
+            <i class="fa {{ .icon }} pl-2"></i>
+          </a>
+          {{ end }}
+        </div>
+        <div class="border-t border-border dark:border-darkmode-border"></div>
       </div>
-      <div class="col-12">
-        {{ partial "image" (dict "Src" .image "Alt" "Banner image" "Loading"
-        "eager" "Class" "mx-auto lg:!max-w-[800px]" "DisplayXL" "800x" ) }}
       </div>
     </div>
   </div>
@@ -38,105 +48,270 @@
 {{ end }}
 <!-- /Banner -->
 
-<!-- Features -->
-{{ range $i, $e:= .Params.features }}
-<section class="section-sm {{ if (modBool $i 2) }}bg-gradient{{ end }}">
-  <div class="container">
-    <div class="row items-center justify-between">
-      <div
-        class="mb:md-0 {{ if not (modBool $i 2) }}
-              md:order-2
-            {{ end }} md:col-5 mb-6"
-      >
-        {{ partial "image" (dict "Src" .image "Alt" "feature image" "DisplayXL"
-        "520x" "DisplayLG" "425x" "DisplayMD" "360x") }}
-      </div>
-      <div
-        class="{{ if not (modBool $i 2) }}
-              md:order-1
-            {{ end }} md:col-7 lg:col-6"
-      >
-        <h2 class="mb-4">{{ .title | markdownify }}</h2>
-        <p class="mb-8 text-lg">{{ .content | markdownify }}</p>
-        <ul>
-          {{ range .bulletpoints }}
-          <li class="relative mb-4 pl-6">
-            <i class="fa fa-check absolute left-0 top-1.5"></i>
-            {{ . | markdownify }}
-          </li>
-          {{ end }}
-        </ul>
-        {{ with .button }} {{ if .enable }}
-        <a class="btn btn-primary mt-6" href="{{ .link | absURL }}">
-          {{ .label }}
-          <i class="fa fa-arrow-right pl-2"></i>
-        </a>
-        {{ end }} {{ end }}
-      </div>
-    </div>
-  </div>
-</section>
-{{ end }}
-<!-- /Features -->
-
-<!-- Testimonials -->
-{{ with site.GetPage "sections/testimonial" }} {{ if .Params.enable }}
-<section class="section">
-  <div class="container">
-    <div class="row">
-      <div class="md:col-10 lg:col-8 xl:col-6 mx-auto mb-12 text-center">
-        <h2 class="mb-4">{{ .Title | markdownify }}</h2>
-        <p>{{ .Params.description | markdownify }}</p>
-      </div>
-      <div class="col-12">
-        <div class="swiper testimonial-slider">
-          <div class="swiper-wrapper">
-            {{ range .Params.testimonials }}
-            <div class="swiper-slide">
-              <div
-                class="bg-light dark:bg-darkmode-light rounded-lg px-7 py-10"
-              >
-                <div class="text-text-dark dark:text-white">
-                  <svg
-                    width="33"
-                    height="20"
-                    viewBox="0 0 33 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1.28375 19.41L0.79375 18.64C1.21375 17.0067 1.75042 15.07 2.40375 12.83C3.05708 10.5433 3.75708 8.28 4.50375 6.04C5.29708 3.75333 6.06708 1.77 6.81375 0.0899959H15.3538C14.9338 2.09666 14.4904 4.26667 14.0238 6.6C13.5571 8.88666 13.1371 11.15 12.7638 13.39C12.4371 15.5833 12.1571 17.59 11.9238 19.41H1.28375ZM31.69 0.0899959L32.18 0.859998C31.76 2.54 31.2233 4.5 30.57 6.74C29.9167 8.98 29.2167 11.2433 28.47 13.53C27.7233 15.77 26.9533 17.73 26.16 19.41H17.69C18.0167 17.9167 18.3433 16.33 18.67 14.65C18.9967 12.9233 19.3 11.22 19.58 9.54C19.9067 7.81333 20.1867 6.15667 20.42 4.57C20.7 2.93666 20.91 1.44333 21.05 0.0899959H31.69Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </div>
-                <blockquote class="mt-8">
-                  {{ .content | markdownify }}
-                </blockquote>
-                <div class="mt-11 flex items-center">
-                  <div class="text-text-dark dark:text-white">
-                    {{ partial "image" (dict "Src" .avatar "Size" "50x50"
-                    "Class" "rounded-full" "Alt" .name) }}
-                  </div>
-                  <div class="ml-4">
-                    <h3 class="h5 font-primary font-semibold">{{ .name }}</h3>
-                    <p class="text-text-dark dark:text-white">
-                      {{ .designation | markdownify }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+{{ with .Params.home_cta }}
+<section class="section-sm py-0">
+  <div class="site-container">
+    <div class="ui-shell">
+      <div class="row items-center gap-y-8">
+        <div class="lg:col-8">
+          <p class="ui-kicker mb-3">{{ .kicker }}</p>
+          <h2 class="mb-4">{{ .title }}</h2>
+          <p class="mb-6 max-w-3xl text-lg text-text dark:text-darkmode-text">{{ .content }}</p>
+          <ul class="space-y-3">
+            {{ range .points }}
+            <li class="relative pl-6">
+              <i class="fa fa-check absolute left-0 top-1.5"></i>
+              {{ . }}
+            </li>
             {{ end }}
-          </div>
-          <div
-            class="testimonial-slider-pagination mt-9 flex items-center justify-center text-center"
-          ></div>
+          </ul>
+        </div>
+        <div class="lg:col-4 text-left lg:text-right">
+          <a class="btn btn-primary mb-4 w-full lg:w-auto" href="{{ strings.TrimPrefix `/` .primary_button.link | relURL }}">
+            {{ .primary_button.label }}
+            <i class="fa fa-arrow-right pl-2"></i>
+          </a>
+          <br />
+          <a class="btn btn-outline-primary w-full lg:w-auto" href="{{ strings.TrimPrefix `/` .secondary_button.link | absURL }}" target="_blank" rel="noopener">
+            {{ .secondary_button.label }}
+            <i class="fa fa-arrow-right pl-2"></i>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </section>
-{{ end }} {{ end }}
-<!-- /Testimonials -->
+{{ end }}
+
+{{ $blogPageSet := where site.RegularPages "Section" "blog" }}
+{{ $blogCompactPosts := sort $blogPageSet "PublishDate" "desc" }}
+{{ $blogTagMap := dict }}
+{{ $blogCategoryMap := dict }}
+{{ range $blogPageSet }}
+  {{ range .Params.tags }}
+    {{ $key := lower . }}
+    {{ $existing := index $blogTagMap $key }}
+    {{ if $existing }}
+      {{ $blogTagMap = merge $blogTagMap (dict $key (dict
+        "name" ($existing.name)
+        "nameLower" ($existing.nameLower)
+        "count" (add ($existing.count) 1)
+        "page" ($existing.page)
+      )) }}
+    {{ else }}
+      {{ $termPage := site.GetPage (printf "/tags/%s" (. | urlize | lower)) }}
+      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
+      {{ $blogTagMap = merge $blogTagMap (dict $key (dict
+        "name" $displayName
+        "nameLower" (lower $displayName)
+        "count" 1
+        "page" $termPage
+      )) }}
+    {{ end }}
+  {{ end }}
+  {{ range .Params.categories }}
+    {{ $key := lower . }}
+    {{ $existing := index $blogCategoryMap $key }}
+    {{ if $existing }}
+      {{ $blogCategoryMap = merge $blogCategoryMap (dict $key (dict
+        "name" ($existing.name)
+        "nameLower" ($existing.nameLower)
+        "count" (add ($existing.count) 1)
+        "page" ($existing.page)
+      )) }}
+    {{ else }}
+      {{ $termPage := site.GetPage (printf "/categories/%s" (. | urlize | lower)) }}
+      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
+      {{ $blogCategoryMap = merge $blogCategoryMap (dict $key (dict
+        "name" $displayName
+        "nameLower" (lower $displayName)
+        "count" 1
+        "page" $termPage
+      )) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $blogTags := slice }}
+{{ range $key, $value := $blogTagMap }}
+  {{ $blogTags = $blogTags | append $value }}
+{{ end }}
+{{ $blogTags = first 8 (sort (sort $blogTags "nameLower") "count" "desc") }}
+{{ $blogCategories := slice }}
+{{ range $key, $value := $blogCategoryMap }}
+  {{ $blogCategories = $blogCategories | append $value }}
+{{ end }}
+{{ $blogCategories = sort (sort $blogCategories "nameLower") "count" "desc" }}
+{{ with .Params.blog_section }}
+{{ if gt (len $blogCompactPosts) 0 }}
+<section class="section-sm pt-4 pb-8 md:pt-6 md:pb-12">
+  <div class="site-container">
+    <div class="mb-10">
+      <div>
+        <p class="ui-kicker mb-3">{{ .kicker }}</p>
+        <div class="mb-3 flex flex-wrap items-center gap-4">
+          <div class="flex flex-wrap items-center gap-4">
+          <h2 class="mb-0 text-h4 text-text-dark dark:text-darkmode-text-dark">{{ .title }}</h2>
+          <a class="btn btn-outline-primary mt-1" href="{{ strings.TrimPrefix `/` .button_link | relURL }}">
+            {{ .button_label }}
+            <i class="fa fa-pen pl-2"></i>
+          </a>
+          </div>
+        </div>
+        <p class="max-w-2xl text-text-light dark:text-darkmode-text-light">{{ .description }}</p>
+      </div>
+    </div>
+    {{ if gt (len $blogCategories) 0 }}
+    <div class="mb-8 flex items-start gap-3">
+      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
+        Category highlights
+      </div>
+      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+        {{ range $blogCategories }}
+        <li>
+          {{ partial "components/category-chip" (dict "Name" .name "Href" .page.RelPermalink "Class" "!px-3 !py-1 !text-sm" "Suffix" (printf "<span class=\"ml-1\">(%d)</span>" .count)) }}
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+    {{ if gt (len $blogTags) 0 }}
+    <div class="mb-8 flex items-start gap-3">
+      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
+        I tend to talk about
+      </div>
+      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+        {{ range $blogTags }}
+        <li>
+          <a href="{{ .page.RelPermalink }}" class="ui-chip ui-chip-meta !px-3 !py-1 !text-sm">
+            <i class="fa-solid fa-tag mr-2"></i>{{ .name }}
+            <span class="ml-1">({{ .count }})</span>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+    {{ partial "components/home-compact-dated-list" (dict "Pages" $blogCompactPosts) }}
+  </div>
+</section>
+{{ end }}
+{{ end }}
+
+<div class="site-container">
+  <div class="border-t border-border dark:border-darkmode-border"></div>
+</div>
+
+{{ $portfolioPageSet := where site.RegularPages "Section" "portfolio" }}
+{{ $portfolioCompactPosts := sort $portfolioPageSet "PublishDate" "desc" }}
+{{ $portfolioTagMap := dict }}
+{{ $portfolioCategoryMap := dict }}
+{{ range $portfolioPageSet }}
+  {{ range .Params.tags }}
+    {{ $key := lower . }}
+    {{ $existing := index $portfolioTagMap $key }}
+    {{ if $existing }}
+      {{ $portfolioTagMap = merge $portfolioTagMap (dict $key (dict
+        "name" ($existing.name)
+        "nameLower" ($existing.nameLower)
+        "count" (add ($existing.count) 1)
+        "page" ($existing.page)
+      )) }}
+    {{ else }}
+      {{ $termPage := site.GetPage (printf "/tags/%s" (. | urlize | lower)) }}
+      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
+      {{ $portfolioTagMap = merge $portfolioTagMap (dict $key (dict
+        "name" $displayName
+        "nameLower" (lower $displayName)
+        "count" 1
+        "page" $termPage
+      )) }}
+    {{ end }}
+  {{ end }}
+  {{ range .Params.categories }}
+    {{ $key := lower . }}
+    {{ $existing := index $portfolioCategoryMap $key }}
+    {{ if $existing }}
+      {{ $portfolioCategoryMap = merge $portfolioCategoryMap (dict $key (dict
+        "name" ($existing.name)
+        "nameLower" ($existing.nameLower)
+        "count" (add ($existing.count) 1)
+        "page" ($existing.page)
+      )) }}
+    {{ else }}
+      {{ $termPage := site.GetPage (printf "/categories/%s" (. | urlize | lower)) }}
+      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
+      {{ $portfolioCategoryMap = merge $portfolioCategoryMap (dict $key (dict
+        "name" $displayName
+        "nameLower" (lower $displayName)
+        "count" 1
+        "page" $termPage
+      )) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $portfolioTags := slice }}
+{{ range $key, $value := $portfolioTagMap }}
+  {{ $portfolioTags = $portfolioTags | append $value }}
+{{ end }}
+{{ $portfolioTags = first 8 (sort (sort $portfolioTags "nameLower") "count" "desc") }}
+{{ $portfolioCategories := slice }}
+{{ range $key, $value := $portfolioCategoryMap }}
+  {{ $portfolioCategories = $portfolioCategories | append $value }}
+{{ end }}
+{{ $portfolioCategories = sort (sort $portfolioCategories "nameLower") "count" "desc" }}
+{{ with .Params.portfolio_section }}
+{{ if gt (len $portfolioCompactPosts) 0 }}
+<section class="section-sm pt-8 pb-8 md:pt-12 md:pb-12">
+  <div class="site-container">
+    <div class="mb-10">
+      <div>
+        <p class="ui-kicker mb-3">{{ .kicker }}</p>
+        <div class="mb-3 flex flex-wrap items-center gap-4">
+          <div class="flex flex-wrap items-center gap-4">
+          <h2 class="mb-0 text-h4 text-text-dark dark:text-darkmode-text-dark">{{ .title }}</h2>
+          <a class="btn btn-outline-primary mt-1" href="{{ strings.TrimPrefix `/` .button_link | relURL }}">
+            {{ .button_label }}
+            <i class="fa fa-briefcase pl-2"></i>
+          </a>
+          </div>
+        </div>
+        <p class="max-w-2xl text-text-light dark:text-darkmode-text-light">{{ .description }}</p>
+      </div>
+    </div>
+    {{ if gt (len $portfolioCategories) 0 }}
+    <div class="mb-8 flex items-start gap-3">
+      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
+        Category highlights
+      </div>
+      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+        {{ range $portfolioCategories }}
+        <li>
+          {{ partial "components/category-chip" (dict "Name" .name "Href" .page.RelPermalink "Class" "!px-3 !py-1 !text-sm" "Suffix" (printf "<span class=\"ml-1\">(%d)</span>" .count)) }}
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+    {{ if gt (len $portfolioTags) 0 }}
+    <div class="mb-8 flex items-start gap-3">
+      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
+        I tend to work on
+      </div>
+      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+        {{ range $portfolioTags }}
+        <li>
+          <a href="{{ .page.RelPermalink }}" class="ui-chip ui-chip-meta !px-3 !py-1 !text-sm">
+            <i class="fa-solid fa-tag mr-2"></i>{{ .name }}
+            <span class="ml-1">({{ .count }})</span>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+    {{ partial "components/home-compact-dated-list" (dict "Pages" $portfolioCompactPosts) }}
+  </div>
+</section>
+{{ end }}
+{{ end }}
 {{ end }}

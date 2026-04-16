@@ -1,0 +1,36 @@
+{{ $name := .Name }}
+{{ $href := .Href }}
+{{ $active := .Active | default false }}
+{{ $class := .Class | default "" }}
+{{ $suffix := .Suffix | default "" }}
+{{ $slug := $name | urlize | lower }}
+
+{{ $tone := "category-chip-slate" }}
+{{ if or (eq $slug "data-engineering") (eq $slug "engineering") }}
+  {{ $tone = "category-chip-blue" }}
+{{ else if or (eq $slug "data-governance") (eq $slug "governance") }}
+  {{ $tone = "category-chip-teal" }}
+{{ else if or (eq $slug "business-intelligence") (eq $slug "bi") (eq $slug "analytics") }}
+  {{ $tone = "category-chip-amber" }}
+{{ else if or (eq $slug "personal-development") (eq $slug "career-growth") }}
+  {{ $tone = "category-chip-violet" }}
+{{ else if eq $slug "lifestyle" }}
+  {{ $tone = "category-chip-rose" }}
+{{ else if or (eq $slug "data-science") (eq $slug "science") }}
+  {{ $tone = "category-chip-green" }}
+{{ else if or (eq $slug "forecasting") (eq $slug "strategy") }}
+  {{ $tone = "category-chip-orange" }}
+{{ else if or (eq $slug "machine-learning") (eq $slug "ml") (eq $slug "ai") }}
+  {{ $tone = "category-chip-indigo" }}
+{{ end }}
+
+{{ $activeClass := "" }}
+{{ if $active }}
+  {{ $activeClass = "border-text-light/30 text-text-dark dark:border-darkmode-text-light/30 dark:text-darkmode-text-dark" }}
+{{ end }}
+
+<a href="{{ $href }}" data-filter-kind="categories" data-filter-value="{{ $slug }}" class="ui-chip ui-chip-meta ui-chip-category {{ $tone }} {{ $activeClass }} {{ $class }}">
+  <i class="fa-regular fa-layer-group mr-2" title="Categories"></i>
+  {{ $name }}
+  {{ $suffix | safeHTML }}
+</a>

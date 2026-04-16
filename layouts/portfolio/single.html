@@ -1,77 +1,71 @@
 {{ define "main" }}
-<section class="section pt-7">
-  <div class="container">
-    <div class="row justify-center">
-      <article class="lg:col-10">
+<section class="section pt-8">
+  <div class="site-container">
+    <article>
+        <div class="ui-shell mb-8 !py-5 md:!py-6">
 
         {{ $image := .Params.image }}
         {{ if $image }}
-          <div class="mb-10">
-            {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title "Class" "w-full rounded") }}
+          <div class="mb-8">
+            {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title "Class" "w-full rounded-2xl border border-border dark:border-darkmode-border") }}
           </div>
         {{ end }}
 
-        <h1 class="h2 mb-4">{{ .Title }}</h1>
+<h1 class="h2 mb-5">{{ .Title }}</h1>
 
-        <!-- Row 1: Author + Publish Date -->
-        <ul class="mb-2">
-          {{ with .Params.author }}
-            <li class="mr-4 inline-block hover:underline">
-              <a href="{{ `author/` | relURL }}{{ . | urlize }}/">
-                <i class="fa-regular fa-circle-user mr-1" title="Author"></i>
+        <div class="mb-3 flex flex-col gap-2">
+          <div class="flex flex-wrap items-center gap-2">
+            {{ with .Params.author }}
+              <a href="{{ `author/` | relURL }}{{ . | urlize }}/" class="ui-chip ui-chip-meta !px-3.5 !py-1 !text-sm">
+                <i class="fa-regular fa-circle-user mr-2" title="Author"></i>
                 {{ . }}
               </a>
-            </li>
-          {{ end }}
-
-          <li class="mr-4 inline-block">
-            <i class="fa-regular fa-code-merge mr-1" title="Publish Date"></i>
-            {{ time.Format ":date_long" .PublishDate }}
-          </li>
-        </ul>
-
-        <!-- Row 2: Duration + Categories + Tags -->
-        <ul class="ml-[0.1rem] mb-4 text-sm text-gray-600">
-          {{ with .Params.length }}
-            <li class="mr-4 inline-block hover:underline">
-              <a href="{{ `length/` | relURL }}{{ . | urlize }}/">
-                <i class="fa-regular fa-calendar-check mr-1" title="Project Duration"></i>
+            {{ end }}
+            {{ with .Params.length }}
+              <a href="{{ `length/` | relURL }}{{ . | urlize }}/" class="ui-chip ui-chip-meta !px-3.5 !py-1 !text-sm">
+                <i class="fa-regular fa-calendar-check mr-2" title="Project Duration"></i>
                 {{ . }}
               </a>
-            </li>
-          {{ end }}
-
-          {{ $categories := .Params.categories }}
-          {{ if $categories }}
-            <li class="mr-4 inline-block">
-              <i class="fa-regular fa-layer-group mr-1" title="Categories"></i>
-              {{ range $i, $c := $categories }}
-                <a href="{{ `categories/` | relURL }}{{ $c | urlize | lower }}/" class="hover:underline">
-                  {{ $c }}
-                </a>
-                {{ if ne $i (sub (len $categories) 1) }}
-                  <span class="mx-1 text-gray-400">|</span>
-                {{ end }}
+            {{ end }}
+            {{ $categories := .Params.categories }}
+            {{ if $categories }}
+              {{ range $categories }}
+                {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) "Class" "!px-3.5 !py-1 !text-sm") }}
               {{ end }}
-            </li>
-          {{ end }}
+            {{ end }}
+          </div>
 
           {{ $tags := .Params.tags }}
           {{ if $tags }}
-            <li class="inline-block whitespace-nowrap">
-              <i class="fa-regular fa-tag mr-1" title="Tags"></i>
-              {{ range $t := $tags }}
-                <a href="{{ `tags/` | relURL }}{{ $t | urlize | lower }}/" class="hover:underline mr-2">
-                  #{{ $t }}
-                </a>
-              {{ end }}
-            </li>
+          <div class="flex flex-wrap items-center gap-1.5">
+            {{ range $tags }}
+              <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" class="ui-chip ui-chip-meta !px-3 !py-1.5 !text-xs !leading-none">
+                <span class="inline-flex items-center gap-2">
+                  <i class="fa-regular fa-tag" title="Tags"></i>
+                  <span>#{{ . }}</span>
+                </span>
+              </a>
+            {{ end }}
+          </div>
           {{ end }}
-        </ul>
 
-        <div class="content mb-10 mt-10">
+        </div>
+        </div>
+
+        <div class="mb-2 px-6 md:px-8 text-sm text-text-light dark:text-darkmode-text-light">
+          {{ time.Format ":date_long" .PublishDate }}
+        </div>
+
+        <div class="mb-10 px-6 md:px-8">
+          <div class="content">
           <!-- {{ partial "toc.html" (dict "Class" "portfolio" "Collapsed" true "TableOfContents" .TableOfContents ) }} -->
           {{ .Content }}
+          </div>
+        </div>
+
+        <div class="ui-card-compact mb-10 flex flex-wrap items-center gap-3">
+          <span class="text-sm font-semibold">{{ T "share" }}</span>
+          {{ partial "social-share" (dict "Context" . "Class" "share-icons flex gap-2" "Linkedin" true "X" true "Email" true "Copy" true "Facebook" false "Reddit" false "Whatsapp" true "Telegram" false "Pinterest" false "Tumblr" false "Vk" false "Fediverse" false) }}
         </div>
 
         {{ if site.Config.Services.Disqus.Shortname }}
@@ -80,18 +74,20 @@
           </div>
         {{ end }}
 
-      </article>
-    </div>
+    </article>
 
     <!-- Related posts -->
     {{ $related := .Site.RegularPages.Related . | first 10 }}
     {{ $related = $related | shuffle | first 3 }}
     {{ with $related }}
       <div class="section pb-0">
-        <h2 class="h3 mb-12">{{ T "related_posts" }}</h2>
+        <div class="mb-8">
+          <p class="ui-kicker mb-2">More work</p>
+          <h2 class="h3">{{ T "related_posts" }}</h2>
+        </div>
         <div class="row">
           {{ range . }}
-            <div class="lg:col-4 md:col-6 mb-14">
+            <div class="lg:col-4 md:col-6 mb-8">
               {{ partial "components/portfolio-card" . }}
             </div>
           {{ end }}

@@ -1,11 +1,41 @@
 {{ define "main" }} 
 {{ partial "page-header" . }}
+<section id="content-results" class="section pt-4">
+  <div class="site-container">
+    <div
+      data-filter-root
+      data-list-view-root
+      data-list-view-key="portfolio"
+      data-filter-clear-url="{{ .RelPermalink }}"
+      class="pt-0"
+    >
+    {{ partial "widgets/filters-panel" (dict "Page" . "ClearURL" .RelPermalink "ScopePages" .RegularPages) }}
+    <div class="relative pt-6" data-filter-results>
+      <div class="absolute right-0 top-8 flex justify-end">
+        <button
+          type="button"
+          class="home-view-icon-button"
+          data-list-view-toggle-button
+          aria-pressed="false"
+          aria-label="Switch to compact view"
+          title="Switch to compact view"
+        >
+          <i class="fa-solid fa-table-cells-large" data-list-view-icon></i>
+          <span data-list-view-label>Full</span>
+        </button>
+      </div>
+      <div class="space-y-5">
+        {{ partial "components/dated-card-list" (dict "Pages" .RegularPages) }}
+      </div>
+      <div class="ui-shell hidden text-center" data-filter-empty>
+        <p class="text-text-light dark:text-darkmode-text-light">No projects match the selected filters.</p>
+      </div>
+    </div>
+    </div>
 
-<section class="section pt-16">
-  <div class="container">
     <!-- git contribution chart-->
-    <a href="https://github.com/wgsn-shipj">
-      <div class="flex items-center justify-center pb-16">
+    <a href="https://github.com/wgsn-shipj" class="mt-10 block">
+      <div class="ui-shell flex items-center justify-center">
         <img
           loading="lazy"
           src="https://ghchart.rshah.org/wgsn-shipj"
@@ -15,25 +45,15 @@
         />
       </div>
     </a>
-
-    <div class="row gap-x-16">
-      <!-- sidebar -->
-      <div class="lg:col-3 text-sm">
-        <!-- widget -->
-        {{ $widget:= site.Params.widgets.sidebar }} {{ partialCached
-        "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
-      </div>
-
-      <!-- portfolio-->
-      <div class="lg:col-8">
-        <div class="space-y-16">
-          {{ $paginator:= .Paginate .RegularPages }} {{ range $paginator.Pages
-          }}
-          <div class="w-full">{{ partial "components/portfolio-card" . }}</div>
-          {{ end }}
-        </div>
-        {{ partial "components/pagination.html" . }}
-      </div>
+    <div class="pt-8 text-center">
+      <a
+        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-light text-text-dark transition hover:border-text-light/30 dark:border-darkmode-border dark:bg-darkmode-light dark:text-darkmode-text-dark dark:hover:border-darkmode-text-light/30"
+        href="#site-footer"
+        aria-label="More content"
+        title="More content"
+      >
+        <i class="fa-solid fa-arrow-down text-xs"></i>
+      </a>
     </div>
   </div>
 </section>

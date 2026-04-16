@@ -1,0 +1,48 @@
+{{ $scopePages := where (.ScopePages | default site.RegularPages) "Section" "portfolio" }}
+{{ $lengthMap := dict }}
+{{ range $scopePages }}
+  {{ with .Params.length }}
+    {{ $key := . | urlize }}
+    {{ $existing := index $lengthMap $key }}
+    {{ if $existing }}
+      {{ $lengthMap = merge $lengthMap (dict $key (dict
+        "name" ($existing.name)
+        "nameLower" ($existing.nameLower)
+        "count" (add ($existing.count) 1)
+      )) }}
+    {{ else }}
+      {{ $lengthMap = merge $lengthMap (dict $key (dict
+        "name" .
+        "nameLower" (lower .)
+        "count" 1
+      )) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $lengths := slice }}
+{{ range $key, $value := $lengthMap }}
+  {{ $lengths = $lengths | append $value }}
+{{ end }}
+{{ if gt (len $lengths) 0 }}
+{{ $sorted := sort (sort $lengths "nameLower") "count" "desc" }}
+<div class="flex items-start gap-2">
+  <div class="min-w-[6.5rem] pt-1 text-sm font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
+    Project length
+  </div>
+  <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+    {{ range $sorted }}
+    <li>
+      <a
+        href="{{ $.ClearURL }}"
+        data-filter-kind="lengths"
+        data-filter-value="{{ .name | urlize }}"
+        class="ui-chip ui-chip-meta"
+      >
+        <i class="fa-solid fa-calendar-check mr-2"></i>{{ .name }}
+        <span class="ml-1">({{ .count }})</span>
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}
