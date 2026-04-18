@@ -1,5 +1,5 @@
 ---
-title: "\U0001F4DD Lessons from Jury Service"
+title: Lessons from Jury Service
 meta_title: >-
   Lessons Learned from Jury Service: Overcoming Imposter Syndrome and Embracing
   Life Skills
@@ -7,22 +7,23 @@ description: >-
   Lessons learned from mandatory Jury service, including an absolute sense of
   imposter syndrome
 slug: lessons-from-jury-service
-date: '2026-03-02T22:03:01.663Z'
+date: '2026-04-18T09:31:10.237Z'
 categories:
   - Lifestyle
-author: Jack
 tags:
   - collaboration
   - personal-goals
-image: ''
-draft: false
-type: blog
+author: Jack
 length: Very Short (1-2 days)
+read_time: 5
+type: blog
+draft: false
 notion_id: 3177fd6b-fd0d-805c-9ab7-dfbc6c66e8e5
 created_at: '2026-03-02T21:52:00.000Z'
-last_edited_at: '2026-03-02T22:02:00.000Z'
-last_synced: '2026-03-02T22:03:01.663Z'
+last_edited_at: '2026-04-18T09:30:00.000Z'
+last_synced: '2026-04-18T09:31:10.237Z'
 math: true
+image: ''
 ---
 I was a fresh-faced grad when the first letter arrived - *Jury Service Summons*. Deferred. I still had the sense that adulthood came with a certificate you got handed at reception, alongside a lanyard and a map. I had barely learned how to sound confident in meetings. I was still surprised when people asked for my opinion on anything that mattered.
 

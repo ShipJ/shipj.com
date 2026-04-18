@@ -119,6 +119,21 @@ const pickSelect = (p) =>
           ? pickText(p)
           : "";
 
+const pickScalar = (p) =>
+  !p
+    ? ""
+    : p.type === "number"
+      ? p.number ?? ""
+      : p.type === "formula"
+        ? p.formula?.type === "string"
+          ? p.formula.string ?? ""
+          : p.formula?.type === "number"
+            ? p.formula.number ?? ""
+            : p.formula?.type === "boolean"
+              ? p.formula.boolean ?? ""
+              : ""
+        : pickText(p) || pickSelect(p);
+
 const pickPeople = (p) => (p?.type === "people" ? p.people?.[0]?.name ?? "" : "");
 const pickDate = (p) => p?.date?.start ?? null;
 const pickMulti = (p) => p?.multi_select?.map((x) => x.name) ?? [];
@@ -284,18 +299,11 @@ function mapFrontMatter(page) {
   const props = page.properties || {};
   const pageType = (pickSelect(prop(props, "type")) || "").toLowerCase();
   const rawTitle = pickTitle(props) || "Untitled";
-
-  // Keep casual emojis in title depending on type (optional branding cue)
-  const titled =
-    pageType === "blog" && !rawTitle.startsWith("📝 ")
-      ? `📝 ${rawTitle}`
-      : pageType === "portfolio" && !rawTitle.startsWith("💼 ")
-        ? `💼 ${rawTitle}`
-        : rawTitle;
+  const readTimeProp = prop(props, "read_time");
 
   const slugProp = pickText(prop(props, "slug"));
   const fm = {
-    title: titled,
+    title: rawTitle,
     meta_title: pickText(prop(props, "meta_title")),
     description: pickText(prop(props, "description")),
     slug: slugProp || slug(rawTitle), // slug from rawTitle (avoids emoji noise)
@@ -304,6 +312,7 @@ function mapFrontMatter(page) {
     tags: pickMulti(prop(props, "tags")),
     author: pickPeople(prop(props, "author")),
     length: pickSelect(prop(props, "length")),
+    read_time: pickScalar(readTimeProp),
     type: pageType,
     draft: !pickCheck(prop(props, "is_published")),
     notion_id: page.id, // store original; we normalize on read

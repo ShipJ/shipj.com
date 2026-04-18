@@ -1,5 +1,7 @@
 ---
-title: "\U0001F4DD A step-by-step guide to sync your Notion content with a Hugo site using Notion’s API"
+title: >-
+  A step-by-step guide to sync your Notion content with a Hugo site using
+  Notion’s API
 meta_title: >-
   Sync Notion Content with Your Hugo Site Using the Notion API: A Step-by-Step
   Guide
@@ -8,9 +10,9 @@ description: >-
   website via the Notion API
 slug: >-
   a-step-by-step-guide-to-sync-your-notion-content-with-a-hugo-site-using-notions-api
-date: '2026-03-03T11:28:26.082Z'
+date: '2026-04-18T09:31:10.975Z'
 categories:
-  - Vibe-Coding
+  - Data Engineering
 tags:
   - Notion
   - Hugo
@@ -19,249 +21,184 @@ tags:
   - personal-goals
 author: Jack
 length: Very Short (1-2 days)
+read_time: 5
 type: blog
 draft: false
 notion_id: 3187fd6b-fd0d-8055-9e3f-e1f79643cb61
 created_at: '2026-03-03T09:11:00.000Z'
-last_edited_at: '2026-03-03T11:28:00.000Z'
-last_synced: '2026-03-03T11:28:26.083Z'
+last_edited_at: '2026-04-18T09:30:00.000Z'
+last_synced: '2026-04-18T09:31:10.975Z'
 math: true
 image: ''
 ---
-If you write everything in Notion — blog posts, project notes, ideas — and maintain a separate Hugo site, you have probably felt the friction of copying content between the two. This guide eliminates that by turning Notion into the CMS for your Hugo site, with a single sync script that does all the heavy lifting.
+Have you ever wanted to write everything in Notion, leverage its clean editor, databases, relations, and rich formatting, and publish that directly to your own Hugo site with one script?
 
-**The goal:** write and publish in Notion, run one command, and have your Hugo `content/` folder updated automatically — no copy-pasting, no duplicate files, no manual front matter.
+**Problem Statement**
 
-The sync is intentionally one-way (Notion → Hugo), so Notion remains the single source of truth and your Hugo output is always reproducible.
+Avoid copying and pasting Markdown, managing files, and maintaining two parallel systems, you want Notion to be your CMS - while keeping full control of your static site.
 
-### High-level flow
+If that’s you goal, this guide walks through a simple, reproducible way to sync your Notion pages directly with your Hugo `content/` folder. The sync is one-way, i.e you can build on top of existing content.
 
-```
-Publish post in Notion → node scripts/notion-sync.mjs → Markdown in Hugo content/
-```
+### High-level outcome
+
+Publish post in Notion → Sync → Markdown written to Hugo `content/`
 
 ---
 
-### 1) Create a Notion integration and connect your database
+### 1) Create Notion integration and connect your database
 
-1. In Notion, create a new Database (or use an existing one).
+1. In Notion, create a new Database (or use an existing one)
 
-2. Navigate to **Settings → Connections → Develop or manage integrations**.
+1. Navigate to Settings > Connections > Develop or manage integrations.
 
-3. Create an [**Integration**](https://www.notion.so/profile/integrations/public) and copy the **Internal Integration Token**.
+1. Create an [**Integration**](https://www.notion.so/profile/integrations/public)** **and copy the **Internal Integration Token**.
 
-4. In your Notion database, click **… → Connections → Connect to** your integration.
+1. In your Notion Database, click **… → Connections → Connect to** your integration.
 
-5. Copy the **Database ID** from the URL (the 32-character string before the `?v=` query parameter).
+1. Copy the **Database ID** from the URL.
 
-Store these credentials securely — I use Google Secret Manager for CI, and a local `.env` file for development:
+Store the following credentials securely in a secrets manager (I use google secrets manager).
 
 - `NOTION_TOKEN`
+
 - `NOTION_DATABASE_ID`
 
 ---
 
 ### 2) Add properties to your Notion database
 
-The sync script maps Notion properties to Hugo front matter fields. The exact properties are up to you, but consistency matters — changing a property name later means updating the script too.
+You can add whatever properties you like but try to be consistent - the following worked for me. I didn’t add a ‘slug’ field here.
 
 **Required**
 
-- `title` (Title) — the page title, used as the post heading and to generate the slug
-- `is_published` (Checkbox) — only pages with this checked will be synced
+- `title` (Text)
+
+- `is_published` (Checkbox)
 
 **Recommended**
 
-- `date` (Date) — maps to the Hugo publish date; defaults to `created_time` if omitted
-- `description` (Text) — used for meta descriptions and post previews
-- `categories` (Multi-select) — maps to Hugo taxonomy
-- `tags` (Multi-select) — maps to Hugo taxonomy
-- `author` (People) — maps to the `author` front matter field
+- `date` (Date): to map to a publish date
 
-**Optional extras**
+- `description` (Text)
 
-- `type` (Select: `blog` / `portfolio`) — lets you route content to different Hugo sections (`content/blog/` vs `content/portfolio/`) from a single Notion database
-- `main_image` (Files & media) — a cover image; the sync script downloads it locally to avoid Notion’s expiring signed URLs
-- `meta_title` (Text) — override the `<title>` tag independently from the post heading, useful for SEO tuning
+- `categories` (Multi-select)
 
----
+- `tags` (Multi-select)
 
-### 3) Install dependencies
+- `author` (People)
 
-Node 18+ is recommended (built-in `fetch`, no node-fetch needed). From your Hugo project root:
+**Extras for fun**
 
-```bash
-npm init -y
-npm install @notionhq/client gray-matter slugify dotenv
-```
+- `type` (Select: `blog` / `portfolio`): I intended to separate one-off blog posts from larger project work. Having a switch like this 
 
-| Package | Purpose |
-|---|---|
-| `@notionhq/client` | Official Notion API SDK |
-| `gray-matter` | Parse and write front matter |
-| `slugify` | Generate consistent URL slugs from titles |
-| `dotenv` | Load `.env` credentials locally |
+- `main_image` (Files): I thought it might be fun 
+
+- `meta_title` (Text): I played around with the AI feature to auto-populate to maximise SEO
 
 ---
 
-### 4) Write the sync script
+### 3) Install Hugo dependencies
 
-Create `scripts/notion-sync.mjs`. My implementation is [available here](https://github.com/ShipJ/shipj.com/blob/main/scripts/syncNotion.mjs) as a reference.
+Node 18+ is recommended for built-in `fetch`. From your Hugo project root, run:
 
-At a high level, the script should:
-
-1. **Query Notion** for all pages where `is_published == true`
-2. **Skip unchanged pages** — compare `last_edited_time` against the `last_synced` value stored in front matter
-3. **Convert blocks to Markdown** — handle headings, paragraphs, bulleted and numbered lists, code blocks, block quotes, dividers, and images
-4. **Route output** — write to `content/blog/` or `content/portfolio/` based on the `type` property (or a single directory if you keep it simple)
-5. **Build front matter** — map Notion properties to Hugo front matter fields, and always store `notion_id` and `last_synced`
-6. **Download images** — save any `main_image` files to `assets/images/gallery/` at sync time; Notion’s file URLs are signed and expire after one hour
-
-A minimal script structure looks like this:
-
-```js
-import { Client } from "@notionhq/client";
-import { writeFileSync } from "fs";
-import slugify from "slugify";
-import dotenv from "dotenv";
-dotenv.config();
-
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
-
-const { results } = await notion.databases.query({
-  database_id: process.env.NOTION_DATABASE_ID,
-  filter: { property: "is_published", checkbox: { equals: true } },
-});
-
-for (const page of results) {
-  const blocks = await notion.blocks.children.list({ block_id: page.id });
-  const markdown = blocksToMarkdown(blocks.results); // implement this
-  const frontMatter = buildFrontMatter(page);         // implement this
-  const slug = slugify(page.properties.title.title[0].plain_text, { lower: true });
-  const outputPath = `content/blog/${slug}.md`;
-  writeFileSync(outputPath, `${frontMatter}\n${markdown}`);
-  console.log(`Synced: ${outputPath}`);
-}
+```plain text
+npm init-y
+npm i @notionhq/client gray-matter slugify dotenv
 ```
 
 ---
 
-### 5) Configure environment variables
+### 4) Create a sync script
 
-Create a `.env` file in your project root:
+Create a file like the following, mine is [here](https://github.com/ShipJ/shipj.com/blob/main/scripts/syncNotion.mjs): 
 
-```bash
-NOTION_TOKEN=secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```plain text
+scripts/notion-sync.mjs
+```
+
+Your script should:
+
+- Query Notion for pages where `is_published == true`
+
+- Convert Blocks → Markdown (headings, paragraphs, lists, code, quotes, dividers, images)
+
+- Map content to `content/blog/` or `content/portfolio/`
+
+- Add front matter (title, date, tags, etc.)
+
+- Optionally download `main_image` to `assets/images/gallery/` and link in front matter
+
+---
+
+### 5) Add environment variables
+
+Create `.env` in your repo root and paste Notion credentials. Add `.env` to `.gitignore`!
+
+```plain text
+NOTION_TOKEN=secret_xxx
 NOTION_DATABASE_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-
-**Important:** add `.env` to `.gitignore` immediately. Never commit API tokens.
-
-```bash
-echo ".env" >> .gitignore
-```
-
-For CI/CD (e.g. GitHub Actions), set these as [repository secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and reference them in your workflow.
 
 ---
 
 ### 6) Run the sync
 
-```bash
+```plain text
 node scripts/notion-sync.mjs
 ```
 
-Expected output:
+You should see logs like:
 
-```
-Found 12 published pages
-Skipped 10 unchanged pages
-Synced: content/blog/2026-03-03-building-with-notion-api.md
-Synced: content/portfolio/2026-02-15-side-project.md
-```
+- Found N published pages
 
-Resulting files:
+- Skipped unchanged pages
 
-- Markdown in `content/blog/` and/or `content/portfolio/`
-- Images in `assets/images/gallery/` (if `main_image` is enabled)
+- Synced markdown paths
 
----
+Result:
 
-### 7) (Optional) Preserve internal Notion links
+- Markdown files in `content/blog/` and/or `content/portfolio/`
 
-If you link between Notion pages, the sync script can rewrite those links to a custom marker:
-
-```md
-[My Other Post](hugo-ref:blog/2026-02-15-my-other-post.md)
-```
-
-Then add a Hugo [render hook](https://gohugo.io/templates/render-hooks/) at `layouts/_default/_markup/render-link.html` to convert this marker into a `relref` call:
-
-```html
-{{- if hasPrefix .Destination "hugo-ref:" -}}
-  {{- $path := strings.TrimPrefix "hugo-ref:" .Destination -}}
-  <a href="{{ relref .Page $path }}">{{ .Text }}</a>
-{{- else -}}
-  <a href="{{ .Destination }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
-{{- end -}}
-```
-
-This ensures internal links resolve correctly regardless of the final URL structure.
+- Images saved to `assets/images/gallery/` (if enabled)
 
 ---
 
-### 8) Integrate into your workflow
+### 7) (Optional) Make internal Notion links work in Hugo
 
-**Local development** — run sync before building:
+If your script rewrites Notion links into a marker like:
 
-```bash
-node scripts/notion-sync.mjs && hugo server
+```plain text
+[hugo-ref:blog/2026-03-02-my-post.md]
 ```
 
-**Before committing:**
+Create a Hugo **render hook** for links that converts that marker into `relref`.
 
-```bash
-node scripts/notion-sync.mjs && git add content/ && git commit -m "sync: notion content"
+This preserves internal links between posts when you publish from Notion.
+
+---
+
+### 8) Add it to your workflow
+
+**Manual:** run before you commit:
+
+```plain text
+node scripts/notion-sync.mjs && hugo
 ```
 
-**Automated via GitHub Actions** — add a scheduled workflow to sync and deploy daily:
+**Automated (example):**
 
-```yaml
-name: Sync and Deploy
+- GitHub Actions cron job (daily)
 
-on:
-  schedule:
-    - cron: "0 6 * * *"   # daily at 06:00 UTC
-  workflow_dispatch:        # allow manual trigger
-
-jobs:
-  sync-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "20" }
-      - run: npm ci
-      - run: node scripts/notion-sync.mjs
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-      - uses: peaceiris/actions-hugo@v3
-      - run: hugo --minify
-      - uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-```
+- Or trigger on push to your content repo
 
 ---
 
 ### Troubleshooting
 
-| Symptom | Likely cause | Fix |
-|---|---|---|
-| No pages returned | Database not connected to integration, or `is_published` unchecked | Share the database with your integration via **… → Connections** |
-| `401` / `403` errors | Wrong token, or token lacks access to the database | Regenerate the token and re-connect the database |
-| Images missing or broken | Notion file URLs expire after ~1 hour | Always download images during sync; never hotlink Notion URLs |
-| Duplicate files on re-sync | Slug changed between runs | Store `notion_id` in front matter and use it as the file identifier, not the slug |
-| Blocks missing from output | Unsupported block types (e.g. callouts, toggles) | Add handlers in `blocksToMarkdown` for any block types you use |
+- **No results?** confirm the database is shared with the integration, and `is_published` is checked.
+
+- **401/403:** token wrong or database not connected to the integration.
+
+- **Missing images:** Notion file URLs expire; always download during sync rather than hotlink.
+
+- **Duplicates:** ensure you store `notion_id` in front matter and use it to overwrite the same file on subsequent runs.

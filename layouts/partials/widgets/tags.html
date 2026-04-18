@@ -13,7 +13,7 @@
       )) }}
     {{ else }}
       {{ $termPage := site.GetPage (printf "/tags/%s" (. | urlize | lower)) }}
-      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
+      {{ $displayName := . }}
       {{ $tagMap = merge $tagMap (dict $key (dict
         "name" $displayName
         "nameLower" (lower $displayName)
@@ -29,22 +29,33 @@
 {{ end }}
 {{ if gt (len $tags) 0 }}
 {{ $sorted := sort (sort $tags "nameLower") "count" "desc" }}
-<div class="flex items-start gap-2">
-  <div class="min-w-[6.5rem] pt-1 text-sm font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
-    {{ T "tags" }}
+<div data-tags-widget>
+  <div class="mb-2 flex items-center gap-2">
+    <p class="text-xs font-semibold uppercase tracking-widest text-text-light dark:text-darkmode-text-light">Tags</p>
+    <input
+      type="search"
+      placeholder="Search…"
+      autocomplete="off"
+      oninput="var q=this.value.trim().toLowerCase(),w=this.closest('[data-tags-widget]');if(w)w.querySelectorAll('[data-filter-search-item]').forEach(function(el){el.style.display=!q||el.dataset.filterSearchItem.includes(q)?'':'none';})"
+      class="bg-transparent rounded-full border border-border/60 text-sm text-text-light placeholder:text-text-light/40 focus:outline-none focus:ring-0 px-2.5 py-1.5 w-24 dark:border-darkmode-border/60 dark:text-darkmode-text-light dark:placeholder:text-darkmode-text-light/40"
+    />
+    <button
+      type="button"
+      data-tags-sort="count"
+      onclick="(function(btn){var w=btn.closest('[data-tags-widget]'),ul=w.querySelector('ul'),items=Array.from(ul.querySelectorAll('[data-filter-search-item]')),toAlpha=btn.dataset.tagsSort!=='alpha';if(toAlpha){items.sort(function(a,b){return a.dataset.filterSearchItem.localeCompare(b.dataset.filterSearchItem);});btn.dataset.tagsSort='alpha';btn.textContent='#';}else{items.sort(function(a,b){return(parseInt(b.dataset.tagCount)||0)-(parseInt(a.dataset.tagCount)||0);});btn.dataset.tagsSort='count';btn.textContent='A-Z';}items.forEach(function(li){ul.appendChild(li);});})(this)"
+      class="bg-transparent rounded-full border border-border/60 text-sm text-text-light px-2.5 py-1.5 cursor-pointer focus:outline-none focus:ring-0 hover:border-text-light/40 dark:border-darkmode-border/60 dark:text-darkmode-text-light dark:hover:border-darkmode-text-light/40"
+    >A-Z</button>
   </div>
-  <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+  <ul class="flex min-w-0 flex-wrap gap-x-4 gap-y-1">
     {{ range $sorted }}
-    {{ $isActive := and (ne .page nil) (eq $.Page.RelPermalink .page.RelPermalink) }}
-    <li>
+    <li data-filter-search-item="{{ .nameLower }}" data-tag-count="{{ .count }}">
       <a
-        href="{{ if $isActive }}{{ $.ClearURL }}{{ else }}{{ .page.RelPermalink }}{{ end }}"
+        href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .name) }}"
         data-filter-kind="tags"
         data-filter-value="{{ .name | urlize | lower }}"
-        class="ui-chip ui-chip-meta {{ if $isActive }}border-text-light/30 text-text-dark dark:border-darkmode-text-light/30 dark:text-darkmode-text-dark{{ end }}"
+        class="text-sm text-text-light hover:underline dark:text-darkmode-text-light transition"
       >
-        <i class="fa-solid fa-tag mr-2"></i>{{ .name }}
-        <span class="ml-1">({{ .count }})</span>
+        #{{ .name }} <span class="text-text-light/70 dark:text-darkmode-text-light/70">({{ .count }})</span>
       </a>
     </li>
     {{ end }}

@@ -1,60 +1,31 @@
 {{ define "main" }} 
 {{ partial "page-header" . }}
-<section id="content-results" class="section pt-4">
+<section id="content-results" class="section pt-4 portfolio-list-page">
   <div class="site-container">
-    <div
-      data-filter-root
-      data-list-view-root
-      data-list-view-key="portfolio"
-      data-filter-clear-url="{{ .RelPermalink }}"
-      class="pt-0"
-    >
-    {{ partial "widgets/filters-panel" (dict "Page" . "ClearURL" .RelPermalink "ScopePages" .RegularPages) }}
-    <div class="relative pt-6" data-filter-results>
-      <div class="absolute right-0 top-8 flex justify-end">
-        <button
-          type="button"
-          class="home-view-icon-button"
-          data-list-view-toggle-button
-          aria-pressed="false"
-          aria-label="Switch to compact view"
-          title="Switch to compact view"
-        >
-          <i class="fa-solid fa-table-cells-large" data-list-view-icon></i>
-          <span data-list-view-label>Full</span>
-        </button>
+    <div class="pt-6">
+      <div class="row">
+        {{ range .RegularPages }}
+          <div class="mb-5 md:col-6 lg:col-4">
+            <div class="portfolio-grid-item">
+              {{ partial "components/portfolio-card" . }}
+            </div>
+          </div>
+        {{ end }}
       </div>
-      <div class="space-y-5">
-        {{ partial "components/dated-card-list" (dict "Pages" .RegularPages) }}
-      </div>
-      <div class="ui-shell hidden text-center" data-filter-empty>
-        <p class="text-text-light dark:text-darkmode-text-light">No projects match the selected filters.</p>
-      </div>
-    </div>
     </div>
 
     <!-- git contribution chart-->
-    <a href="https://github.com/wgsn-shipj" class="mt-10 block">
+    <a href="https://github.com/shipj" class="mt-10 block">
       <div class="ui-shell flex items-center justify-center">
         <img
           loading="lazy"
-          src="https://ghchart.rshah.org/wgsn-shipj"
+          src="https://ghchart.rshah.org/shipj"
           alt="GitHub chart for ShipJ"
           width="75%"
           height="auto"
         />
       </div>
     </a>
-    <div class="pt-8 text-center">
-      <a
-        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-light text-text-dark transition hover:border-text-light/30 dark:border-darkmode-border dark:bg-darkmode-light dark:text-darkmode-text-dark dark:hover:border-darkmode-text-light/30"
-        href="#site-footer"
-        aria-label="More content"
-        title="More content"
-      >
-        <i class="fa-solid fa-arrow-down text-xs"></i>
-      </a>
-    </div>
   </div>
 </section>
 {{ end }}

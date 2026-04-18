@@ -148,7 +148,10 @@
     applyListView(initialView === "compact" ? "compact" : "full");
 
     toggleButton.addEventListener("click", () => {
+      const buttonTop = toggleButton.getBoundingClientRect().top;
       applyListView(root.dataset.listView === "compact" ? "full" : "compact");
+      const newButtonTop = toggleButton.getBoundingClientRect().top;
+      window.scrollBy(0, newButtonTop - buttonTop);
     });
   });
 
@@ -165,7 +168,7 @@
     const items = Array.from(root.querySelectorAll("[data-filter-item]"));
     const groups = Array.from(root.querySelectorAll("[data-filter-group]"));
     const emptyState = root.querySelector("[data-filter-empty]");
-    const kinds = ["categories", "tags", "authors", "lengths"];
+    const kinds = ["categories", "tags", "authors"];
 
     const parseValues = (value) =>
       (value || "")
@@ -316,10 +319,17 @@
       syncPanel(readSelected());
     });
 
+    const applySelected = (nextSelected) => {
+      updateUrl(nextSelected, clearUrl);
+      syncControls(nextSelected);
+      syncPanel(nextSelected);
+      applyFilters(nextSelected);
+    };
+
     clearButton?.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      window.location.href = clearUrl;
+      applySelected(kinds.reduce((acc, kind) => { acc[kind] = new Set(); return acc; }, {}));
     });
 
     controls.forEach((control) => {
@@ -336,16 +346,38 @@
           nextSelected[kind].add(value);
         }
 
-        const anySelected = hasAnySelection(nextSelected);
-        if (!anySelected) {
-          window.location.href = clearUrl;
-          return;
-        }
-
-        const query = buildQuery(nextSelected);
-        window.location.href = query ? `${clearUrl}?${query}` : clearUrl;
+        applySelected(nextSelected);
       });
     });
+
+    const tagSearchBox = root.querySelector("[data-tag-filter-box]");
+    const tagSearchInput = root.querySelector("[data-tag-filter-search]");
+    const tagOptions = Array.from(root.querySelectorAll("[data-tag-filter-option]"));
+    const tagEmptyMessage = root.querySelector("[data-tag-filter-empty]");
+
+    if (tagSearchInput && tagOptions.length > 0) {
+      const applyTagSearch = () => {
+        const query = tagSearchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        tagOptions.forEach((option) => {
+          const label = option.dataset.tagFilterLabel || "";
+          const matches = query === "" || label.includes(query);
+          option.classList.toggle("hidden", !matches);
+          if (matches) visibleCount += 1;
+        });
+
+        tagEmptyMessage?.classList.toggle("hidden", visibleCount !== 0);
+      };
+
+      tagSearchInput.addEventListener("input", applyTagSearch);
+
+      tagSearchBox?.addEventListener("toggle", () => {
+        if (tagSearchBox.open) {
+          window.setTimeout(() => tagSearchInput.focus(), 0);
+        }
+      });
+    }
   });
 
   // Search modal scrollbar compensation

@@ -1,11 +1,11 @@
 ---
-title: "\U0001F4DD About me as of 2025"
+title: About me as of 2025
 meta_title: >-
   About Me: A Director's Cut on My Journey in Data Science, Management, and
   Personal Growth
 description: A brief introduction to me and my blogging journey
 slug: about-me-as-of-2025
-date: '2026-03-03T10:51:51.623Z'
+date: '2026-04-18T09:31:09.038Z'
 categories:
   - Personal Development
 tags:
@@ -16,12 +16,13 @@ tags:
   - about-me
 author: Jack
 length: Very Short (1-2 days)
+read_time: 5
 type: blog
 draft: false
 notion_id: 3167fd6b-fd0d-8057-b381-c6d9813142ab
 created_at: '2026-03-01T10:42:00.000Z'
-last_edited_at: '2026-03-03T10:51:00.000Z'
-last_synced: '2026-03-03T10:51:51.623Z'
+last_edited_at: '2026-04-18T09:30:00.000Z'
+last_synced: '2026-04-18T09:31:09.039Z'
 math: true
 image: ''
 ---
@@ -35,7 +36,7 @@ At our annual conference in , I was asked to join WGSN from CEO Carla Buzasi. Wh
 
 Outside of that, I like long/slow books, odd maps, and trying to learn things the hard way.
 
-My role was made redundant in September 2025, and became [When redundancy is the best outcome](https://www.notion.so/3167fd6bfd0d80258d25c7ff2c4b340a).
+My role was made redundant in September 2025, and became [A Survival Guide to redundancy](https://www.notion.so/3167fd6bfd0d80258d25c7ff2c4b340a).
 
 The final gift is my time back. Weekends, evenings, holidays, sickness were spent prepping 1-1 notes, monitoring pipelines, adding one extra feature, learning a new tool - getting the nth crazy project over the line because Y will be on annual leave from Wednesday.
 

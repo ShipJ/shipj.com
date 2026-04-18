@@ -35,13 +35,12 @@
   </div>
   <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
     {{ range $sorted }}
-    {{ $isActive := and (ne .page nil) (eq $.Page.RelPermalink .page.RelPermalink) }}
     <li>
       <a
-        href="{{ if $isActive }}{{ $.ClearURL }}{{ else }}{{ .page.RelPermalink }}{{ end }}"
+        href="{{ partial "components/filter-url" (dict "Kind" "authors" "Value" .name) }}"
         data-filter-kind="authors"
         data-filter-value="{{ .name | urlize }}"
-        class="ui-chip ui-chip-meta {{ if $isActive }}border-text-light/30 text-text-dark dark:border-darkmode-text-light/30 dark:text-darkmode-text-dark{{ end }}"
+        class="ui-chip ui-chip-meta"
       >
         <i class="fa-solid fa-circle-user mr-2"></i>{{ .name }}
         <span class="ml-1">({{ .count }})</span>

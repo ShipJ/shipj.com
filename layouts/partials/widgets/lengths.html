@@ -33,7 +33,7 @@
     {{ range $sorted }}
     <li>
       <a
-        href="{{ $.ClearURL }}"
+        href="{{ partial "components/filter-url" (dict "Kind" "lengths" "Value" .name) }}"
         data-filter-kind="lengths"
         data-filter-value="{{ .name | urlize }}"
         class="ui-chip ui-chip-meta"

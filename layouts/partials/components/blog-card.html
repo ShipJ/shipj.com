@@ -1,48 +1,40 @@
-<article class="ui-card-compact ui-card-hover !p-4 flex h-full flex-col cursor-pointer" data-card-link="{{ .RelPermalink }}">
-  {{ $image := .Params.image }}
-  {{ if $image }}
-    {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title "Class" "card-featured-image mb-4 w-full rounded-2xl border border-border dark:border-darkmode-border") }}
-  {{ end }}
-
-  <div class="mb-2">
-    <h4 class="card-title-row flex items-center text-base font-semibold leading-snug text-text-dark dark:text-darkmode-text-dark md:text-lg">
-      <a class="card-title text-text-dark hover:text-text-dark dark:text-darkmode-text-dark dark:hover:text-darkmode-text-dark transition" href="{{ .RelPermalink }}">
-        {{ .Title }}
-      </a>
-    </h4>
-  </div>
-
-  <div class="ui-meta mb-2 text-xs">
-    {{ with .Params.author }}
-    <a class="ui-chip ui-chip-meta" href="{{ `author/` | relURL }}{{ . | urlize }}/" data-filter-kind="authors" data-filter-value="{{ . | urlize }}">
-      <i class="fa-regular fa-circle-user mr-2" title="Author"></i>{{ . }}
-    </a>
-    {{ end }}
-
+<article class="ui-card-compact !bg-white hover:!bg-[#f7f7f7] dark:!bg-darkmode-light dark:hover:!bg-[#2a2a2a] !p-4 flex h-full flex-col cursor-pointer transition-colors" data-card-link="{{ .RelPermalink }}">
+  <div class="min-w-0 flex flex-1 flex-col">
     {{ $categories := .Params.categories }}
-    {{ if $categories }}
-      {{ range first 1 $categories }}
-        {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) ) }}
+    <div class="mb-1 flex items-start justify-between gap-2" data-card-title-wrap>
+      <h4 class="card-title-row m-0 flex min-w-0 flex-1 items-center text-base font-semibold leading-snug text-text-dark dark:text-darkmode-text-dark md:text-sm">
+        <a class="card-title portfolio-card-title text-text hover:text-text-dark dark:text-darkmode-text dark:hover:text-darkmode-text-dark transition" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ if $categories }}{{ range first 1 $categories }}<a class="card-category-inline tone-{{ partial "components/category-tone" (dict "Name" .) | strings.TrimSpace }} hover:underline ml-1" href="{{ partial "components/filter-url" (dict "Kind" "categories" "Value" .) }}">· {{ . }}</a>{{ end }}{{ end }}
+      </h4>
+      {{ if $categories }}
+      <div class="card-category-pill shrink-0">
+        {{ range first 1 $categories }}
+          {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower))) }}
+        {{ end }}
+      </div>
       {{ end }}
+    </div>
+
+    {{ $tags := .Params.tags }}
+    {{ if $tags }}
+    <div class="portfolio-card-tags-row mb-2 text-xs text-text-light dark:text-darkmode-text-light">
+      {{ range $tags }}
+        <a href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .) }}" data-filter-kind="tags" data-filter-value="{{ . | urlize | lower }}" class="portfolio-card-tag-link inline text-xs text-text-light transition hover:underline hover:text-text-dark dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark">
+          #{{ . }}
+        </a>
+      {{ end }}
+    </div>
     {{ end }}
-  </div>
 
-  {{ $tags := .Params.tags }}
-  {{ if $tags }}
-  <div class="ui-meta mb-2 gap-x-1 gap-y-1 text-xs">
-    {{ range $tags }}
-      <a href="{{ `tags/` | relURL }}{{ . | urlize | lower }}/" data-filter-kind="tags" data-filter-value="{{ . | urlize | lower }}" class="ui-chip ui-chip-meta !px-2.5 !pt-[9px] !pb-[7px] !text-xs !leading-none">
-        <i class="fa-regular fa-tag mr-2" title="Tags"></i>#{{ . }}
-      </a>
-    {{ end }}
-  </div>
-  {{ end }}
+    <a
+      class="card-summary-link portfolio-card-summary mt-2 w-full flex-1 text-sm text-text transition hover:text-text-dark dark:text-darkmode-text dark:hover:text-darkmode-text-dark"
+      href="{{ .RelPermalink }}"
+      style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;white-space:normal;text-overflow:ellipsis;line-height:1.45rem;max-height:4.35rem;"
+    >
+      {{ .Summary | plainify }}
+    </a>
 
-  <a class="card-summary-link block w-full text-sm text-text transition hover:text-text-dark dark:text-darkmode-text dark:hover:text-darkmode-text-dark" href="{{ .RelPermalink }}">
-    <span class="block truncate">{{ .Summary | plainify }}</span>
-  </a>
-
-  <div class="card-date-footer mt-auto pt-3 text-left text-xs text-text-light dark:text-darkmode-text-light">
-    {{ .Date.Format "2 Jan 2006" }}
+    <div class="card-date-footer mt-auto flex items-end justify-between gap-3 pt-3 text-xs text-text-light dark:text-darkmode-text-light">
+      <span>{{ .Date.Format "2 Jan 2006" }}</span>
+    </div>
   </div>
 </article>

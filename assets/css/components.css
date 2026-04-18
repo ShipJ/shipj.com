@@ -9,10 +9,24 @@
 
 /* container */
 .site-container {
-  width: 60vw;
-  max-width: 60vw;
+  width: 92vw;
+  max-width: 92vw;
   margin-inline: auto;
   padding-inline: 0;
+}
+
+@media (min-width: 768px) {
+  .site-container {
+    width: 84vw;
+    max-width: 84vw;
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-container {
+    width: 60vw;
+    max-width: 60vw;
+  }
 }
 
 .ui-shell {
@@ -31,19 +45,63 @@
   @apply transition-colors hover:bg-[#ececec] dark:hover:bg-[#2a2a2a];
 }
 
+.tldr-box {
+  @apply border-0;
+}
+
+.tldr-box-summary {
+  @apply flex cursor-pointer list-none items-center gap-3 pb-2 text-sm font-normal tracking-normal text-text-light transition dark:text-darkmode-text-light;
+}
+
+.tldr-box-summary::-webkit-details-marker {
+  display: none;
+}
+
+.tldr-box-body {
+  @apply pt-2 pb-2 text-sm text-text-light dark:text-darkmode-text-light;
+}
+
+.tldr-box-body > :first-child {
+  margin-top: 0;
+}
+
+.tldr-box-body > :last-child {
+  margin-bottom: 0;
+}
+
+.tldr-box-body p {
+  @apply text-sm text-text-light dark:text-darkmode-text-light;
+}
+
+.tldr-divider {
+  margin-top: 0;
+}
+
+.tldr-box[open] + .tldr-divider {
+  margin-top: 0;
+}
+
 .ui-chip {
-  @apply inline-flex items-center leading-none rounded-full border border-border bg-body px-2.5 py-1.5 text-sm font-primary font-medium normal-case tracking-normal text-text-light transition hover:border-text-light/30 hover:bg-light hover:text-text-dark dark:border-darkmode-border dark:bg-darkmode-body dark:text-darkmode-text-light dark:hover:border-darkmode-text-light/30 dark:hover:bg-darkmode-light dark:hover:text-darkmode-text-dark;
+  @apply inline-flex items-center leading-none rounded-full border border-border bg-body px-2.5 py-1.5 text-sm font-primary font-normal normal-case tracking-normal text-text-light transition hover:border-text-light/30 hover:bg-light hover:text-text-dark dark:border-darkmode-border dark:bg-darkmode-body dark:text-darkmode-text-light dark:hover:border-darkmode-text-light/30 dark:hover:bg-darkmode-light dark:hover:text-darkmode-text-dark;
 }
 
 .ui-chip-meta {
   @apply font-normal normal-case tracking-normal;
 }
 
+.card-category-pill .ui-chip {
+  font-weight: 400;
+}
+
 .ui-chip-category {
 }
 
 .ui-chip-active {
-  @apply border-[3px] border-text-dark/40 dark:border-darkmode-text-dark/40;
+  @apply underline underline-offset-2 decoration-1;
+}
+
+[data-filter-kind="tags"].ui-chip-active {
+  color: #4a75b5 !important;
 }
 
 .category-chip-slate {
@@ -99,7 +157,7 @@
 }
 
 .home-view-icon-button {
-  @apply inline-flex items-center gap-2 rounded-full border border-border bg-transparent px-3 py-1.5 text-sm text-text-light transition hover:border-text-light/30 hover:text-text-dark dark:border-darkmode-border dark:bg-transparent dark:text-darkmode-text-light dark:hover:border-darkmode-text-light/30 dark:hover:text-darkmode-text-dark;
+  @apply inline-flex items-center gap-2 rounded-full border border-border bg-body px-3 py-1.5 text-sm text-text-light transition hover:border-text-light/30 hover:text-text-dark dark:border-darkmode-border dark:bg-darkmode-body dark:text-darkmode-text-light dark:hover:border-darkmode-text-light/30 dark:hover:text-darkmode-text-dark;
 }
 
 .home-view-icon-button span {
@@ -107,11 +165,70 @@
 }
 
 .home-view-icon-button-active {
-  @apply border-text-light/30 text-text-dark dark:border-darkmode-text-light/30 dark:text-darkmode-text-dark;
+  @apply border-text-light/30 dark:border-darkmode-text-light/30;
+}
+
+.home-view-icon-button-ghost {
+  background-color: transparent !important;
+}
+
+.tooltip-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tooltip-trigger {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: help;
+}
+
+.tooltip-bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.45rem);
+  z-index: 20;
+  width: max-content;
+  max-width: min(18rem, 70vw);
+  transform: translateX(-50%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.45rem 0.6rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--color-text);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+}
+
+.tooltip-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  height: 0.55rem;
+  width: 0.55rem;
+  transform: translateX(-50%) rotate(45deg);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.tooltip-wrap:hover .tooltip-bubble,
+.tooltip-wrap:focus-within .tooltip-bubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
 }
 
 [data-list-view="compact"] [data-filter-results] .ui-card-compact {
-  @apply border-transparent bg-transparent !p-0 shadow-none;
+  @apply border-transparent !bg-transparent hover:!bg-transparent dark:!bg-transparent dark:hover:!bg-transparent !p-0 shadow-none;
 }
 
 [data-list-view="compact"] [data-filter-results] .ui-card-hover {
@@ -120,9 +237,139 @@
 
 [data-list-view="compact"] [data-filter-results] .card-featured-image,
 [data-list-view="compact"] [data-filter-results] .ui-meta,
-[data-list-view="compact"] [data-filter-results] .card-summary-link,
+[data-list-view="compact"] [data-filter-results] .portfolio-card-tags-row,
 [data-list-view="compact"] [data-filter-results] .card-date-footer {
-  @apply hidden;
+  display: none !important;
+}
+
+[data-list-view="compact"] [data-filter-results] .card-summary-link {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  max-height: none !important;
+  color: var(--color-text-light) !important;
+  margin-top: 0.2rem !important;
+}
+
+[data-list-view="compact"] [data-filter-results] [data-filter-group] > div:first-child {
+  padding-left: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.card-category-inline {
+  display: none;
+}
+
+[data-list-view="compact"] [data-filter-results] .card-category-inline         { display: inline; color: #7a8898; font-weight: 400; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-blue   { color: #4a75b5; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-teal   { color: #3d8a85; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-amber  { color: #9a6f28; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-violet { color: #7855a8; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-rose   { color: #b54d6a; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-green  { color: #3d8858; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-orange { color: #b5602a; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline.tone-indigo { color: #4a5ab8; }
+
+[data-list-view="compact"] [data-filter-results] .card-category-pill {
+  display: none !important;
+}
+
+/* Hide old category row in list context; new pill handles it */
+[data-filter-results] .portfolio-card-category-row {
+  display: none !important;
+}
+
+/* Hide new category pill in related-posts grid contexts (not portfolio list page) */
+.portfolio-grid-item .card-category-pill {
+  display: none;
+}
+
+/* Below-title pill: hidden everywhere except portfolio list page */
+.card-category-pill-below {
+  display: none;
+}
+
+.portfolio-list-page .card-category-pill-below {
+  display: block;
+}
+
+/* Hide inline pill on portfolio list page */
+.portfolio-list-page .card-category-pill-inline {
+  display: none !important;
+}
+
+.portfolio-list-page .portfolio-card-category-row {
+  display: none !important;
+}
+
+/* Hide tags on portfolio list page only */
+.portfolio-list-page .portfolio-card-tags-row {
+  display: none;
+}
+
+/* Portfolio list page — wider container, natural card height */
+.portfolio-list-page .site-container {
+  width: 80vw;
+  max-width: 80vw;
+}
+
+.portfolio-list-page .portfolio-grid-item {
+  aspect-ratio: unset;
+}
+
+.portfolio-list-page .portfolio-grid-item > * {
+  position: static;
+  height: auto;
+  overflow: visible;
+}
+
+.portfolio-list-page .card-title-row {
+  min-height: 2.75em;
+  align-items: flex-start !important;
+  font-size: 1.125rem !important;
+}
+
+.portfolio-list-page .portfolio-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.portfolio-list-page .portfolio-card-summary {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 3 !important;
+  overflow: hidden !important;
+  max-height: none !important;
+}
+
+
+[data-list-view="compact"] [data-filter-results] [data-card-title-wrap] {
+  margin-bottom: 0.15rem;
+  align-items: center;
+}
+
+/* Item-to-item spacing within a day group */
+[data-list-view="compact"] [data-filter-results] [data-filter-item] + [data-filter-item] {
+  margin-top: 1.6rem;
+}
+
+/* Date header → first article spacing */
+[data-list-view="compact"] [data-filter-results] [data-filter-group].space-y-2 > [data-filter-item] {
+  margin-top: 1.25rem !important;
+}
+
+/* Month header → first date heading spacing */
+[data-list-view="compact"] [data-filter-results] [data-filter-group].space-y-3 > [data-filter-group] {
+  margin-top: 0.4rem !important;
+}
+
+/* Collapse the gap between consecutive day groups — the day header provides separation */
+[data-list-view="compact"] [data-filter-results] [data-filter-group] > [data-filter-group] + [data-filter-group] {
+  margin-top: 0;
 }
 
 [data-list-view="compact"] [data-filter-results] .card-title-row {
@@ -130,7 +377,16 @@
 }
 
 [data-list-view="compact"] [data-filter-results] .card-title {
-  @apply text-text-dark hover:underline dark:text-darkmode-text-dark dark:hover:text-darkmode-text-dark;
+  color: var(--color-text) !important;
+  @apply hover:underline;
+}
+
+[data-list-view="compact"] [data-filter-results] .portfolio-card-title {
+  display: inline;
+  overflow: visible;
+  white-space: normal;
+  -webkit-box-orient: initial;
+  -webkit-line-clamp: unset;
 }
 
 [data-list-view="compact"] [data-filter-results] [data-filter-item] {
@@ -143,6 +399,73 @@
 
 .home-compact-link {
   @apply inline text-base font-normal text-text-dark transition hover:underline dark:text-darkmode-text-dark;
+}
+
+.portfolio-grid-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.portfolio-grid-item {
+  position: relative;
+  aspect-ratio: 1 / 0.92;
+  width: 100%;
+}
+
+.portfolio-grid-item > * {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.portfolio-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.portfolio-card-category-row {
+  min-height: 2rem;
+  max-height: 2rem;
+  overflow: hidden;
+}
+
+.portfolio-card-tags-row {
+  line-height: 1.4rem;
+  max-height: 2.8rem;
+  overflow: hidden;
+}
+
+.portfolio-card-tag-link {
+  display: inline;
+  margin-right: 0.5rem;
+}
+
+.portfolio-card-summary {
+  display: -webkit-box !important;
+  overflow: hidden;
+  white-space: normal;
+  line-height: 1.5rem;
+  max-height: 4.5rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@media (max-width: 1200px) {
+  .portfolio-grid-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .portfolio-grid-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .portfolio-card-media picture {
@@ -165,7 +488,7 @@
   @apply inline-block;
 }
 .social-icons li a {
-  @apply flex h-9 w-9 items-center justify-center rounded-full border border-border bg-light text-center text-text-dark transition hover:border-text-light/30 dark:border-darkmode-border dark:bg-darkmode-light dark:text-darkmode-text-dark dark:hover:border-darkmode-text-light/30;
+  @apply flex h-9 w-9 items-center justify-center rounded-full border border-border text-center text-text-dark transition hover:border-text-light/30 hover:bg-[#f7f7f7] dark:border-darkmode-border dark:text-darkmode-text-dark dark:hover:border-darkmode-text-light/30 dark:hover:bg-[#2a2a2a];
 }
 .social-icons li a svg {
   @apply h-4 w-4;

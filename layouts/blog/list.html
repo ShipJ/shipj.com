@@ -1,5 +1,6 @@
 {{ define "main" }} 
 {{ partial "page-header" . }}
+{{ $combinedPages := sort (where site.RegularPages "Section" "in" (slice "blog" "portfolio")) "Date" "desc" }}
 <section id="content-results" class="section pt-4">
   <div class="site-container">
     <div
@@ -9,38 +10,15 @@
       data-filter-clear-url="{{ .RelPermalink }}"
       class="pt-0"
     >
-    {{ partial "widgets/filters-panel" (dict "Page" . "ClearURL" .RelPermalink "ScopePages" .RegularPages) }}
-    <div class="relative pt-6" data-filter-results>
-      <div class="absolute right-0 top-8 flex justify-end">
-        <button
-          type="button"
-          class="home-view-icon-button"
-          data-list-view-toggle-button
-          aria-pressed="false"
-          aria-label="Switch to compact view"
-          title="Switch to compact view"
-        >
-          <i class="fa-solid fa-table-cells-large" data-list-view-icon></i>
-          <span data-list-view-label>Full</span>
-        </button>
-      </div>
+    {{ partial "widgets/filters-panel" (dict "Page" . "ClearURL" .RelPermalink "ScopePages" $combinedPages) }}
+    <div class="pt-8" data-filter-results>
       <div class="space-y-5">
-        {{ partial "components/dated-card-list" (dict "Pages" .RegularPages) }}
+        {{ partial "components/dated-card-list" (dict "Pages" $combinedPages "ShowToggle" true "ShowMonthTags" true) }}
       </div>
       <div class="ui-shell hidden text-center" data-filter-empty>
-        <p class="text-text-light dark:text-darkmode-text-light">No posts match the selected filters.</p>
+        <p class="text-text-light dark:text-darkmode-text-light">No content matches the selected filters.</p>
       </div>
     </div>
-    </div>
-    <div class="pt-8 text-center">
-      <a
-        class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-light text-text-dark transition hover:border-text-light/30 dark:border-darkmode-border dark:bg-darkmode-light dark:text-darkmode-text-dark dark:hover:border-darkmode-text-light/30"
-        href="#site-footer"
-        aria-label="More content"
-        title="More content"
-      >
-        <i class="fa-solid fa-arrow-down text-xs"></i>
-      </a>
     </div>
   </div>
 </section>

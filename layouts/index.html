@@ -6,40 +6,42 @@
     <div class="flex min-h-[72vh] items-start pt-6 pb-0 md:min-h-[76vh] md:pt-8">
       <div class="row justify-center">
       <div class="lg:col-12 text-left">
-        <div class="mx-auto w-full sm:w-[90%] md:w-[80%] lg:w-[70%]">
+        <div class="w-full">
         <!-- <p class="ui-kicker mb-3">Welcome</p> -->
         <h1 class="mb-8 text-h3 lg:text-[clamp(1.9rem,5.1vw,5.1rem)]">{{ .title | markdownify }}</h1>
         <p class="mb-6 lg:text-lg">{{ .content | markdownify }}</p>
         </div>
-        <div class="mt-8 mb-8 flex flex-col items-center gap-4 lg:flex-row lg:flex-wrap lg:justify-center md:mt-10 md:mb-12">
-          {{ with .button }} {{ if .enable }}
-          <a
-            class="btn btn-primary w-full max-w-sm px-6 py-3 text-base lg:w-auto lg:max-w-none"
-            href="{{ strings.TrimPrefix `/` .link | absURL }}"
-            {{
-            if
-            strings.HasPrefix
-            .link
-            `http`
-            }}
-            target="_blank"
-            rel="noopener"
-            {{
-            end
-            }}
-          >
-            {{ .label }}
-            <i class="fa fa-arrow-right pl-2"></i>
-          </a>
-          {{ end }} {{ end }}
-          {{ range .secondary_buttons }}
-          <a class="btn btn-outline-primary w-full max-w-sm px-6 py-3 text-base lg:w-auto lg:max-w-none" href="{{ strings.TrimPrefix `/` .link | relURL }}">
-            {{ .label }}
-            <i class="fa {{ .icon }} pl-2"></i>
-          </a>
-          {{ end }}
+        <div class="mt-8 mb-8 w-full">
+          <div class="flex flex-col items-center gap-4 lg:flex-row lg:flex-nowrap lg:items-stretch lg:justify-center">
+            {{ with .button }} {{ if .enable }}
+            <a
+              class="btn btn-primary w-full max-w-sm px-6 py-3 text-base lg:max-w-none lg:flex-1 lg:px-4 lg:py-2.5 lg:text-sm"
+              href="{{ strings.TrimPrefix `/` .link | absURL }}"
+              {{
+              if
+              strings.HasPrefix
+              .link
+              `http`
+              }}
+              target="_blank"
+              rel="noopener"
+              {{
+              end
+              }}
+            >
+              {{ .label }}
+              <i class="fa fa-arrow-right pl-2"></i>
+            </a>
+            {{ end }} {{ end }}
+            {{ range .secondary_buttons }}
+            <a class="btn btn-outline-primary w-full max-w-sm px-6 py-3 text-base lg:max-w-none lg:flex-1 lg:px-4 lg:py-2.5 lg:text-sm" href="{{ strings.TrimPrefix `/` .link | relURL }}">
+              {{ .label }}
+              <i class="fa {{ .icon }} pl-2"></i>
+            </a>
+            {{ end }}
+          </div>
         </div>
-        <div class="border-t border-border dark:border-darkmode-border"></div>
+        <div class="border-t border-border dark:border-darkmode-border mt-10 mb-10"></div>
       </div>
       </div>
     </div>
@@ -83,69 +85,14 @@
 </section>
 {{ end }}
 
-{{ $blogPageSet := where site.RegularPages "Section" "blog" }}
-{{ $blogCompactPosts := sort $blogPageSet "PublishDate" "desc" }}
-{{ $blogTagMap := dict }}
-{{ $blogCategoryMap := dict }}
-{{ range $blogPageSet }}
-  {{ range .Params.tags }}
-    {{ $key := lower . }}
-    {{ $existing := index $blogTagMap $key }}
-    {{ if $existing }}
-      {{ $blogTagMap = merge $blogTagMap (dict $key (dict
-        "name" ($existing.name)
-        "nameLower" ($existing.nameLower)
-        "count" (add ($existing.count) 1)
-        "page" ($existing.page)
-      )) }}
-    {{ else }}
-      {{ $termPage := site.GetPage (printf "/tags/%s" (. | urlize | lower)) }}
-      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
-      {{ $blogTagMap = merge $blogTagMap (dict $key (dict
-        "name" $displayName
-        "nameLower" (lower $displayName)
-        "count" 1
-        "page" $termPage
-      )) }}
-    {{ end }}
-  {{ end }}
-  {{ range .Params.categories }}
-    {{ $key := lower . }}
-    {{ $existing := index $blogCategoryMap $key }}
-    {{ if $existing }}
-      {{ $blogCategoryMap = merge $blogCategoryMap (dict $key (dict
-        "name" ($existing.name)
-        "nameLower" ($existing.nameLower)
-        "count" (add ($existing.count) 1)
-        "page" ($existing.page)
-      )) }}
-    {{ else }}
-      {{ $termPage := site.GetPage (printf "/categories/%s" (. | urlize | lower)) }}
-      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
-      {{ $blogCategoryMap = merge $blogCategoryMap (dict $key (dict
-        "name" $displayName
-        "nameLower" (lower $displayName)
-        "count" 1
-        "page" $termPage
-      )) }}
-    {{ end }}
-  {{ end }}
-{{ end }}
-{{ $blogTags := slice }}
-{{ range $key, $value := $blogTagMap }}
-  {{ $blogTags = $blogTags | append $value }}
-{{ end }}
-{{ $blogTags = first 8 (sort (sort $blogTags "nameLower") "count" "desc") }}
-{{ $blogCategories := slice }}
-{{ range $key, $value := $blogCategoryMap }}
-  {{ $blogCategories = $blogCategories | append $value }}
-{{ end }}
-{{ $blogCategories = sort (sort $blogCategories "nameLower") "count" "desc" }}
+{{ $blogPageSet := where site.RegularPages "Section" "in" (slice "blog" "portfolio") }}
+{{ $blogCompactPosts := sort $blogPageSet "Date" "desc" }}
 {{ with .Params.blog_section }}
 {{ if gt (len $blogCompactPosts) 0 }}
 <section class="section-sm pt-4 pb-8 md:pt-6 md:pb-12">
   <div class="site-container">
-    <div class="mb-10">
+    <div data-filter-root data-list-view-root data-list-view-key="home" data-filter-clear-url="{{ site.Home.RelPermalink }}">
+    <div class="mb-6">
       <div>
         <p class="ui-kicker mb-3">{{ .kicker }}</p>
         <div class="mb-3 flex flex-wrap items-center gap-4">
@@ -157,159 +104,18 @@
           </a>
           </div>
         </div>
-        <p class="max-w-2xl text-text-light dark:text-darkmode-text-light">{{ .description }}</p>
+        <p class="text-text-light dark:text-darkmode-text-light">{{ .description }}</p>
       </div>
     </div>
-    {{ if gt (len $blogCategories) 0 }}
-    <div class="mb-8 flex items-start gap-3">
-      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
-        Category highlights
-      </div>
-      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
-        {{ range $blogCategories }}
-        <li>
-          {{ partial "components/category-chip" (dict "Name" .name "Href" .page.RelPermalink "Class" "!px-3 !py-1 !text-sm" "Suffix" (printf "<span class=\"ml-1\">(%d)</span>" .count)) }}
-        </li>
-        {{ end }}
-      </ul>
+    <div class="mt-10">
+      {{ partial "widgets/filters-panel" (dict "Page" . "ScopePages" $blogPageSet) }}
     </div>
-    {{ end }}
-    {{ if gt (len $blogTags) 0 }}
-    <div class="mb-8 flex items-start gap-3">
-      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
-        I tend to talk about
-      </div>
-      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
-        {{ range $blogTags }}
-        <li>
-          <a href="{{ .page.RelPermalink }}" class="ui-chip ui-chip-meta !px-3 !py-1 !text-sm">
-            <i class="fa-solid fa-tag mr-2"></i>{{ .name }}
-            <span class="ml-1">({{ .count }})</span>
-          </a>
-        </li>
-        {{ end }}
-      </ul>
-    </div>
-    {{ end }}
-    {{ partial "components/home-compact-dated-list" (dict "Pages" $blogCompactPosts) }}
-  </div>
-</section>
-{{ end }}
-{{ end }}
-
-<div class="site-container">
-  <div class="border-t border-border dark:border-darkmode-border"></div>
-</div>
-
-{{ $portfolioPageSet := where site.RegularPages "Section" "portfolio" }}
-{{ $portfolioCompactPosts := sort $portfolioPageSet "PublishDate" "desc" }}
-{{ $portfolioTagMap := dict }}
-{{ $portfolioCategoryMap := dict }}
-{{ range $portfolioPageSet }}
-  {{ range .Params.tags }}
-    {{ $key := lower . }}
-    {{ $existing := index $portfolioTagMap $key }}
-    {{ if $existing }}
-      {{ $portfolioTagMap = merge $portfolioTagMap (dict $key (dict
-        "name" ($existing.name)
-        "nameLower" ($existing.nameLower)
-        "count" (add ($existing.count) 1)
-        "page" ($existing.page)
-      )) }}
-    {{ else }}
-      {{ $termPage := site.GetPage (printf "/tags/%s" (. | urlize | lower)) }}
-      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
-      {{ $portfolioTagMap = merge $portfolioTagMap (dict $key (dict
-        "name" $displayName
-        "nameLower" (lower $displayName)
-        "count" 1
-        "page" $termPage
-      )) }}
-    {{ end }}
-  {{ end }}
-  {{ range .Params.categories }}
-    {{ $key := lower . }}
-    {{ $existing := index $portfolioCategoryMap $key }}
-    {{ if $existing }}
-      {{ $portfolioCategoryMap = merge $portfolioCategoryMap (dict $key (dict
-        "name" ($existing.name)
-        "nameLower" ($existing.nameLower)
-        "count" (add ($existing.count) 1)
-        "page" ($existing.page)
-      )) }}
-    {{ else }}
-      {{ $termPage := site.GetPage (printf "/categories/%s" (. | urlize | lower)) }}
-      {{ $displayName := cond (ne $termPage nil) $termPage.Title . }}
-      {{ $portfolioCategoryMap = merge $portfolioCategoryMap (dict $key (dict
-        "name" $displayName
-        "nameLower" (lower $displayName)
-        "count" 1
-        "page" $termPage
-      )) }}
-    {{ end }}
-  {{ end }}
-{{ end }}
-{{ $portfolioTags := slice }}
-{{ range $key, $value := $portfolioTagMap }}
-  {{ $portfolioTags = $portfolioTags | append $value }}
-{{ end }}
-{{ $portfolioTags = first 8 (sort (sort $portfolioTags "nameLower") "count" "desc") }}
-{{ $portfolioCategories := slice }}
-{{ range $key, $value := $portfolioCategoryMap }}
-  {{ $portfolioCategories = $portfolioCategories | append $value }}
-{{ end }}
-{{ $portfolioCategories = sort (sort $portfolioCategories "nameLower") "count" "desc" }}
-{{ with .Params.portfolio_section }}
-{{ if gt (len $portfolioCompactPosts) 0 }}
-<section class="section-sm pt-8 pb-8 md:pt-12 md:pb-12">
-  <div class="site-container">
-    <div class="mb-10">
-      <div>
-        <p class="ui-kicker mb-3">{{ .kicker }}</p>
-        <div class="mb-3 flex flex-wrap items-center gap-4">
-          <div class="flex flex-wrap items-center gap-4">
-          <h2 class="mb-0 text-h4 text-text-dark dark:text-darkmode-text-dark">{{ .title }}</h2>
-          <a class="btn btn-outline-primary mt-1" href="{{ strings.TrimPrefix `/` .button_link | relURL }}">
-            {{ .button_label }}
-            <i class="fa fa-briefcase pl-2"></i>
-          </a>
-          </div>
-        </div>
-        <p class="max-w-2xl text-text-light dark:text-darkmode-text-light">{{ .description }}</p>
+    <div class="pt-8" data-filter-results>
+      <div class="space-y-5">
+        {{ partial "components/dated-card-list" (dict "Pages" $blogCompactPosts "ShowToggle" true "ShowMonthTags" true) }}
       </div>
     </div>
-    {{ if gt (len $portfolioCategories) 0 }}
-    <div class="mb-8 flex items-start gap-3">
-      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
-        Category highlights
-      </div>
-      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
-        {{ range $portfolioCategories }}
-        <li>
-          {{ partial "components/category-chip" (dict "Name" .name "Href" .page.RelPermalink "Class" "!px-3 !py-1 !text-sm" "Suffix" (printf "<span class=\"ml-1\">(%d)</span>" .count)) }}
-        </li>
-        {{ end }}
-      </ul>
     </div>
-    {{ end }}
-    {{ if gt (len $portfolioTags) 0 }}
-    <div class="mb-8 flex items-start gap-3">
-      <div class="min-w-[2rem] pt-1 text-base font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
-        I tend to work on
-      </div>
-      <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
-        {{ range $portfolioTags }}
-        <li>
-          <a href="{{ .page.RelPermalink }}" class="ui-chip ui-chip-meta !px-3 !py-1 !text-sm">
-            <i class="fa-solid fa-tag mr-2"></i>{{ .name }}
-            <span class="ml-1">({{ .count }})</span>
-          </a>
-        </li>
-        {{ end }}
-      </ul>
-    </div>
-    {{ end }}
-    {{ partial "components/home-compact-dated-list" (dict "Pages" $portfolioCompactPosts) }}
   </div>
 </section>
 {{ end }}

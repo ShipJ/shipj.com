@@ -1,101 +1,78 @@
 {{ define "main" }}
 {{ partial "page-header" . }}
 
-<!-- Personal intro -->
-<section class="section-sm pt-4">
-  <div class="site-container">
-    {{ partial "image" (dict "Src" .Params.image "Context" .Page "Alt" .Title "Class" "mx-auto mb-6 rounded-full object-cover w-48 h-auto" "Size" "") }}
-    <div class="content">{{ .Content }}</div>
-  </div>
-</section>
-
-<!-- Work with me -->
 {{ with .Params.consulting }}
-<section class="section bg-gradient">
+<section class="section-sm pt-6">
   <div class="site-container">
 
-    <!-- Heading -->
-    <div class="row justify-center mb-12">
-      <div class="lg:col-8 text-center">
-        <p class="ui-kicker mb-3">Services</p>
-        <h2 class="mb-4">{{ .title }}</h2>
-        <p class="text-lg opacity-80">{{ .intro }}</p>
-      </div>
+    <!-- Image -->
+    {{ partial "image" (dict "Src" $.Params.image "Context" $.Page "Alt" $.Title "Class" "mb-8 rounded-2xl object-cover w-72 h-auto" "Size" "") }}
+
+    <!-- Merged intro -->
+    <div class="mb-12">
+      <div class="content mb-4">{{ $.Content }}</div>
+      <p class="text-lg text-text-light dark:text-darkmode-text-light">{{ .intro }}</p>
     </div>
 
     <!-- Services + Engagements -->
-    <div class="row justify-center mb-12">
-
-      <!-- Services -->
-      <div class="lg:col-5 mb-8 lg:mb-0">
+    <div class="row mb-12">
+      <div class="lg:col-6 mb-8 lg:mb-0">
         <div class="ui-card h-full">
-        <h4 class="mb-5">What I do</h4>
-        <ul class="space-y-3">
-          {{ range .services }}
-          <li class="relative pl-6 text-sm">
-            <i class="fa fa-check absolute left-0 top-1 text-primary dark:text-darkmode-primary"></i>
-            {{ . | markdownify }}
-          </li>
-          {{ end }}
-        </ul>
+          <h4 class="mb-5">What I do</h4>
+          <ul class="space-y-3">
+            {{ range .services }}
+            <li class="relative pl-6 text-sm">
+              <i class="fa fa-check absolute left-0 top-1 text-primary dark:text-darkmode-primary"></i>
+              {{ . | markdownify }}
+            </li>
+            {{ end }}
+          </ul>
         </div>
       </div>
-
-      <!-- Engagements -->
-      <div class="lg:col-5 lg:col-offset-1">
+      <div class="lg:col-6">
         <div class="ui-card h-full">
-        <h4 class="mb-5">How we can work together</h4>
-        <div class="space-y-4">
-          {{ range .engagements }}
-          <div class="rounded-2xl border border-border bg-body p-4 dark:border-darkmode-border dark:bg-darkmode-body">
-            <p class="font-semibold text-sm mb-1">{{ .label }}</p>
-            <p class="text-sm opacity-75">{{ .description }}</p>
+          <h4 class="mb-5">How we can work together</h4>
+          <div class="space-y-4">
+            {{ range .engagements }}
+            <div class="rounded-2xl border border-border bg-body p-4 dark:border-darkmode-border dark:bg-darkmode-body">
+              <p class="font-semibold text-sm mb-1">{{ .label }}</p>
+              <p class="text-sm opacity-75">{{ .description }}</p>
+            </div>
+            {{ end }}
           </div>
-          {{ end }}
-        </div>
         </div>
       </div>
-
     </div>
 
     <!-- Process -->
     {{ with .process }}
-    <div class="row justify-center mb-12">
-      <div class="lg:col-10">
-        <h4 class="mb-6 text-center">How it works</h4>
-        <div class="row">
-          {{ range $i, $step := . }}
-          <div class="md:col-3 mb-6 text-center">
-            <div class="ui-card-compact h-full">
+    <div class="mb-12">
+      <h4 class="mb-6">How it works</h4>
+      <div class="row">
+        {{ range $i, $step := . }}
+        <div class="md:col-3 mb-6">
+          <div class="ui-card-compact h-full">
             <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary dark:bg-darkmode-primary text-white font-bold text-sm">
               {{ add $i 1 }}
             </div>
             <p class="font-semibold text-sm mb-1">{{ $step.step }}</p>
             <p class="text-xs opacity-75">{{ $step.description }}</p>
-            </div>
           </div>
-          {{ end }}
         </div>
+        {{ end }}
       </div>
     </div>
     {{ end }}
 
     <!-- CTA -->
-    <div class="row justify-center">
-      <div class="text-center">
-        <a
-          href="{{ .cta_primary_link }}"
-          target="_blank"
-          rel="noopener"
-          class="btn btn-primary mr-4"
-        >
-          {{ .cta_primary_label }}
-          <i class="fa fa-arrow-right pl-2"></i>
-        </a>
-        <a href="{{ .cta_secondary_link | relURL }}" class="btn btn-outline-primary">
-          {{ .cta_secondary_label }}
-        </a>
-      </div>
+    <div>
+      <a href="{{ .cta_primary_link }}" target="_blank" rel="noopener" class="btn btn-primary mr-4">
+        {{ .cta_primary_label }}
+        <i class="fa fa-arrow-right pl-2"></i>
+      </a>
+      <a href="{{ .cta_secondary_link | relURL }}" class="btn btn-outline-primary">
+        {{ .cta_secondary_label }}
+      </a>
     </div>
 
   </div>

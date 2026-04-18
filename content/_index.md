@@ -18,7 +18,7 @@ banner:
 blog_section:
   # kicker: "Blog"
   title: "Latest posts"
-  description: "Notes on data science, engineering, systems, and the decisions behind the work."
+  description: "Notes on data science, engineering, systems, and the decisions behind the work. Each post belongs to a single category; tags capture the specifics. Both are shown below, ordered by frequency."
   button_label: "Read the blog"
   button_link: "/blog/"
 

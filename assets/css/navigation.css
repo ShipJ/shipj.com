@@ -20,7 +20,7 @@
 }
 
 .nav-link {
-  @apply block rounded-2xl border border-transparent font-normal font-primary tracking-wide whitespace-nowrap text-text-light transition hover:text-text-dark dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark;
+  @apply block rounded-2xl border border-transparent font-normal font-primary tracking-wide whitespace-nowrap text-text-light transition hover:border-text-light/20 hover:bg-[#f7f7f7] hover:text-text-dark dark:text-darkmode-text-light dark:hover:border-darkmode-text-light/20 dark:hover:bg-[#2a2a2a] dark:hover:text-darkmode-text-dark;
   font-size: clamp(0.72rem, 0.82vw, 0.875rem);
   padding-inline: clamp(0.6rem, 0.9vw, 1rem);
   padding-block: clamp(0.18rem, 0.35vw, 0.25rem);
@@ -66,7 +66,7 @@
   @apply inline-flex;
 
   label {
-    @apply relative inline-block h-6 w-12 cursor-pointer rounded-full border border-border bg-light transition hover:border-text-light/30 dark:border-darkmode-border dark:bg-darkmode-light dark:hover:border-darkmode-text-light/30;
+    @apply relative inline-block h-6 w-12 cursor-pointer rounded-full border border-border transition hover:border-text-light/30 dark:border-darkmode-border dark:hover:border-darkmode-text-light/30;
   }
 
   input {

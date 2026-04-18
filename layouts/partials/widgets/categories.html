@@ -29,19 +29,14 @@
 {{ end }}
 {{ if gt (len $categories) 0 }}
 {{ $sorted := sort (sort $categories "nameLower") "count" "desc" }}
-<div class="flex items-start gap-2">
-  <div class="min-w-[6.5rem] pt-1 text-sm font-normal text-text-dark/70 dark:text-darkmode-text-dark/70">
-    {{ T "categories" }}
-  </div>
-  <ul class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+<div class="mb-6">
+  <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-text-light dark:text-darkmode-text-light">Categories</p>
+  <ul class="flex min-w-0 flex-wrap gap-1.5">
     {{ range $sorted }}
-    {{ $isActive := and (ne .page nil) (eq $.Page.RelPermalink .page.RelPermalink) }}
     <li>
       {{ partial "components/category-chip" (dict
         "Name" .name
-        "Href" (cond $isActive $.ClearURL .page.RelPermalink)
-        "Active" $isActive
-        "Class" "!text-sm"
+        "Class" "!px-3 !py-1 !text-sm"
         "Suffix" (printf "<span class=\"ml-1\">(%d)</span>" .count)
       ) }}
     </li>

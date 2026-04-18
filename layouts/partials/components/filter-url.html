@@ -1,0 +1,3 @@
+{{- $blogPage := site.GetPage "section" "blog" -}}
+{{- $base := cond (ne $blogPage nil) $blogPage.RelPermalink ("/blog/" | relLangURL) -}}
+{{- printf "%s?%s" $base (querify .Kind (.Value | urlize | lower)) -}}
