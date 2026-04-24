@@ -1,4 +1,5 @@
 ---
+id: '26'
 title: A reminder of the maths for machine learning
 meta_title: >-
   Essential Maths for Machine Learning: A Guide to Linear Algebra, Calculus, and
@@ -12,7 +13,7 @@ description: >-
   of these mathematical principles in understanding and applying machine
   learning algorithms effectively.
 slug: a-reminder-of-the-maths-for-machine-learning
-date: '2026-04-18T10:27:26.829Z'
+date: '2026-04-24T15:14:50.102Z'
 categories:
   - Data Science
 tags:
@@ -28,13 +29,13 @@ draft: false
 notion_id: 31b7fd6b-fd0d-8055-9af9-e28d0f7fef92
 created_at: '2026-03-06T10:16:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:26.829Z'
+last_synced: '2026-04-24T15:14:50.102Z'
 math: true
 image: ''
 ---
 Here we’ll review basic concepts in Linear Algebra, Calculus, and Probability and Statistics to remind ourselves of the necessary ML pre-requisites.
 
-Side note  - we’ll see just how useful enabling $\text{\LaTeX}$ was! See more in [How I created this site with Hugo](hugo-ref:portfolio/2026-04-18-how-i-created-this-site-with-hugo.md) 
+Side note  - we’ll see just how useful enabling $\text{\LaTeX}$ was! See more in [How I created this site with Hugo](hugo-ref:portfolio/2026-04-24-how-i-created-this-site-with-hugo.md) 
 
 ## 1. Linear Algebra
 

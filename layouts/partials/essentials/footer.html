@@ -6,6 +6,7 @@
           {{ range site.Data.social.main }}
           <li>
             <a
+              class="footer-social-link"
               target="_blank"
               aria-label="{{ .name }}"
               rel="nofollow noopener"
@@ -16,13 +17,13 @@
           </li>
           {{ end }}
         </ul>
-        <span style="font-size: 10px; opacity: 0.6; text-align: center;">© {{ now.UTC.Format "2006" }} · Jack Shipsmith</span>
+        <span class="footer-signoff">© {{ now.UTC.Format "2006" }} · Jack Shipsmith</span>
       </div>
       <ul class="flex flex-wrap items-center justify-center gap-1">
         {{ range site.Menus.footer }}
         <li>
           <a
-            class="rounded-full px-3 py-1.5 transition hover:bg-light hover:text-text-dark dark:hover:bg-darkmode-light dark:hover:text-darkmode-text-dark"
+            class="footer-nav-link rounded-full px-3 py-1.5 transition hover:bg-light hover:text-text-dark dark:hover:text-darkmode-text-dark"
             {{ if findRE `^http` .URL }}target="_blank" rel="noopener"{{ end }}
             href="{{ if findRE `^#` .URL }}{{ if not $.IsHome }}{{ site.Home.RelPermalink }}{{ end }}{{ .URL }}{{ else }}{{ .URL | relURL }}{{ end }}"
             >{{ .Name }}</a>

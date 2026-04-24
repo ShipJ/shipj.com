@@ -1,9 +1,10 @@
 ---
+id: '12'
 title: 'Data-as-a-Service: Scalable, Reliable, Client-Ready Pipelines'
 meta_title: ''
 description: 'Data-as-a-Service: Scalable, Reliable, Client-Ready Pipelines'
 slug: data-as-a-service-scalable-reliable-client-ready-pipelines
-date: '2026-04-18T10:27:23.205Z'
+date: '2026-04-24T15:14:47.194Z'
 categories:
   - Data Governance
   - Management
@@ -23,7 +24,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-80a9-b462-e43f684ab24f
 created_at: '2026-03-01T14:07:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:23.205Z'
+last_synced: '2026-04-24T15:14:47.194Z'
 math: true
 image: ''
 ---

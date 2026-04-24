@@ -162,6 +162,9 @@
     const filterPanel = root.querySelector("[data-filter-panel]");
     const clearButton = root.querySelector("[data-clear-filters]");
     const activeSummary = root.querySelector("[data-active-filters-summary]");
+    const matchButtons = Array.from(
+      root.querySelectorAll("[data-filter-match-mode]"),
+    );
     const controls = Array.from(
       root.querySelectorAll("[data-filter-kind][data-filter-value]"),
     );
@@ -208,7 +211,28 @@
         return acc;
       }, {});
 
-    const buildQuery = (selected) => {
+    const readTagMatchMode = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("tag_mode") === "and" ? "and" : "or";
+    };
+
+    const syncTagMatchControls = (mode, currentSelected = selected) => {
+      const activeTagCount = currentSelected.tags ? currentSelected.tags.size : 0;
+      const shouldShow = activeTagCount >= 2;
+
+      const toggleWrap = root.querySelector("[data-filter-match-toggle]");
+      if (toggleWrap) {
+        toggleWrap.classList.toggle("hidden", !shouldShow);
+      }
+
+      matchButtons.forEach((button) => {
+        const isActive = button.dataset.filterMatchMode === mode;
+        button.classList.toggle("on", isActive);
+        button.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    };
+
+    const buildQuery = (selected, tagMatchMode) => {
       const params = new URLSearchParams();
 
       kinds.forEach((kind) => {
@@ -217,11 +241,15 @@
         });
       });
 
+      if (tagMatchMode === "and") {
+        params.set("tag_mode", "and");
+      }
+
       return params.toString();
     };
 
-    const updateUrl = (selected, basePath = window.location.pathname) => {
-      const query = buildQuery(selected);
+    const updateUrl = (selected, tagMatchMode, basePath = window.location.pathname) => {
+      const query = buildQuery(selected, tagMatchMode);
       const targetUrl = query ? `${basePath}?${query}` : clearUrl;
       window.history.replaceState({}, "", targetUrl);
     };
@@ -265,21 +293,32 @@
       });
     };
 
-    const applyFilters = (selected) => {
+    const applyFilters = (selected, tagMatchMode) => {
       let visibleCount = 0;
-      const activeSelections = kinds.flatMap((kind) =>
-        Array.from(selected[kind] || []).map((value) => ({ kind, value })),
-      );
+      const selectedCategories = Array.from(selected.categories || []);
+      const selectedTags = Array.from(selected.tags || []);
+      const selectedAuthors = Array.from(selected.authors || []);
 
       items.forEach((item) => {
-        const matches =
-          activeSelections.length === 0 ||
-          activeSelections.some(({ kind, value }) => {
-            const itemValues = parseItemValues(
-              item.dataset[`filter${kind[0].toUpperCase()}${kind.slice(1)}`],
-            );
-            return itemValues.includes(value);
-          });
+        const itemCategories = parseItemValues(item.dataset.filterCategories);
+        const itemTags = parseItemValues(item.dataset.filterTags);
+        const itemAuthors = parseItemValues(item.dataset.filterAuthors);
+
+        const matchesCategories =
+          selectedCategories.length === 0 ||
+          selectedCategories.some((value) => itemCategories.includes(value));
+
+        const matchesTags =
+          selectedTags.length === 0 ||
+          (tagMatchMode === "and"
+            ? selectedTags.every((value) => itemTags.includes(value))
+            : selectedTags.some((value) => itemTags.includes(value)));
+
+        const matchesAuthors =
+          selectedAuthors.length === 0 ||
+          selectedAuthors.some((value) => itemAuthors.includes(value));
+
+        const matches = matchesCategories && matchesTags && matchesAuthors;
 
         item.classList.toggle("hidden", !matches);
         if (matches) visibleCount += 1;
@@ -300,6 +339,7 @@
     };
 
     let selected = readSelected();
+    let tagMatchMode = readTagMatchMode();
     const initialSelections = getInitialSelections();
     const hasInitialSelections = kinds.some(
       (kind) => initialSelections[kind].length > 0,
@@ -309,27 +349,32 @@
 
     syncControls(selected);
     syncPanel(selected);
-    applyFilters(selected);
+    syncTagMatchControls(tagMatchMode, selected);
+    applyFilters(selected, tagMatchMode);
     if (!isScopedArchivePage) {
-      updateUrl(selected, clearUrl);
+      updateUrl(selected, tagMatchMode, clearUrl);
     }
 
     filterPanel?.addEventListener("toggle", () => {
       filterPanel.dataset.userToggled = "true";
       syncPanel(readSelected());
+      syncTagMatchControls(readTagMatchMode(), readSelected());
     });
 
-    const applySelected = (nextSelected) => {
-      updateUrl(nextSelected, clearUrl);
+    const applySelected = (nextSelected, nextTagMatchMode = tagMatchMode) => {
+      selected = nextSelected;
+      tagMatchMode = nextTagMatchMode;
+      updateUrl(nextSelected, tagMatchMode, clearUrl);
       syncControls(nextSelected);
       syncPanel(nextSelected);
-      applyFilters(nextSelected);
+      syncTagMatchControls(tagMatchMode, nextSelected);
+      applyFilters(nextSelected, tagMatchMode);
     };
 
     clearButton?.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      applySelected(kinds.reduce((acc, kind) => { acc[kind] = new Set(); return acc; }, {}));
+      applySelected(kinds.reduce((acc, kind) => { acc[kind] = new Set(); return acc; }, {}), tagMatchMode);
     });
 
     controls.forEach((control) => {
@@ -347,6 +392,14 @@
         }
 
         applySelected(nextSelected);
+      });
+    });
+
+    matchButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        applySelected(readSelected(), button.dataset.filterMatchMode === "and" ? "and" : "or");
       });
     });
 

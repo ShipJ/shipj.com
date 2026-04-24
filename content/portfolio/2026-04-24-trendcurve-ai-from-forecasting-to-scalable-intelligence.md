@@ -1,4 +1,5 @@
 ---
+id: '7'
 title: 'TrendCurve AI: From Forecasting to Scalable Intelligence'
 meta_title: >-
   TrendCurve AI: Transforming Fashion Forecasting with Scalable Intelligence and
@@ -7,7 +8,7 @@ description: >-
   They key data science and engineering principles behind building WGSN’s first
   customer-facing forecasting product
 slug: trendcurve-ai-from-forecasting-to-scalable-intelligence
-date: '2026-04-18T10:27:21.833Z'
+date: '2026-04-24T15:14:43.686Z'
 categories:
   - Data Science
   - Data Engineering
@@ -34,7 +35,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-8052-9ab2-f7b88aeb5a90
 created_at: '2026-03-01T13:54:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:21.833Z'
+last_synced: '2026-04-24T15:14:43.686Z'
 math: true
 image: ''
 ---

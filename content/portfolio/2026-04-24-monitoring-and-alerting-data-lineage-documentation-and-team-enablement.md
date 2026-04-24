@@ -1,9 +1,10 @@
 ---
+id: '15'
 title: 'Monitoring & Alerting: Data Lineage, Documentation, and Team Enablement'
 meta_title: ''
 description: 'Monitoring & Alerting: Data Lineage, Documentation, and Team Enablement'
 slug: monitoring-and-alerting-data-lineage-documentation-and-team-enablement
-date: '2026-04-18T10:27:22.584Z'
+date: '2026-04-24T15:14:46.127Z'
 categories:
   - Data Engineering
   - Data Analytics
@@ -25,7 +26,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-809d-9b72-fc83ada286b6
 created_at: '2026-03-01T14:17:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:22.584Z'
+last_synced: '2026-04-24T15:14:46.127Z'
 math: true
 image: ''
 ---

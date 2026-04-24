@@ -6,7 +6,7 @@
   <div class="site-container">
     <div class="editorial-hero">
       {{ partial "components/page-eyebrow" (dict "Page" $) }}
-      <h1 class="eyebrow-gap">&gt; {{ .title | markdownify }}<span class="cursor"></span></h1>
+      <h1 class="eyebrow-gap">&gt; {{ .title | markdownify }}<span class="cursor" aria-hidden="true"></span></h1>
       <div class="hero-body">
         {{ .content | markdownify }}
       </div>
@@ -44,6 +44,8 @@
         {{ .button_label }} <span class="arrow">→</span>
       </a>
     </div>
+
+    {{ partial "components/rising-topics" . }}
 
     <div class="post-list">
       {{ range first 5 $blogPages }}

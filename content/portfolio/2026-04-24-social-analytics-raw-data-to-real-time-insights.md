@@ -1,11 +1,12 @@
 ---
+id: '8'
 title: 'Social Analytics: Raw Data to Real-Time Insights'
 meta_title: >-
   Social Analytics: Transforming Raw Data into Real-Time Insights for Trend
   Prediction
 description: Collecting live social data to predict scale of emerging trends
 slug: social-analytics-raw-data-to-real-time-insights
-date: '2026-04-18T10:27:21.511Z'
+date: '2026-04-24T15:14:43.309Z'
 categories:
   - Data Engineering
   - Management
@@ -25,7 +26,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-802a-8f8d-c0c65344dd13
 created_at: '2026-03-01T14:00:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:21.511Z'
+last_synced: '2026-04-24T15:14:43.309Z'
 math: true
 image: ''
 ---

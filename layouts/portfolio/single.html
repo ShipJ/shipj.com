@@ -16,61 +16,50 @@
 
         <hr class="mt-4 border-border/60 dark:border-darkmode-border/60" />
 
-        <div class="mt-6 flex flex-col gap-6">
-          <div class="flex flex-col gap-6">
-            <div class="flex flex-wrap items-center gap-2">
+        <div class="content-meta-strip">
+          <div class="content-meta-left">
+            <div class="content-meta-categories">
               {{ $categories := .Params.categories }}
               {{ if $categories }}
                 {{ range $categories }}
-                  {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) "Class" "!px-3.5 !py-1 !text-sm") }}
+                  {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) "Class" "!px-4 !py-1.5 !text-[11px]") }}
                 {{ end }}
               {{ end }}
             </div>
-            {{ with .Params.length }}
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="ui-chip ui-chip-meta !px-3.5 !py-1 !text-sm">
-                <i class="fa-regular fa-calendar-check mr-2" title="Project Duration"></i>
-                {{ . }}
-              </span>
-            </div>
-            {{ end }}
             {{ $tags := .Params.tags }}
             {{ if $tags }}
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-text-light dark:text-darkmode-text-light">
+            <div class="content-meta-tags">
               {{ range $tags }}
-                <a href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .) }}" class="inline-flex text-sm text-text-light transition hover:underline hover:text-text-dark dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark">
-                  #{{ . }}
-                </a>
+                <a href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .) }}" class="content-meta-tag">#{{ . }}</a>
               {{ end }}
             </div>
             {{ end }}
           </div>
 
-          <div class="text-sm text-text-light dark:text-darkmode-text-light">
-            {{ time.Format ":date_long" .PublishDate }}
-            {{ with .Params.read_time }}
-              <span class="mx-2">&middot;</span>
-              <span>{{ . }} min read</span>
+          <div class="content-meta-right">
+            <span>{{ time.Format ":date_long" .PublishDate }}</span>
+            {{ with .Params.length }}
+              <span class="sep">&middot;</span>
+              <span>{{ . }}</span>
             {{ end }}
           </div>
-
-          {{ with .Params.description }}
-          <details class="tldr-box group">
-            <summary class="tldr-box-summary">
-              <span class="inline-flex items-center gap-2">
-                <span>Summary</span>
-                <i class="fa-solid fa-chevron-down text-xs transition duration-200 group-open:rotate-180"></i>
-              </span>
-            </summary>
-            <div class="tldr-box-body content">
-              <p>{{ . }}</p>
-            </div>
-          </details>
-          <hr class="tldr-divider border-border/60 dark:border-darkmode-border/60" />
-          {{ end }}
         </div>
 
-        <div class="mt-20 mb-12">
+        {{ with .Params.description }}
+        <details class="tldr-box content-tldr-box group mt-14">
+          <summary class="tldr-box-summary content-tldr-summary">
+            <span class="inline-flex items-center gap-2">
+              <span>TL;DR</span>
+              <i class="fa-solid fa-chevron-down text-xs transition duration-200 group-open:rotate-180"></i>
+            </span>
+          </summary>
+          <div class="tldr-box-body content content-tldr-body">
+            <p>{{ . }}</p>
+          </div>
+        </details>
+        {{ end }}
+
+        <div class="mt-14 mb-12">
           <div class="content">
           <!-- {{ partial "toc.html" (dict "Class" "portfolio" "Collapsed" true "TableOfContents" .TableOfContents ) }} -->
           {{ .Content }}

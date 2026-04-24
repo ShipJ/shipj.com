@@ -1,0 +1,103 @@
+{{ $pages := where site.RegularPages "Section" "in" (slice "blog" "portfolio") }}
+{{ $nowUnix := now.Unix }}
+{{ $weekSeconds := 604800 }}
+{{ $categoryMap := dict }}
+{{ $tagMap := dict }}
+
+{{ range $pages }}
+  {{ $publishedAt := .PublishDate | default .Date }}
+  {{ $weekIndex := div (sub $nowUnix $publishedAt.Unix) $weekSeconds }}
+  {{ if and (ge $weekIndex 0) (lt $weekIndex 26) }}
+    {{ range (.Params.categories | default (slice)) }}
+      {{ $key := . | urlize | lower }}
+      {{ $topic := index $categoryMap $key | default (dict "Label" (. | lower) "Buckets" dict) }}
+      {{ $buckets := index $topic "Buckets" | default dict }}
+      {{ $bucketKey := printf "%d" $weekIndex }}
+      {{ $count := index $buckets $bucketKey | default 0 }}
+      {{ $buckets = merge $buckets (dict $bucketKey (add $count 1)) }}
+      {{ $topic = merge $topic (dict "Buckets" $buckets) }}
+      {{ $categoryMap = merge $categoryMap (dict $key $topic) }}
+    {{ end }}
+
+    {{ range (.Params.tags | default (slice)) }}
+      {{ $key := . | urlize | lower }}
+      {{ $topic := index $tagMap $key | default (dict "Label" (printf "#%s" (. | lower)) "Buckets" dict) }}
+      {{ $buckets := index $topic "Buckets" | default dict }}
+      {{ $bucketKey := printf "%d" $weekIndex }}
+      {{ $count := index $buckets $bucketKey | default 0 }}
+      {{ $buckets = merge $buckets (dict $bucketKey (add $count 1)) }}
+      {{ $topic = merge $topic (dict "Buckets" $buckets) }}
+      {{ $tagMap = merge $tagMap (dict $key $topic) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $categories := slice }}
+{{ range $key, $topic := $categoryMap }}
+  {{ $values := slice }}
+  {{ $recentTotal := 0 }}
+  {{ $longTotal := 0 }}
+  {{ $buckets := index $topic "Buckets" }}
+  {{ range $n := seq 26 }}
+    {{ $weekIndex := sub 26 $n }}
+    {{ $count := index $buckets (printf "%d" $weekIndex) | default 0 }}
+    {{ $values = $values | append $count }}
+    {{ $longTotal = add $longTotal $count }}
+    {{ if lt $weekIndex 4 }}
+      {{ $recentTotal = add $recentTotal $count }}
+    {{ end }}
+  {{ end }}
+  {{ $change := 0 }}
+  {{ if gt $longTotal 0 }}
+    {{ $change = sub (div (mul (mul $recentTotal 26) 100) (mul $longTotal 4)) 100 }}
+  {{ else if gt $recentTotal 0 }}
+    {{ $change = 100 }}
+  {{ end }}
+  {{ $categories = $categories | append (dict
+    "Label" (index $topic "Label")
+    "Values" $values
+    "Change" $change
+    "RecentTotal" $recentTotal
+    "LongTotal" $longTotal
+  ) }}
+{{ end }}
+
+{{ $tags := slice }}
+{{ range $key, $topic := $tagMap }}
+  {{ $values := slice }}
+  {{ $recentTotal := 0 }}
+  {{ $longTotal := 0 }}
+  {{ $buckets := index $topic "Buckets" }}
+  {{ range $n := seq 26 }}
+    {{ $weekIndex := sub 26 $n }}
+    {{ $count := index $buckets (printf "%d" $weekIndex) | default 0 }}
+    {{ $values = $values | append $count }}
+    {{ $longTotal = add $longTotal $count }}
+    {{ if lt $weekIndex 4 }}
+      {{ $recentTotal = add $recentTotal $count }}
+    {{ end }}
+  {{ end }}
+  {{ $change := 0 }}
+  {{ if gt $longTotal 0 }}
+    {{ $change = sub (div (mul (mul $recentTotal 26) 100) (mul $longTotal 4)) 100 }}
+  {{ else if gt $recentTotal 0 }}
+    {{ $change = 100 }}
+  {{ end }}
+  {{ $tags = $tags | append (dict
+    "Label" (index $topic "Label")
+    "Values" $values
+    "Change" $change
+    "RecentTotal" $recentTotal
+    "LongTotal" $longTotal
+  ) }}
+{{ end }}
+
+{{ $categories = sort (sort $categories "RecentTotal" "desc") "Change" "desc" }}
+{{ $tags = sort (sort $tags "RecentTotal" "desc") "Change" "desc" }}
+
+{{ return (dict
+  "window_short" "last 4 weeks"
+  "window_long" "last 26 weeks"
+  "categories" (first 3 $categories)
+  "tags" (first 3 $tags)
+) }}

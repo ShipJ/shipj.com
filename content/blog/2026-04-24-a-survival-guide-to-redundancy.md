@@ -1,11 +1,12 @@
 ---
+id: '3'
 title: A Survival Guide to redundancy
 meta_title: >-
   When Redundancy Becomes the Best Outcome: Understanding the Experience of
   Being Made Redundant
 description: What it’s like to be made redundant and how to make it work for you
 slug: a-survival-guide-to-redundancy
-date: '2026-04-18T10:27:20.517Z'
+date: '2026-04-24T15:14:42.597Z'
 categories:
   - Personal Development
   - Management
@@ -20,7 +21,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-8025-8d25-c7ff2c4b340a
 created_at: '2026-03-01T11:28:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:20.517Z'
+last_synced: '2026-04-24T15:14:42.597Z'
 math: true
 image: ''
 ---

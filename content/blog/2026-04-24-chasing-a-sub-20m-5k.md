@@ -1,9 +1,10 @@
 ---
+id: '6'
 title: Chasing a sub-20m 5k
 meta_title: 'Achieving a Sub-20 Minute 5K: My Journey from 30 Minutes to 20 Minutes'
 description: How I went from 30m to 20m
 slug: chasing-a-sub-20m-5k
-date: '2026-04-18T10:27:26.011Z'
+date: '2026-04-24T15:14:47.959Z'
 categories:
   - Sport
 tags:
@@ -17,7 +18,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-80e1-bb9f-ce4258e65d58
 created_at: '2026-03-01T13:47:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:26.011Z'
+last_synced: '2026-04-24T15:14:47.959Z'
 math: true
 image: ''
 ---

@@ -1,0 +1,59 @@
+{{ $label := .Label | default "topic" }}
+{{ $values := .Values | default (slice) }}
+{{ $ariaLabel := .AriaLabel | default (printf "%s recent activity trend" $label) }}
+{{ $width := 76 }}
+{{ $height := 18 }}
+{{ $pad := 1 }}
+{{ $chartHeight := sub $height (mul $pad 2) }}
+{{ $count := len $values }}
+{{ $points := slice }}
+{{ $lastX := sub $width 1 }}
+{{ $lastY := div $height 2 }}
+
+{{ if gt $count 0 }}
+  {{ $min := index $values 0 }}
+  {{ $max := index $values 0 }}
+  {{ range $values }}
+    {{ if lt . $min }}{{ $min = . }}{{ end }}
+    {{ if gt . $max }}{{ $max = . }}{{ end }}
+  {{ end }}
+  {{ $range := sub $max $min }}
+  {{ range $i, $v := $values }}
+    {{ $x := $pad }}
+    {{ if gt $count 1 }}
+      {{ $x = add $pad (div (mul $i (sub $width (mul $pad 2))) (sub $count 1)) }}
+    {{ end }}
+    {{ $y := div $height 2 }}
+    {{ if gt $range 0 }}
+      {{ $y = sub (add $pad $chartHeight) (div (mul (sub $v $min) $chartHeight) $range) }}
+    {{ end }}
+    {{ $points = $points | append (printf "%d,%d" $x $y) }}
+    {{ $lastX = $x }}
+    {{ $lastY = $y }}
+  {{ end }}
+{{ else }}
+  {{ $points = slice (printf "1,%d" (div $height 2)) (printf "%d,%d" (sub $width 1) (div $height 2)) }}
+{{ end }}
+
+<svg
+  class="topic-sparkline{{ if .Highlight }} is-top{{ end }}"
+  viewBox="0 0 {{ $width }} {{ $height }}"
+  role="img"
+  aria-label="{{ $ariaLabel }}"
+  focusable="false"
+>
+  <polyline
+    points="{{ delimit $points " " }}"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle
+    cx="{{ $lastX }}"
+    cy="{{ $lastY }}"
+    r="{{ if .Highlight }}2.7{{ else }}2.3{{ end }}"
+    fill="var(--color-accent)"
+  />
+</svg>

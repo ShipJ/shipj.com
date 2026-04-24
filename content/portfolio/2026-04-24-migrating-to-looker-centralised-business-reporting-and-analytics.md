@@ -1,14 +1,16 @@
 ---
-title: "Migrating to Looker: Centralised Business Reporting & Analytics"
+id: '18'
+title: 'Migrating to Looker: Centralised Business Reporting & Analytics'
 meta_title: >-
   Migrating to Looker: Centralising Business Reporting & Analytics for Enhanced
   Data Insights
 description: 'Migrating to Looker: Centralising Business Reporting & Analytics'
 slug: migrating-to-looker-centralised-business-reporting-and-analytics
-date: '2026-03-02T21:14:07.661Z'
+date: '2026-04-24T15:14:44.533Z'
 categories:
+  - Data Engineering
+  - Data Governance
   - Business Intelligence
-author: Jack
 tags:
   - Looker
   - dbt
@@ -17,15 +19,17 @@ tags:
   - reporting
   - SQL
   - LookML
-image: /images/gallery/screenshot-2026-03-02-at-165238.png
-draft: false
-type: portfolio
+author: Jack
 length: Long (6-12 months)
+read_time: 5
+type: portfolio
+draft: false
 notion_id: 3167fd6b-fd0d-8077-839d-e90a57c8f299
 created_at: '2026-03-01T14:22:00.000Z'
-last_edited_at: '2026-03-02T21:14:00.000Z'
-last_synced: '2026-03-02T21:14:07.661Z'
+last_edited_at: '2026-04-18T09:30:00.000Z'
+last_synced: '2026-04-24T15:14:44.533Z'
 math: true
+image: /images/gallery/screenshot-2026-03-02-at-165238.png
 ---
 Most companies don’t struggle with a lack of data, but fragmented reporting, inconsistent definitions, manual processes, and unclear ownership - sound familiar?
 

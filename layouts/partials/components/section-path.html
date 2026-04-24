@@ -1,5 +1,9 @@
 {{- if .IsHome -}}
 ~/{{- else if .Section -}}
-{{- printf "~/%s" .Section -}}
+  {{- if and .IsPage (in (slice "blog" "portfolio") .Section) (.Params.id) -}}
+    {{- printf "~/%s/post_%03d" .Section (int .Params.id) -}}
+  {{- else -}}
+    {{- printf "~/%s" .Section -}}
+  {{- end -}}
 {{- else -}}
 ~/{{- end -}}

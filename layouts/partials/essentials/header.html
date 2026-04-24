@@ -122,7 +122,7 @@
       {{ with site.Params.search }} {{ if .enable }}
       <button
         aria-label="search"
-        class="flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-full border border-border text-text transition hover:border-text-light/30 hover:bg-[var(--color-light)] dark:border-darkmode-border dark:text-darkmode-text dark:hover:border-darkmode-text-light/30 dark:hover:bg-[var(--color-darkmode-light)]"
+        class="search-trigger flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-full border border-border text-text transition hover:border-text-light/30 hover:bg-[var(--hover-bg)] dark:border-darkmode-border dark:text-darkmode-text dark:hover:border-darkmode-text-light/30 dark:hover:bg-[var(--hover-bg)] dark:hover:text-darkmode-text-dark"
         data-target="search-modal"
       >
         <i class="fa-solid fa-search text-[13px]"></i>

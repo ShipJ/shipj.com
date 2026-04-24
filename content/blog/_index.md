@@ -1,5 +1,5 @@
 ---
 title: "Blog"
 meta_title: "Blog"
-description: "> Thoughts on data science and engineering."
+description: "> An <s>imposter</s> expert's thoughts on data science and engineering."
 ---

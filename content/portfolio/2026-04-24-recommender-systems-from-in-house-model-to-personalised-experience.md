@@ -1,9 +1,10 @@
 ---
+id: '11'
 title: 'Recommender Systems: From In-House Model to Personalised Experience'
 meta_title: ''
 description: 'Recommender Systems: From In-House Model to Personalised Experience'
 slug: recommender-systems-from-in-house-model-to-personalised-experience
-date: '2026-04-18T10:27:22.881Z'
+date: '2026-04-24T15:14:46.476Z'
 categories:
   - Data Science
   - Data Architecture
@@ -20,7 +21,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-809d-a8f4-d5db23bfea04
 created_at: '2026-03-01T14:06:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:22.881Z'
+last_synced: '2026-04-24T15:14:46.476Z'
 math: true
 image: ''
 ---

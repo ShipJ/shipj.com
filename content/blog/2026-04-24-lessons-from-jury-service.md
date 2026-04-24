@@ -1,4 +1,5 @@
 ---
+id: '22'
 title: Lessons from Jury Service
 meta_title: >-
   Lessons Learned from Jury Service: Overcoming Imposter Syndrome and Embracing
@@ -7,7 +8,7 @@ description: >-
   Lessons learned from mandatory Jury service, including an absolute sense of
   imposter syndrome
 slug: lessons-from-jury-service
-date: '2026-04-18T09:31:10.237Z'
+date: '2026-04-24T15:14:48.331Z'
 categories:
   - Lifestyle
 tags:
@@ -21,7 +22,7 @@ draft: false
 notion_id: 3177fd6b-fd0d-805c-9ab7-dfbc6c66e8e5
 created_at: '2026-03-02T21:52:00.000Z'
 last_edited_at: '2026-04-18T09:30:00.000Z'
-last_synced: '2026-04-18T09:31:10.237Z'
+last_synced: '2026-04-24T15:14:48.331Z'
 math: true
 image: ''
 ---

@@ -117,13 +117,23 @@ const pickSelect = (p) =>
         ? p.status?.name ?? ""
         : p.type === "rich_text"
           ? pickText(p)
-          : "";
+        : "";
+
+const pickUniqueId = (p) => {
+  if (!p || p.type !== "unique_id") return "";
+  const prefix = p.unique_id?.prefix ?? "";
+  const number = p.unique_id?.number;
+  if (number === null || number === undefined) return "";
+  return prefix ? `${prefix}-${number}` : String(number);
+};
 
 const pickScalar = (p) =>
   !p
     ? ""
     : p.type === "number"
       ? p.number ?? ""
+      : p.type === "unique_id"
+        ? pickUniqueId(p)
       : p.type === "formula"
         ? p.formula?.type === "string"
           ? p.formula.string ?? ""
@@ -303,6 +313,7 @@ function mapFrontMatter(page) {
 
   const slugProp = pickText(prop(props, "slug"));
   const fm = {
+    id: pickScalar(prop(props, "id")),
     title: rawTitle,
     meta_title: pickText(prop(props, "meta_title")),
     description: pickText(prop(props, "description")),

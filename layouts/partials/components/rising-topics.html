@@ -1,0 +1,65 @@
+{{ $data := site.Data.rising_topics }}
+{{ if not $data }}{{ return }}{{ end }}
+{{ $minimal := false }}
+{{ with .Minimal }}{{ $minimal = . }}{{ end }}
+
+<section class="rising-topics{{ if $minimal }} is-minimal{{ end }}" aria-label="hot topics">
+  <div class="rising-topics-grid">
+    <div class="rising-topic-group">
+      <ul class="rising-topic-list" role="list">
+        {{ range $i, $topic := first 3 ($data.categories | default (slice)) }}
+          {{ $label := $topic.label }}
+          {{ $chipLabel := title $label }}
+          {{ $value := $label | urlize | lower }}
+          {{ $change := $topic.change | default 0 }}
+          {{ $tone := printf "category-chip-%s" (partial "components/category-tone" (dict "Name" $label) | strings.TrimSpace) }}
+          <li class="rising-topic-item{{ if eq $i 0 }} is-top{{ end }}">
+            <a
+              class="rising-topic-link"
+              href="{{ partial "components/filter-url" (dict "Kind" "categories" "Value" $label) }}"
+              data-filter-kind="categories"
+              data-filter-label="{{ $chipLabel }}"
+              data-filter-value="{{ $value }}"
+            >
+              <span class="rising-topic-trace">
+                <span class="rising-topic-name rising-topic-name-category ui-chip ui-chip-meta ui-chip-category {{ $tone }}{{ if gt (len $chipLabel) 18 }} is-long{{ end }}">{{ $chipLabel }}</span>
+                <span class="rising-topic-chartline">
+                  {{ partial "components/topic-sparkline" (dict "Label" $label "Values" $topic.values "Highlight" (eq $i 0)) }}
+                  <span class="rising-topic-change">+{{ $change }}%</span>
+                </span>
+              </span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+
+    <div class="rising-topic-group">
+      <ul class="rising-topic-list" role="list">
+        {{ range $i, $topic := first 3 ($data.tags | default (slice)) }}
+          {{ $label := $topic.label }}
+          {{ $rawLabel := strings.TrimPrefix "#" $label }}
+          {{ $value := $rawLabel | urlize | lower }}
+          {{ $change := $topic.change | default 0 }}
+          <li class="rising-topic-item{{ if eq $i 0 }} is-top{{ end }}">
+            <a
+              class="rising-topic-link"
+              href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" $rawLabel) }}"
+              data-filter-kind="tags"
+              data-filter-label="{{ $label }}"
+              data-filter-value="{{ $value }}"
+            >
+              <span class="rising-topic-trace">
+                <span class="rising-topic-name">{{ $label }}</span>
+                <span class="rising-topic-chartline">
+                  {{ partial "components/topic-sparkline" (dict "Label" $label "Values" $topic.values "Highlight" (eq $i 0)) }}
+                  <span class="rising-topic-change">+{{ $change }}%</span>
+                </span>
+              </span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+  </div>
+</section>

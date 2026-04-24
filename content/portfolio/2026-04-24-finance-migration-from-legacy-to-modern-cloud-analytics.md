@@ -1,9 +1,10 @@
 ---
+id: '13'
 title: 'Finance Migration: From Legacy to Modern Cloud Analytics'
 meta_title: ''
 description: 'Finance Migration: From Legacy to Modern Cloud Analytics'
 slug: finance-migration-from-legacy-to-modern-cloud-analytics
-date: '2026-04-18T10:27:25.510Z'
+date: '2026-04-24T15:14:47.625Z'
 categories:
   - Data Engineering
   - Data Analytics
@@ -26,7 +27,7 @@ draft: false
 notion_id: 3167fd6b-fd0d-80c4-a1bd-c810102c2198
 created_at: '2026-03-01T14:09:00.000Z'
 last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-18T10:27:25.510Z'
+last_synced: '2026-04-24T15:14:47.625Z'
 math: true
 image: ''
 ---

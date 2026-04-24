@@ -18,9 +18,7 @@
     {{ if $tags }}
     <div class="portfolio-card-tags-row mb-2 text-xs text-text-light dark:text-darkmode-text-light">
       {{ range $tags }}
-        <a href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .) }}" data-filter-kind="tags" data-filter-value="{{ . | urlize | lower }}" class="portfolio-card-tag-link inline text-xs text-text-light transition hover:text-text-dark dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark">
-          #{{ . }}
-        </a>
+        <span class="portfolio-card-tag-link inline cursor-pointer text-xs text-text-light transition hover:text-text-dark dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark" data-filter-kind="tags" data-filter-value="{{ . | urlize | lower }}">#{{ . }}</span>
       {{ end }}
     </div>
     {{ end }}

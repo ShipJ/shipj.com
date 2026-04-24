@@ -1,4 +1,5 @@
 ---
+id: '24'
 title: >-
   A step-by-step guide to sync your Notion content with a Hugo site using
   Notion’s API
@@ -10,9 +11,9 @@ description: >-
   website via the Notion API
 slug: >-
   a-step-by-step-guide-to-sync-your-notion-content-with-a-hugo-site-using-notions-api
-date: '2026-04-18T09:31:10.975Z'
+date: '2026-04-24T15:14:49.485Z'
 categories:
-  - Data Engineering
+  - Vibe-Coding
 tags:
   - Notion
   - Hugo
@@ -27,7 +28,7 @@ draft: false
 notion_id: 3187fd6b-fd0d-8055-9e3f-e1f79643cb61
 created_at: '2026-03-03T09:11:00.000Z'
 last_edited_at: '2026-04-18T09:30:00.000Z'
-last_synced: '2026-04-18T09:31:10.975Z'
+last_synced: '2026-04-24T15:14:49.485Z'
 math: true
 image: ''
 ---

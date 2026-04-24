@@ -36,7 +36,7 @@
 {{ end }}
 {{ $tagList = sort $tagList "Count" "desc" }}
 
-<section class="page-lead">
+<section class="page-lead blog-list-page">
   <div class="site-container">
     <div
       class="blog-list"
@@ -47,11 +47,14 @@
       data-filter-clear-url="{{ .RelPermalink }}"
     >
 
+      <div class="blog-rising-topics-shell">
+        {{ partial "components/rising-topics" (dict "Page" . "ShowTitle" false "Minimal" true) }}
+      </div>
+
       {{/* ---- Editorial hero ---- */}}
       <div class="editorial-list-hero">
         {{ partial "components/page-eyebrow" (dict "Page" .) }}
-        <h1 class="eyebrow-gap">{{ .Params.description | default "Notes on data, systems, and the decisions behind the work." }}</h1>
-        <p class="lead">Each post belongs to one category; tags capture specifics. Ordered by date.</p>
+        <h1 class="eyebrow-gap">{{ .Params.description | default "Notes on data, systems, and the decisions behind the work." | safeHTML }}<span class="cursor" aria-hidden="true"></span></h1>
       </div>
 
       {{/* ---- Collapsible filters ---- */}}
@@ -60,6 +63,10 @@
           <span>filters</span>
           <i class="chevron">▾</i>
           <span class="active-chips hidden" data-active-chips></span>
+          <span class="filter-match-toggle hidden" data-filter-match-toggle>
+            <button type="button" class="filter-match-opt on" data-filter-match-mode="or">or</button>
+            <button type="button" class="filter-match-opt" data-filter-match-mode="and">and</button>
+          </span>
           <a class="clear-btn hidden" href="{{ .RelPermalink }}" data-clear-filters>clear</a>
         </summary>
         <div class="filter-body">
@@ -238,23 +245,38 @@
         var labels = [];
         activeCats.forEach(function (v) {
           var ctrl = root.querySelector('[data-filter-kind="categories"][data-filter-value="' + v + '"]');
-          if (ctrl) labels.push(ctrl.textContent.trim().replace(/\s+\d+\s*$/, ''));
+          if (ctrl) labels.push({ label: ctrl.dataset.filterLabel || ctrl.textContent.trim().replace(/\s+\d+\s*$/, ''), kind: 'categories', value: v });
         });
         activeTags.forEach(function (v) {
           var ctrl = root.querySelector('[data-filter-kind="tags"][data-filter-value="' + v + '"]');
           if (ctrl) {
+            if (ctrl.dataset.filterLabel) {
+              labels.push({ label: ctrl.dataset.filterLabel, kind: 'tags', value: v });
+              return;
+            }
             var clone = ctrl.cloneNode(true);
             var num = clone.querySelector('.num');
             if (num) num.remove();
-            labels.push(clone.textContent.trim());
+            labels.push({ label: clone.textContent.trim(), kind: 'tags', value: v });
           }
         });
         chipsEl.innerHTML = '';
-        labels.forEach(function (label, i) {
+        labels.forEach(function (item, i) {
           if (i > 0) chipsEl.appendChild(document.createTextNode(' · '));
           var s = document.createElement('span');
           s.className = 'active-chip-word';
-          s.textContent = label;
+          s.textContent = item.label;
+          s.style.cursor = 'pointer';
+          s.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var chip = root.querySelector('[data-filter-kind="' + item.kind + '"][data-filter-value="' + item.value + '"]');
+            if (!chip) return;
+            var details = root.querySelector('.filter-details');
+            var wasOpen = details ? details.open : false;
+            chip.click();
+            if (details) details.open = wasOpen;
+          });
           chipsEl.appendChild(s);
         });
         chipsEl.classList.toggle('hidden', labels.length === 0);
@@ -282,17 +304,37 @@
       });
     }());
 
-    // Clicking post-row tags/categories toggles filters instead of navigating.
+    // Clicking post-row tags/categories toggles filters without opening the panel.
     root.querySelectorAll('.post-row').forEach(function (row) {
       row.addEventListener('click', function (e) {
         var tagEl = e.target.closest('[data-post-tag]');
         var catEl = e.target.closest('[data-post-category]');
         if (!tagEl && !catEl) return;
         e.preventDefault();
+        e.stopPropagation();
         var kind = tagEl ? 'tags' : 'categories';
         var value = tagEl ? tagEl.dataset.postTag : catEl.dataset.postCategory;
         var chip = root.querySelector('[data-filter-kind="' + kind + '"][data-filter-value="' + value + '"]');
-        if (chip) chip.click();
+        if (!chip) return;
+        var details = root.querySelector('.filter-details');
+        var wasOpen = details ? details.open : false;
+        chip.click();
+        if (details) details.open = wasOpen;
+      });
+    });
+
+    // Clicking month-meta tags toggles filters without opening the panel.
+    root.querySelectorAll('.month-meta [data-post-tag]').forEach(function (tagEl) {
+      tagEl.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var value = tagEl.dataset.postTag;
+        var chip = root.querySelector('[data-filter-kind="tags"][data-filter-value="' + value + '"]');
+        if (!chip) return;
+        var details = root.querySelector('.filter-details');
+        var wasOpen = details ? details.open : false;
+        chip.click();
+        if (details) details.open = wasOpen;
       });
     });
 
@@ -307,11 +349,6 @@
       window.setTimeout(syncActiveHighlights, 0);
     });
 
-    // Auto-open filter panel if any filter is active in URL
-    var hasAny = new URLSearchParams(window.location.search).getAll('categories').length > 0
-      || new URLSearchParams(window.location.search).getAll('tags').length > 0;
-    var details = root.querySelector('.filter-details');
-    if (details && hasAny) details.open = true;
   })();
 </script>
 

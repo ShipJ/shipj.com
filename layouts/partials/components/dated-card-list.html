@@ -95,7 +95,7 @@
     {{ if $dayChanged }}
       {{ if $openDayGroup }}</div>{{ end }}
       <div data-filter-group class="space-y-2">
-        <div class="pl-0.5 text-xs uppercase tracking-wide text-text-light/80 dark:text-darkmode-text-light/80">
+        <div class="pl-0.5 text-left text-xs uppercase tracking-wide text-text-light/80 dark:text-darkmode-text-light/80">
           {{ .Date.Format "2 Jan" }}
         </div>
       {{ $openDayGroup = true }}
