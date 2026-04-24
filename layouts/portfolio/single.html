@@ -1,8 +1,9 @@
 {{ define "main" }}
-<section class="section pt-8">
+<section class="page-lead pb-20 lg:pb-24 xl:pb-28">
   <div class="site-container">
     <article>
-        <div class="ui-shell mb-8 !px-0 !py-5 md:!py-6">
+        <div class="page-header-shell mb-8">
+        {{ partial "components/page-eyebrow" (dict "Page" . "Class" "mb-4") }}
 
         {{ $image := .Params.image }}
         {{ if $image }}

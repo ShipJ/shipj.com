@@ -1,123 +1,184 @@
 {{ define "main" }}
-<!-- Banner -->
+
+{{/* ========== HERO ========== */}}
 {{ with .Params.banner }}
-<section class="section pt-6 pb-0">
+<section class="page-lead">
   <div class="site-container">
-    <div class="flex min-h-[72vh] items-start pt-6 pb-0 md:min-h-[76vh] md:pt-8">
-      <div class="row justify-center">
-      <div class="lg:col-12 text-left">
-        <div class="w-full">
-        <!-- <p class="ui-kicker mb-3">Welcome</p> -->
-        <h1 class="mb-8 text-h3 lg:text-[clamp(1.9rem,5.1vw,5.1rem)]">{{ .title | markdownify }}</h1>
-        <p class="mb-6 lg:text-lg">{{ .content | markdownify }}</p>
-        </div>
-        <div class="mt-8 mb-8 w-full">
-          <div class="flex flex-col items-center gap-4 lg:flex-row lg:flex-nowrap lg:items-stretch lg:justify-center">
-            {{ with .button }} {{ if .enable }}
-            <a
-              class="btn btn-primary w-full max-w-sm px-6 py-3 text-base lg:max-w-none lg:flex-1 lg:px-4 lg:py-2.5 lg:text-sm"
-              href="{{ strings.TrimPrefix `/` .link | absURL }}"
-              {{
-              if
-              strings.HasPrefix
-              .link
-              `http`
-              }}
-              target="_blank"
-              rel="noopener"
-              {{
-              end
-              }}
-            >
-              {{ .label }}
-              <i class="fa fa-arrow-right pl-2"></i>
-            </a>
-            {{ end }} {{ end }}
-            {{ range .secondary_buttons }}
-            <a class="btn btn-outline-primary w-full max-w-sm px-6 py-3 text-base lg:max-w-none lg:flex-1 lg:px-4 lg:py-2.5 lg:text-sm" href="{{ strings.TrimPrefix `/` .link | relURL }}">
-              {{ .label }}
-              <i class="fa {{ .icon }} pl-2"></i>
-            </a>
-            {{ end }}
-          </div>
-        </div>
-        <div class="border-t border-border dark:border-darkmode-border mt-10 mb-10"></div>
+    <div class="editorial-hero">
+      {{ partial "components/page-eyebrow" (dict "Page" $) }}
+      <h1 class="eyebrow-gap">&gt; {{ .title | markdownify }}<span class="cursor"></span></h1>
+      <div class="hero-body">
+        {{ .content | markdownify }}
       </div>
-      </div>
-    </div>
-  </div>
-</section>
-{{ end }}
-<!-- /Banner -->
 
-{{ with .Params.home_cta }}
-<section class="section-sm py-0">
-  <div class="site-container">
-    <div class="ui-shell">
-      <div class="row items-center gap-y-8">
-        <div class="lg:col-8">
-          <p class="ui-kicker mb-3">{{ .kicker }}</p>
-          <h2 class="mb-4">{{ .title }}</h2>
-          <p class="mb-6 max-w-3xl text-lg text-text dark:text-darkmode-text">{{ .content }}</p>
-          <ul class="space-y-3">
-            {{ range .points }}
-            <li class="relative pl-6">
-              <i class="fa fa-check absolute left-0 top-1.5"></i>
-              {{ . }}
-            </li>
-            {{ end }}
-          </ul>
-        </div>
-        <div class="lg:col-4 text-left lg:text-right">
-          <a class="btn btn-primary mb-4 w-full lg:w-auto" href="{{ strings.TrimPrefix `/` .primary_button.link | relURL }}">
-            {{ .primary_button.label }}
-            <i class="fa fa-arrow-right pl-2"></i>
-          </a>
-          <br />
-          <a class="btn btn-outline-primary w-full lg:w-auto" href="{{ strings.TrimPrefix `/` .secondary_button.link | absURL }}" target="_blank" rel="noopener">
-            {{ .secondary_button.label }}
-            <i class="fa fa-arrow-right pl-2"></i>
-          </a>
-        </div>
+      <div class="cta-row">
+        {{ with .button }}{{ if .enable }}
+        <a class="cta primary" href="{{ strings.TrimPrefix `/` .link | relURL }}">
+          {{ .label }} <span class="arrow">→</span>
+        </a>
+        {{ end }}{{ end }}
+        {{ range .secondary_buttons }}
+        <a class="cta" href="{{ strings.TrimPrefix `/` .link | relURL }}">
+          {{ .label }}{{ with .icon }} <i class="fa-solid {{ . }} cta-icon"></i>{{ end }}
+        </a>
+        {{ end }}
       </div>
     </div>
   </div>
 </section>
 {{ end }}
 
-{{ $blogPageSet := where site.RegularPages "Section" "in" (slice "blog" "portfolio") }}
-{{ $blogCompactPosts := sort $blogPageSet "Date" "desc" }}
+{{/* ========== LATEST POSTS (diff-style list) ========== */}}
+{{ $blogPages := sort (where site.RegularPages "Section" "blog") "Date" "desc" }}
 {{ with .Params.blog_section }}
-{{ if gt (len $blogCompactPosts) 0 }}
-<section class="section-sm pt-4 pb-8 md:pt-6 md:pb-12">
+{{ if gt (len $blogPages) 0 }}
+<section class="ed-section">
   <div class="site-container">
-    <div data-filter-root data-list-view-root data-list-view-key="home" data-filter-clear-url="{{ site.Home.RelPermalink }}">
-    <div class="mb-6">
+    <div class="section-kicker">§ 01 — Writing</div>
+    <div class="section-head">
       <div>
-        <p class="ui-kicker mb-3">{{ .kicker }}</p>
-        <div class="mb-3 flex flex-wrap items-center gap-4">
-          <div class="flex flex-wrap items-center gap-4">
-          <h2 class="mb-0 text-h4 text-text-dark dark:text-darkmode-text-dark">{{ .title }}</h2>
-          <a class="btn btn-outline-primary mt-1" href="{{ strings.TrimPrefix `/` .button_link | relURL }}">
-            {{ .button_label }}
-            <i class="fa fa-pen pl-2"></i>
-          </a>
-          </div>
-        </div>
-        <p class="text-text-light dark:text-darkmode-text-light">{{ .description }}</p>
+        <h2>&gt; {{ .title }}</h2>
+        <p class="section-sub">{{ .description }}</p>
       </div>
+      <a class="cta" style="padding:10px 16px; max-width:200px" href="{{ strings.TrimPrefix `/` .button_link | relURL }}">
+        {{ .button_label }} <span class="arrow">→</span>
+      </a>
     </div>
-    <div class="mt-10">
-      {{ partial "widgets/filters-panel" (dict "Page" . "ScopePages" $blogPageSet) }}
-    </div>
-    <div class="pt-8" data-filter-results>
-      <div class="space-y-5">
-        {{ partial "components/dated-card-list" (dict "Pages" $blogCompactPosts "ShowToggle" true "ShowMonthTags" true) }}
-      </div>
-    </div>
+
+    <div class="post-list">
+      {{ range first 5 $blogPages }}
+      {{ $cat := "" }}{{ with .Params.categories }}{{ $cat = index . 0 }}{{ end }}
+      <a class="post-row" href="{{ .RelPermalink }}">
+        <span class="gutter"></span>
+        <span class="date">{{ .Date.Format "02 Jan 2006" }}</span>
+        <span class="title">
+          &gt; {{ .Title }}
+          {{ with .Params.tags }}
+          <span class="tags">{{ range $i, $t := . }}{{ if $i }} · {{ end }}#{{ $t | urlize }}{{ end }}</span>
+          {{ end }}
+        </span>
+        {{ with $cat }}<span class="cat">{{ . }}</span>{{ end }}
+      </a>
+      {{ end }}
     </div>
   </div>
 </section>
 {{ end }}
 {{ end }}
+
+{{/* ========== PORTFOLIO TREE ========== */}}
+{{ $portfolio := sort (where site.RegularPages "Section" "portfolio") "Date" "desc" }}
+{{ with .Params.portfolio_section }}
+{{ if gt (len $portfolio) 0 }}
+<section class="ed-section">
+  <div class="site-container">
+    <div class="section-kicker">§ 02 — Selected work</div>
+    <div class="section-head">
+      <div>
+        <h2>&gt; {{ .title }}</h2>
+        <p class="section-sub">{{ .description }}</p>
+      </div>
+      <span class="meta-row">
+        <span class="num">{{ len $portfolio }}</span> engagements
+        <span class="sep">·</span>
+        retail · ecomm · data
+      </span>
+    </div>
+
+    <div class="panel">
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="panel-head">
+        <span>~ / portfolio — tree</span>
+        <span class="dots"><i></i><i></i><i></i></span>
+      </div>
+      <div class="tree">
+        {{/* Manual group-by-first-category (GroupByParam can't handle slice params) */}}
+        {{ $grouped := dict }}
+        {{ $order := slice }}
+        {{ range $portfolio }}
+          {{ $key := "uncategorised" }}
+          {{ with .Params.categories }}{{ $key = index . 0 }}{{ end }}
+          {{ if not (isset $grouped $key) }}
+            {{ $order = $order | append $key }}
+            {{ $grouped = merge $grouped (dict $key (slice .)) }}
+          {{ else }}
+            {{ $existing := index $grouped $key }}
+            {{ $grouped = merge $grouped (dict $key ($existing | append .)) }}
+          {{ end }}
+        {{ end }}
+        {{ $gLast := sub (len $order) 1 }}
+        {{ range $gi, $key := $order }}
+          {{ $pages := index $grouped $key }}
+          {{ $isLastGroup := eq $gi $gLast }}
+          {{ $folderPrefix := "├─" }}{{ if $isLastGroup }}{{ $folderPrefix = "└─" }}{{ end }}
+          <div class="row">
+            <span><span class="indent">{{ $folderPrefix }} </span><span class="folder">{{ $key | urlize }}/</span></span>
+            <span class="note">— {{ len $pages }} {{ cond (eq (len $pages) 1) "engagement" "engagements" }}</span>
+          </div>
+          {{ $shown := first 4 $pages }}
+          {{ $pLast := sub (len $shown) 1 }}
+          {{ range $pi, $p := $shown }}
+            {{ $isLastLeaf := eq $pi $pLast }}
+            {{ $trunk := "│" }}{{ if $isLastGroup }}{{ $trunk = " " }}{{ end }}
+            {{ $leaf := "├─" }}{{ if $isLastLeaf }}{{ $leaf = "└─" }}{{ end }}
+            {{ $slug := $p.Params.slug | default "" }}
+            {{ if not $slug }}{{ with $p.File }}{{ $slug = .BaseFileName }}{{ end }}{{ end }}
+            <div class="row">
+              <span><span class="indent">{{ $trunk }}  {{ $leaf }} </span><a class="file" href="{{ $p.RelPermalink }}">{{ $slug }}.md</a></span>
+              <span class="note">{{ $p.Date.Format "2006" }}{{ with $p.Params.length }} · {{ . }}{{ end }}</span>
+            </div>
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <a class="cta" style="max-width:240px" href="{{ strings.TrimPrefix `/` .button_link | relURL }}">
+        {{ .button_label }} <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+{{ end }}
+{{ end }}
+
+{{/* ========== CAPABILITIES ========== */}}
+{{ $caps := .Params.capabilities_section | default (dict
+  "kicker" "§ 03 — How I work"
+  "title" "Capabilities"
+  "description" "Three modes, overlapping — most engagements need all three at different points."
+  "items" (slice
+    (dict "label" "01 · strategy"     "id" "0x01" "title" "Framing the problem"   "body" "Narrowing scope to the decision that actually matters. Written recommendations your CFO will read.")
+    (dict "label" "02 · engineering"  "id" "0x02" "title" "Building the system"   "body" "Pipelines, models, evaluation, and the unglamorous plumbing that makes an ML system trustworthy on a Tuesday.")
+    (dict "label" "03 · capability"   "id" "0x03" "title" "Leaving a team behind" "body" "Hiring, rituals, and documentation so the thing keeps working — and improving — after I've gone.")
+  )
+) }}
+<section class="ed-section">
+  <div class="site-container">
+    <div class="section-kicker">{{ $caps.kicker }}</div>
+    <div class="section-head">
+      <div>
+        <h2>&gt; {{ $caps.title }}</h2>
+        <p class="section-sub">{{ $caps.description }}</p>
+      </div>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-3">
+      {{ range $caps.items }}
+      <div class="panel">
+        <span class="corner bl"></span><span class="corner br"></span>
+        <div class="panel-head">
+          <span>{{ .label }}</span>
+          <span>{{ .id }}</span>
+        </div>
+        <div class="panel-body">
+          <h3 class="mb-2.5 text-[19px] tracking-[-0.01em]">&gt; {{ .title }}</h3>
+          <p class="m-0 text-text-light text-[15px] leading-[1.6]">{{ .body }}</p>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
 {{ end }}

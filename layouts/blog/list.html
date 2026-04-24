@@ -1,26 +1,318 @@
-{{ define "main" }} 
-{{ partial "page-header" . }}
-{{ $combinedPages := sort (where site.RegularPages "Section" "in" (slice "blog" "portfolio")) "Date" "desc" }}
-<section id="content-results" class="section pt-4">
+{{ define "main" }}
+{{ $blog := where site.RegularPages "Section" "blog" }}
+{{ $portfolio := where site.RegularPages "Section" "portfolio" }}
+{{ $pages := sort ($blog | union $portfolio) "Date" "desc" }}
+{{ $total := len $pages }}
+
+{{/* Collect unique categories (alphabetical) and tags (by frequency) for filter chips */}}
+{{ $catMap := dict }}
+{{ range $pages }}
+  {{ range .Params.categories }}
+    {{ $k := . | urlize | lower }}
+    {{ if not (isset $catMap $k) }}
+      {{ $catMap = merge $catMap (dict $k .) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $catKeys := slice }}
+{{ range $k, $_ := $catMap }}{{ $catKeys = $catKeys | append $k }}{{ end }}
+{{ $catKeys = sort $catKeys }}
+
+{{ $tagCounts := dict }}
+{{ $tagLabels := dict }}
+{{ range $pages }}
+  {{ range .Params.tags }}
+    {{ $k := . | urlize | lower }}
+    {{ $c := index $tagCounts $k | default 0 }}
+    {{ $tagCounts = merge $tagCounts (dict $k (add $c 1)) }}
+    {{ if not (isset $tagLabels $k) }}
+      {{ $tagLabels = merge $tagLabels (dict $k .) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $tagList := slice }}
+{{ range $k, $c := $tagCounts }}
+  {{ $tagList = $tagList | append (dict "Key" $k "Label" (index $tagLabels $k) "Count" $c) }}
+{{ end }}
+{{ $tagList = sort $tagList "Count" "desc" }}
+
+<section class="page-lead">
   <div class="site-container">
     <div
+      class="blog-list"
+      data-density="compact"
       data-filter-root
       data-list-view-root
       data-list-view-key="blog"
       data-filter-clear-url="{{ .RelPermalink }}"
-      class="pt-0"
     >
-    {{ partial "widgets/filters-panel" (dict "Page" . "ClearURL" .RelPermalink "ScopePages" $combinedPages) }}
-    <div class="pt-8" data-filter-results>
-      <div class="space-y-5">
-        {{ partial "components/dated-card-list" (dict "Pages" $combinedPages "ShowToggle" true "ShowMonthTags" true) }}
+
+      {{/* ---- Editorial hero ---- */}}
+      <div class="editorial-list-hero">
+        {{ partial "components/page-eyebrow" (dict "Page" .) }}
+        <h1 class="eyebrow-gap">{{ .Params.description | default "Notes on data, systems, and the decisions behind the work." }}</h1>
+        <p class="lead">Each post belongs to one category; tags capture specifics. Ordered by date.</p>
       </div>
-      <div class="ui-shell hidden text-center" data-filter-empty>
-        <p class="text-text-light dark:text-darkmode-text-light">No content matches the selected filters.</p>
+
+      {{/* ---- Collapsible filters ---- */}}
+      <details class="filter-details" data-filter-panel>
+        <summary class="filter-summary">
+          <span>filters</span>
+          <i class="chevron">▾</i>
+          <span class="active-chips hidden" data-active-chips></span>
+          <a class="clear-btn hidden" href="{{ .RelPermalink }}" data-clear-filters>clear</a>
+        </summary>
+        <div class="filter-body">
+          <div class="filter-row">
+            <span class="label">categories</span>
+            {{ range $catKeys }}
+              {{ $name := index $catMap . }}
+              <a class="filter-chip"
+                 data-filter-kind="categories"
+                 data-filter-value="{{ . }}"
+                 href="{{ partial "components/filter-url" (dict "Kind" "categories" "Value" $name) }}">{{ $name | lower }}</a>
+            {{ end }}
+          </div>
+
+          {{ if gt (len $tagList) 0 }}
+          <div class="filter-row filter-row-tags">
+            <div class="tag-head">
+              <span class="label">tags</span>
+              <div class="sort-toggle" data-tag-sort aria-label="Sort tags">
+                <button type="button" class="sort-opt on" data-sort="count" title="Sort by count">
+                  <i class="fa-solid fa-sort-numeric-down"></i>
+                </button>
+                <button type="button" class="sort-opt" data-sort="alpha" title="Sort alphabetically">
+                  <i class="fa-solid fa-sort-alpha-down"></i>
+                </button>
+              </div>
+            </div>
+            <span class="tag-chip-list" data-tag-list>
+              {{ range $tagList }}
+                <a class="filter-chip"
+                   data-filter-kind="tags"
+                   data-filter-value="{{ .Key }}"
+                   data-sort-count="{{ .Count }}"
+                   data-sort-alpha="{{ .Label | lower }}"
+                   href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Label) }}"><span class="tag-text">#{{ .Label }}</span> <span class="num">{{ .Count }}</span></a>
+              {{ end }}
+            </span>
+          </div>
+          {{ end }}
+        </div>
+      </details>
+
+      {{/* ---- Month groups ---- */}}
+      <div data-filter-results>
+        {{/* Build month-level tag counts once */}}
+        {{ $monthTags := dict }}
+        {{ range $pages }}
+          {{ $mk := .Date.Format "2006-01" }}
+          {{ $existingMap := index $monthTags $mk | default dict }}
+          {{ range (.Params.tags | default (slice)) }}
+            {{ $tn := . }}
+            {{ $c := index $existingMap $tn | default 0 }}
+            {{ $existingMap = merge $existingMap (dict $tn (add $c 1)) }}
+          {{ end }}
+          {{ $monthTags = merge $monthTags (dict $mk $existingMap) }}
+        {{ end }}
+
+        {{ $prevMonth := "" }}
+        {{ $openGroup := false }}
+        {{ $isFirstMonth := true }}
+        {{ range $pages }}
+          {{ $mk := .Date.Format "2006-01" }}
+          {{ if ne $mk $prevMonth }}
+            {{ if $openGroup }}</div></section>{{ end }}
+            {{ $tagMap := index $monthTags $mk }}
+            {{ $tagList := slice }}
+            {{ range $tn, $c := $tagMap }}
+              {{ $tagList = $tagList | append (dict "Name" $tn "Count" $c) }}
+            {{ end }}
+            {{ $tagList = sort $tagList "Count" "desc" }}
+
+            <section data-filter-group class="pt-4">
+              <div class="month-meta">
+                <span>{{ .Date.Format "January 2006" }}</span>
+                {{ if gt (len $tagList) 0 }}
+                  <span class="sep">·</span>
+                  {{ range first 5 $tagList }}
+                    <a href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Name) }}" data-post-tag="{{ .Name | urlize }}"><span class="tag-text">#{{ .Name }}</span> <span class="num">{{ .Count }}</span></a>
+                  {{ end }}
+                {{ end }}
+                {{ if $isFirstMonth }}
+                  <div class="density-inline">
+                    <span class="muted"></span>
+                    <button type="button" class="filter-chip density-chip on" data-density-val="compact">compact</button>
+                    <button type="button" class="filter-chip density-chip" data-density-val="comfy">comfy</button>
+                  </div>
+                  {{ $isFirstMonth = false }}
+                {{ end }}
+              </div>
+              <div class="post-list">
+            {{ $openGroup = true }}
+            {{ $prevMonth = $mk }}
+          {{ end }}
+
+          {{ $cat := "" }}{{ with .Params.categories }}{{ $cat = index . 0 }}{{ end }}
+          <a class="post-row"
+             href="{{ .RelPermalink }}"
+             data-filter-item
+             data-filter-categories="{{ delimit (apply (.Params.categories | default (slice)) "urlize" ".") "|" }}"
+             data-filter-tags="{{ delimit (apply (.Params.tags | default (slice)) "urlize" ".") "|" }}"
+             data-filter-authors="{{ with .Params.author }}{{ . | urlize }}{{ end }}">
+            <span class="gutter"></span>
+            <span class="date">{{ .Date.Format "02 Jan" }}</span>
+            <span class="title">
+              {{ .Title }}
+              {{ with .Params.tags }}
+              <span class="tags">{{ range $i, $t := . }}{{- if $i }} · {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
+              {{ end }}
+            </span>
+            {{ with $cat }}<span class="cat" data-post-category="{{ . | urlize }}">{{ . }}</span>{{ end }}
+          </a>
+        {{ end }}
+        {{ if $openGroup }}</div></section>{{ end }}
+
+        <div class="ui-shell hidden text-center" data-filter-empty>
+          <p class="text-text-light dark:text-darkmode-text-light">No content matches the selected filters.</p>
+        </div>
       </div>
-    </div>
+
     </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    var root = document.querySelector('.blog-list');
+    if (!root) return;
+
+    // Density chip toggle (scoped to blog-list wrapper)
+    root.querySelectorAll('.density-chip').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        root.dataset.density = btn.dataset.densityVal;
+        root.querySelectorAll('.density-chip').forEach(function (x) {
+          x.classList.toggle('on', x === btn);
+        });
+      });
+    });
+
+    // Tag sort toggle
+    var tagList = root.querySelector('[data-tag-list]');
+    root.querySelectorAll('[data-tag-sort] .sort-opt').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var mode = btn.dataset.sort;
+        root.querySelectorAll('[data-tag-sort] .sort-opt').forEach(function (b) {
+          b.classList.toggle('on', b === btn);
+        });
+        if (!tagList) return;
+        var chips = Array.from(tagList.querySelectorAll('.filter-chip'));
+        chips.sort(function (a, b) {
+          if (mode === 'count') return (+b.dataset.sortCount) - (+a.dataset.sortCount);
+          return a.dataset.sortAlpha.localeCompare(b.dataset.sortAlpha);
+        });
+        chips.forEach(function (c) { tagList.appendChild(c); });
+      });
+    });
+
+    function syncActiveHighlights() {
+      var params = new URLSearchParams(window.location.search);
+      var activeTags = new Set(params.getAll('tags'));
+      var activeCats = new Set(params.getAll('categories'));
+
+      root.querySelectorAll('[data-post-tag]').forEach(function (el) {
+        el.classList.toggle('active', activeTags.has(el.dataset.postTag));
+      });
+      root.querySelectorAll('[data-post-category]').forEach(function (el) {
+        el.classList.toggle('active', activeCats.has(el.dataset.postCategory));
+      });
+
+      var all = root.querySelector('.filter-chip-all');
+      if (all) all.classList.toggle('on', activeCats.size === 0 && activeTags.size === 0);
+
+
+      // Populate active labels next to "filters" in the summary bar.
+      var chipsEl = root.querySelector('[data-active-chips]');
+      if (chipsEl) {
+        var labels = [];
+        activeCats.forEach(function (v) {
+          var ctrl = root.querySelector('[data-filter-kind="categories"][data-filter-value="' + v + '"]');
+          if (ctrl) labels.push(ctrl.textContent.trim().replace(/\s+\d+\s*$/, ''));
+        });
+        activeTags.forEach(function (v) {
+          var ctrl = root.querySelector('[data-filter-kind="tags"][data-filter-value="' + v + '"]');
+          if (ctrl) {
+            var clone = ctrl.cloneNode(true);
+            var num = clone.querySelector('.num');
+            if (num) num.remove();
+            labels.push(clone.textContent.trim());
+          }
+        });
+        chipsEl.innerHTML = '';
+        labels.forEach(function (label, i) {
+          if (i > 0) chipsEl.appendChild(document.createTextNode(' · '));
+          var s = document.createElement('span');
+          s.className = 'active-chip-word';
+          s.textContent = label;
+          chipsEl.appendChild(s);
+        });
+        chipsEl.classList.toggle('hidden', labels.length === 0);
+      }
+    }
+
+    syncActiveHighlights();
+
+    // Watch for ui-chip-active class changes on tag filter chips and force orange.
+    (function () {
+      function applyTagChipColor(chip) {
+        var active = chip.classList.contains('ui-chip-active');
+        chip.style.setProperty('color', active ? '#c85a2b' : '', active ? 'important' : '');
+        chip.style.fontWeight = active ? '700' : '';
+      }
+      var tagChips = Array.from(root.querySelectorAll('[data-filter-kind="tags"].filter-chip'));
+      tagChips.forEach(applyTagChipColor);
+      var mo = new MutationObserver(function (mutations) {
+        mutations.forEach(function (m) {
+          if (m.attributeName === 'class') applyTagChipColor(m.target);
+        });
+      });
+      tagChips.forEach(function (chip) {
+        mo.observe(chip, { attributes: true, attributeFilter: ['class'] });
+      });
+    }());
+
+    // Clicking post-row tags/categories toggles filters instead of navigating.
+    root.querySelectorAll('.post-row').forEach(function (row) {
+      row.addEventListener('click', function (e) {
+        var tagEl = e.target.closest('[data-post-tag]');
+        var catEl = e.target.closest('[data-post-category]');
+        if (!tagEl && !catEl) return;
+        e.preventDefault();
+        var kind = tagEl ? 'tags' : 'categories';
+        var value = tagEl ? tagEl.dataset.postTag : catEl.dataset.postCategory;
+        var chip = root.querySelector('[data-filter-kind="' + kind + '"][data-filter-value="' + value + '"]');
+        if (chip) chip.click();
+      });
+    });
+
+    // Main.js updates URL via replaceState on chip click — re-sync highlights after.
+    root.querySelectorAll('[data-filter-kind][data-filter-value]').forEach(function (ctrl) {
+      ctrl.addEventListener('click', function () {
+        window.setTimeout(syncActiveHighlights, 0);
+      });
+    });
+    var clearBtn = root.querySelector('[data-clear-filters]');
+    if (clearBtn) clearBtn.addEventListener('click', function () {
+      window.setTimeout(syncActiveHighlights, 0);
+    });
+
+    // Auto-open filter panel if any filter is active in URL
+    var hasAny = new URLSearchParams(window.location.search).getAll('categories').length > 0
+      || new URLSearchParams(window.location.search).getAll('tags').length > 0;
+    var details = root.querySelector('.filter-details');
+    if (details && hasAny) details.open = true;
+  })();
+</script>
 
 {{ end }}

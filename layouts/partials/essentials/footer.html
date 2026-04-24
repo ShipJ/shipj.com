@@ -1,50 +1,8 @@
-<footer id="site-footer" class="border-t border-gray-100 py-4 dark:border-darkmode-border">
+<footer id="site-footer" class="foot-editorial">
   <div class="site-container">
-    <div class="row items-center gap-y-4">
-      <div class="xl:col-3 text-center xl:text-left">
-        <!-- navbar brand/logo -->
-        <a
-          class="navbar-brand inline-block opacity-80"
-          href="{{ site.Home.RelPermalink }}"
-        >
-          Hi, I'm Jack
-        </a>
-        <p class="mx-auto mt-2 w-fit font-normal text-[clamp(0.8rem,0.82vw,0.875rem)] tracking-wide text-text-light dark:text-darkmode-text-light xl:mx-0">
-          Scientist, engineer, forecaster.
-        </p>
-      </div>
-      <div class="xl:col-6 text-center">
-        <ul class="flex flex-wrap items-center justify-center gap-3">
-          {{ range site.Menus.footer }}
-          <li>
-            <a
-              class="ui-chip font-primary !text-[clamp(0.72rem,0.82vw,0.875rem)] !font-normal tracking-wide hover:border-text-light/30 hover:text-text-dark dark:hover:border-darkmode-text-light/30 dark:hover:text-darkmode-text-dark"
-              {{
-              if
-              findRE
-              `^http`
-              .URL
-              }}
-              target="_blank"
-              rel="noopener"
-              {{
-              end
-              }}
-              href="{{ if findRE `^#` .URL }}
-                  {{ if not $.IsHome }}
-                    {{ site.Home.RelPermalink }}
-                  {{ end }}{{ .URL }}
-                {{ else }}
-                  {{ .URL | relURL }}
-                {{ end }}"
-              >{{ .Name }}</a
-            >
-          </li>
-          {{ end }}
-        </ul>
-      </div>
-      <div class="xl:col-3 text-center xl:text-right">
-        <ul class="social-icons">
+    <div class="grid items-center gap-x-4" style="grid-template-columns: 1fr auto 1fr;">
+      <div class="flex flex-col gap-2 justify-self-start">
+        <ul class="social-icons" style="font-family: var(--font-primary); text-transform:none; letter-spacing:0; justify-content:flex-start">
           {{ range site.Data.social.main }}
           <li>
             <a
@@ -58,10 +16,26 @@
           </li>
           {{ end }}
         </ul>
+        <span style="font-size: 10px; opacity: 0.6; text-align: center;">© {{ now.UTC.Format "2006" }} · Jack Shipsmith</span>
       </div>
-    </div>
-    <div class="pt-4 text-center text-xs text-text-light dark:text-darkmode-text-light">
-      <p>{{ site.Params.copyright | markdownify }}</p>
+      <ul class="flex flex-wrap items-center justify-center gap-1">
+        {{ range site.Menus.footer }}
+        <li>
+          <a
+            class="rounded-full px-3 py-1.5 transition hover:bg-light hover:text-text-dark dark:hover:bg-darkmode-light dark:hover:text-darkmode-text-dark"
+            {{ if findRE `^http` .URL }}target="_blank" rel="noopener"{{ end }}
+            href="{{ if findRE `^#` .URL }}{{ if not $.IsHome }}{{ site.Home.RelPermalink }}{{ end }}{{ .URL }}{{ else }}{{ .URL | relURL }}{{ end }}"
+            >{{ .Name }}</a>
+        </li>
+        {{ end }}
+      </ul>
+      <div class="text-right leading-snug">
+        <div>last deploy</div>
+        <div style="font-size: 10px; opacity: 0.6;">
+          {{ now.UTC.Format "02 Jan 2006" }}<br>
+          {{ now.UTC.Format "15:04" }} UTC
+        </div>
+      </div>
     </div>
   </div>
 </footer>

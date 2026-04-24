@@ -24,17 +24,13 @@
   {{ $clearURL = (`portfolio/` | relURL) }}
 {{ end }}
 
-<section class="pt-4">
+<section class="page-lead">
   <div class="site-container">
-    <div class="ui-shell px-6 py-4 text-center md:px-8 md:py-5">
-      <p class="mb-4 text-sm tracking-wide text-text-light lowercase dark:text-darkmode-text-light">
-        <a class="hover:text-text-dark dark:hover:text-darkmode-text-dark" href="{{ site.Home.RelPermalink }}">home</a>
-        <span class="mx-2">/</span>
-        <span>date</span>
-      </p>
-      <h1 class="mx-auto mt-0 max-w-4xl">{{ .Title }}</h1>
+    <div class="page-header-shell">
+      {{ partial "components/page-eyebrow" (dict "Page" .) }}
+      <h1 class="mt-6">{{ .Title }}</h1>
       {{ with .Params.description }}
-      <p class="mx-auto mt-4 max-w-2xl text-base text-text-light dark:text-darkmode-text-light md:text-lg">
+      <p class="mt-4 max-w-2xl text-base text-text-light dark:text-darkmode-text-light md:text-lg">
         {{ . }}
       </p>
       {{ end }}

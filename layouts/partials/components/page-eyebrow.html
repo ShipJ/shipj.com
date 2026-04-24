@@ -1,0 +1,10 @@
+{{ $page := .Page }}
+{{ $extras := .Extras | default (slice) }}
+<div class="eyebrow eyebrow-home{{ with .Class }} {{ . }}{{ end }}">
+  Jack Shipsmith on Mac
+  {{ range $extras }}
+    <span class="sep">·</span>
+    {{ . }}
+  {{ end }}
+  <span class="eyebrow-path">{{ partial "components/section-path" $page }}</span>
+</div>

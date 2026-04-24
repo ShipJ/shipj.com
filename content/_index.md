@@ -1,7 +1,8 @@
 ---
 banner:
-  title: "Practical data science and engineering for those seeking clarity."
-  content: "I'm a data science and engineering enthusiast, turn data into products, and AI into measurable impact.<br><br>Over the past decade, I’ve worked across retail and ecommerce, powering some of the world’s most advanced forecasting organisations.<br><br>From strategy through to delivery, I work at the intersection of data, engineering, and business—building systems, teams, and capabilities that last."
+  title: "An <s>imposter</s> expert's guide to data science and engineering."
+  content: "I'm a data scientist by education, engineer by trade, and manager by accident. 
+    <br><br>For the past decade, I’ve worked in retail and ecommerce, powering some of the world’s most advanced forecasting organisations. From strategy through to delivery. If, like me, you're rarely the smartest person in the room, but find yourself in charge of an awful lot, this is for you."
   image: "/images/banner.png"
   button:
     enable: true

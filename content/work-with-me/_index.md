@@ -1,7 +1,7 @@
 ---
 title: "Work with Me"
 meta_title: "Work with Me"
-description: "How can we work together?"
+description: "> How can we work together?"
 image: "/images/banner.png"
 
 consulting:

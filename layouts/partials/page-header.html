@@ -1,22 +1,19 @@
 {{ $isSimpleSectionHeader := in (slice "blog" "portfolio" "about" "work-with-me") .Section }}
-<section class="pt-4">
+{{ $isTighterSectionHeader := in (slice "portfolio" "about" "work-with-me") .Section }}
+<section class="page-lead">
   <div class="site-container">
-    <div class="ui-shell px-6 {{ if $isSimpleSectionHeader }}py-4 md:py-5{{ else }}py-6 md:py-7{{ end }} text-center md:px-8">
-      <p class="mb-4 font-primary text-sm tracking-wide text-text-light lowercase dark:text-darkmode-text-light">
-        <a class="hover:text-text-dark dark:hover:text-darkmode-text-dark" href="{{ site.Home.RelPermalink }}">home</a>
-        <span class="mx-2">/</span>
-        <span>{{ .Title | lower }}</span>
-      </p>
+    <div class="page-header-shell">
+      {{ partial "components/page-eyebrow" (dict "Page" .) }}
       {{ if not $isSimpleSectionHeader }}
-      <h1>{{ T (printf "%s" (lower .Title)) | default .Title | title }}</h1>
+      <h1 class="eyebrow-gap">{{ T (printf "%s" (lower .Title)) | default .Title | title }}</h1>
       {{ end }}
       {{ with .Params.description }}
       {{ if $isSimpleSectionHeader }}
-      <h1 class="mx-auto mt-0 max-w-4xl text-h4 text-text-dark dark:text-darkmode-text-dark md:text-h3">
+      <h1 class="page-header-title {{ if $isTighterSectionHeader }}eyebrow-gap-tight{{ else }}eyebrow-gap{{ end }} text-text-dark dark:text-darkmode-text-dark">
         {{ . }}
       </h1>
       {{ else }}
-      <p class="mx-auto mt-4 max-w-2xl text-base text-text-light dark:text-darkmode-text-light md:text-lg">
+      <p class="page-header-lead mt-4 text-text-light dark:text-darkmode-text-light">
         {{ . }}
       </p>
       {{ end }}
