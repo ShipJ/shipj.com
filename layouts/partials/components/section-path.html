@@ -1,9 +1,13 @@
 {{- if .IsHome -}}
 ~/{{- else if .Section -}}
+  {{- $sectionPath := .Section -}}
+  {{- if eq $sectionPath "work-with-me" -}}
+    {{- $sectionPath = "work" -}}
+  {{- end -}}
   {{- if and .IsPage (in (slice "blog" "portfolio") .Section) (.Params.id) -}}
-    {{- printf "~/%s/post_%03d" .Section (int .Params.id) -}}
+    {{- printf "~/%s/post_%03d" $sectionPath (int .Params.id) -}}
   {{- else -}}
-    {{- printf "~/%s" .Section -}}
+    {{- printf "~/%s" $sectionPath -}}
   {{- end -}}
 {{- else -}}
 ~/{{- end -}}

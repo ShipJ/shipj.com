@@ -6,15 +6,19 @@
 {{ $style := .Style | default "" }}
 {{ $slug := $name | urlize | lower }}
 
-{{ $tone := printf "category-chip-%s" (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) }}
+{{ $tone := partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace }}
+{{ $toneClass := printf "category-chip-%s" $tone }}
+
+{{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
+{{ $color := index $colors $tone | default "#6a7a8a" }}
 
 {{ $activeClass := "" }}
 {{ if $active }}
   {{ $activeClass = "border-text-light/30 text-text-dark dark:border-darkmode-text-light/30 dark:text-darkmode-text-dark" }}
 {{ end }}
 
-<a href="{{ $href }}" data-filter-kind="categories" data-filter-value="{{ $slug }}" class="ui-chip ui-chip-meta ui-chip-category {{ $tone }} {{ $activeClass }} {{ $class }}"{{ with $style }} style="{{ . }}"{{ end }}>
-  <i class="fa-regular fa-layer-group mr-2" title="Categories"></i>
+<a href="{{ $href }}" data-filter-kind="categories" data-filter-value="{{ $slug }}" data-filter-label="{{ $name | lower }}" class="ui-chip ui-chip-meta ui-chip-category {{ $toneClass }} {{ $activeClass }} {{ $class }}" style="--cat: {{ $color }}{{ with $style }}; {{ . }}{{ end }}">
+  <span class="chip-kind">CATEGORY</span>
   {{ $name }}
   {{ $suffix | safeHTML }}
 </a>

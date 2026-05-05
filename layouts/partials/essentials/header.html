@@ -11,7 +11,7 @@
     <input id="nav-toggle" type="checkbox" class="hidden" />
     <label
       for="nav-toggle"
-      class="header-menu-toggle order-3 ml-3 cursor-pointer flex items-center lg:hidden text-text-dark dark:text-white lg:order-1"
+      class="header-menu-toggle order-3 ml-3 cursor-pointer flex items-center text-text-dark dark:text-white lg:order-1"
     >
       <svg id="show-button" class="h-6 fill-current block" viewBox="0 0 20 20">
         <title>Menu Open</title>
@@ -30,7 +30,7 @@
     <!-- main navbar -->
     <ul
       id="nav-menu"
-      class="navbar-nav order-3 hidden w-full pt-2 lg:order-none lg:flex lg:w-auto lg:items-center lg:justify-self-center lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none xl:gap-6"
+      class="navbar-nav order-3 w-full pt-2 lg:order-none lg:w-auto lg:items-center lg:justify-self-center lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none xl:gap-6"
     >
       {{ $currentPage := . }} {{ $homePath := strings.TrimSuffix "/" site.Home.RelPermalink }} {{ $pagePath := strings.TrimSuffix "/" $currentPage.RelPermalink }} {{ range site.Menus.main }} {{ $isExternal := gt (len (findRE `^http` .URL)) 0 }} {{ $menuPath := strings.TrimSuffix "/" (.URL | relURL) }} {{ $active := false }} {{ if not $isExternal }} {{ if eq $menuPath $homePath }} {{ $active = eq $pagePath $homePath }} {{ else }} {{ $active = or (eq $pagePath $menuPath) (hasPrefix $pagePath (printf "%s/" $menuPath)) }} {{ end }} {{ end }} {{ if .HasChildren }}
       <li class="nav-item nav-dropdown group relative">
@@ -105,7 +105,7 @@
         </a>
       </li>
       {{ end }} {{ end }} {{ if site.Params.navigation_button.enable }}
-      <li class="mt-4 inline-block lg:hidden">
+      <li class="hidden">
         <a
           class="btn btn-outline-primary btn-sm"
           href="{{ site.Params.navigation_button.link | relURL }}"

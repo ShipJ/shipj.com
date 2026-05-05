@@ -1,85 +1,75 @@
-{{ define "main" }} {{ partial "page-header" . }}
+{{ define "main" }}
+{{ partial "page-header" . }}
 
-<section class="section pt-16">
-  <div class="w-full px-16 mx-auto">
-    <div class="flex flex-wrap gap-x-16 bg-white rounded-2xl px-8 h-[900px]">
-      <!-- Contact Form (Left Column) -->
-      <div class="col-4">
-        <h5 class="py-8 text-black">📩 Drop me an Email</h5>
+<section class="section-sm pt-4">
+  <div class="space-y-10">
 
-        <form
-          action="https://formspree.io/f/movkborv"
-          method="POST"
-          class="space-y-4"
-        >
-          <input type="hidden" name="_subject" value="Website Contact Form" />
+    <!-- Contact Form -->
+    <form action="https://formspree.io/f/movkborv" method="POST">
+      <input type="hidden" name="_subject" value="Website Contact Form" />
 
-          <div>
-            <label for="name" class="form-label">
-              Name <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="name"
-              name="name"
-              class="form-input w-full"
-              placeholder="John Doe"
-              type="text"
-              required
-            />
-          </div>
-
-          <div>
-            <label for="email" class="form-label">
-              Email <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="email"
-              name="email"
-              class="form-input w-full"
-              placeholder="john.doe@email.com"
-              type="email"
-              required
-            />
-          </div>
-
-          <div>
-            <label for="message" class="form-label">
-              Message <span class="text-red-500">*</span>
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              class="form-input w-full"
-              placeholder="What do you want to chat about..."
-              rows="8"
-              required
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="btn btn-primary w-full dark:bg-darkmode-body dark:text-white"
-          >
-            Submit
-          </button>
-        </form>
+      <div class="site-container mb-4">
+        <h4 class="text-text-dark">Drop me an email</h4>
       </div>
 
-      <!-- Booking Widget (Right Column) -->
-      <div class="col-7">
-        <h5 class="py-8 text-black">☕️ Book an appointment</h5>
+      <div class="border-b border-border py-4">
+        <div class="site-container">
+        <div class="max-w-md space-y-3">
+          <input
+            id="name"
+            name="name"
+            class="block w-full px-4 py-3 bg-transparent text-text-dark placeholder:text-text-light border border-border rounded-xl focus:outline-none dark:bg-darkmode-primary dark:text-darkmode-body dark:placeholder:text-darkmode-body/50 dark:border-darkmode-primary"
+            placeholder="Your name"
+            type="text"
+            required
+          />
 
-        <!-- Google Calendar Appointment Scheduling begin -->
+          <input
+            id="email"
+            name="email"
+            class="block w-full px-4 py-3 bg-transparent text-text-dark placeholder:text-text-light border border-border rounded-xl focus:outline-none dark:bg-darkmode-primary dark:text-darkmode-body dark:placeholder:text-darkmode-body/50 dark:border-darkmode-primary"
+            placeholder="Your email"
+            type="email"
+            required
+          />
+
+          <textarea
+            id="message"
+            name="message"
+            class="block w-full px-4 py-3 bg-transparent text-text-dark placeholder:text-text-light border border-border rounded-xl focus:outline-none resize-y overflow-auto dark:bg-darkmode-primary dark:text-darkmode-body dark:placeholder:text-darkmode-body/50 dark:border-darkmode-primary"
+            placeholder="Your message..."
+            rows="3"
+            required
+          ></textarea>
+          <script>
+            (function () {
+              var t = document.getElementById('message');
+              t.style.minHeight = t.offsetHeight + 'px';
+            })();
+          </script>
+
+          <div class="pt-1">
+            <button type="submit" class="btn btn-primary dark:!text-darkmode-body">Send</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Booking Widget -->
+    <div style="width: 84vw; max-width: 84vw; margin-inline: auto;" class="space-y-4">
+      <h4 class="text-text-dark">Or schedule some time</h4>
+
+      <div class="rounded-3xl border border-border overflow-hidden bg-white">
         <iframe
-          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2j66nKEN13nVOjBg5AtHoCUXwzPliZF_lWx99xlIhPdt5GaVEH7_MGZFH7kQs_oT8hkKWscAPA?gv=true"
-          style="border: 0"
+          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0IgV3RdHXSqdhFxieEhnkHNS90gXwrcoHuqpikDU4TCfkxxfSOCYzb2zZn8diyG3g9IwONyF_6?gv=true"
+          style="border: 0; height: max(900px, calc(100vh - 200px));"
           width="100%"
-          height="100%"
           frameborder="0"
         ></iframe>
-        <!-- end Google Calendar Appointment Scheduling -->
       </div>
     </div>
+
   </div>
 </section>
 

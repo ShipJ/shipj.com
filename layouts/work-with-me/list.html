@@ -2,16 +2,22 @@
 {{ partial "page-header" . }}
 
 {{ with .Params.consulting }}
-<section class="section-sm pt-6">
+<section class="section-sm pt-0">
   <div class="site-container">
-
-    <!-- Image -->
-    {{ partial "image" (dict "Src" $.Params.image "Context" $.Page "Alt" $.Title "Class" "mb-8 rounded-2xl object-cover w-72 h-auto" "Size" "") }}
 
     <!-- Merged intro -->
     <div class="mb-12">
       <div class="content mb-4">{{ $.Content }}</div>
-      <p class="text-lg text-text-light dark:text-darkmode-text-light">{{ .intro }}</p>
+      <p class="text-lg text-text-dark dark:text-darkmode-text-dark mb-6">{{ .intro }}</p>
+      <div class="text-center">
+        <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-primary mr-4 work-cta">
+          {{ .cta_primary_label }}
+          <i class="fa fa-arrow-right pl-2"></i>
+        </a>
+        <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-outline-primary work-cta">
+          {{ .cta_secondary_label }}
+        </a>
+      </div>
     </div>
 
     <!-- Services + Engagements -->
@@ -64,13 +70,12 @@
     </div>
     {{ end }}
 
-    <!-- CTA -->
-    <div>
-      <a href="{{ .cta_primary_link }}" target="_blank" rel="noopener" class="btn btn-primary mr-4">
+    <div class="text-center mb-12">
+      <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-primary mr-4 work-cta">
         {{ .cta_primary_label }}
         <i class="fa fa-arrow-right pl-2"></i>
       </a>
-      <a href="{{ .cta_secondary_link | relURL }}" class="btn btn-outline-primary">
+      <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-outline-primary work-cta">
         {{ .cta_secondary_label }}
       </a>
     </div>

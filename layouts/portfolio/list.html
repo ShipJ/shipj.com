@@ -1,31 +1,17 @@
-{{ define "main" }} 
+{{ define "main" }}
 {{ partial "page-header" . }}
 <section id="content-results" class="section pt-4 portfolio-list-page">
   <div class="site-container">
     <div class="pt-6">
       <div class="row">
-        {{ range .RegularPages }}
+        {{ range .RegularPages.ByDate.Reverse }}
           <div class="mb-5 md:col-6 lg:col-4">
-            <div class="portfolio-grid-item">
-              {{ partial "components/portfolio-card" . }}
-            </div>
+            {{ partial "components/portfolio-card" . }}
           </div>
         {{ end }}
       </div>
     </div>
 
-    <!-- git contribution chart-->
-    <a href="https://github.com/shipj" class="mt-10 block">
-      <div class="ui-shell flex items-center justify-center">
-        <img
-          loading="lazy"
-          src="https://ghchart.rshah.org/shipj"
-          alt="GitHub chart for ShipJ"
-          width="75%"
-          height="auto"
-        />
-      </div>
-    </a>
   </div>
 </section>
 {{ end }}

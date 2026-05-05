@@ -18,6 +18,19 @@
 {{ range $k, $_ := $catMap }}{{ $catKeys = $catKeys | append $k }}{{ end }}
 {{ $catKeys = sort $catKeys }}
 
+{{ $sectorMap := dict }}
+{{ range $pages }}
+  {{ with .Params.sector }}
+    {{ $k := . | urlize | lower }}
+    {{ if not (isset $sectorMap $k) }}
+      {{ $sectorMap = merge $sectorMap (dict $k .) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $sectorKeys := slice }}
+{{ range $k, $_ := $sectorMap }}{{ $sectorKeys = $sectorKeys | append $k }}{{ end }}
+{{ $sectorKeys = sort $sectorKeys }}
+
 {{ $tagCounts := dict }}
 {{ $tagLabels := dict }}
 {{ range $pages }}
@@ -40,16 +53,12 @@
   <div class="site-container">
     <div
       class="blog-list"
-      data-density="compact"
+      data-density="comfy"
       data-filter-root
       data-list-view-root
       data-list-view-key="blog"
       data-filter-clear-url="{{ .RelPermalink }}"
     >
-
-      <div class="blog-rising-topics-shell">
-        {{ partial "components/rising-topics" (dict "Page" . "ShowTitle" false "Minimal" true) }}
-      </div>
 
       {{/* ---- Editorial hero ---- */}}
       <div class="editorial-list-hero">
@@ -68,18 +77,46 @@
             <button type="button" class="filter-match-opt" data-filter-match-mode="and">and</button>
           </span>
           <a class="clear-btn hidden" href="{{ .RelPermalink }}" data-clear-filters>clear</a>
+          <div class="density-inline ml-auto">
+            <span class="muted"></span>
+            <button type="button" class="filter-chip density-chip" data-density-val="compact">compact</button>
+            <button type="button" class="filter-chip density-chip on" data-density-val="comfy">comfy</button>
+          </div>
         </summary>
         <div class="filter-body">
           <div class="filter-row">
             <span class="label">categories</span>
             {{ range $catKeys }}
               {{ $name := index $catMap . }}
-              <a class="filter-chip"
+              {{ $tone := printf "category-chip-%s" (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) }}
+              {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
+              {{ $color := index $colors (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) | default "#6a7a8a" }}
+              <a class="filter-chip {{ $tone }}"
                  data-filter-kind="categories"
                  data-filter-value="{{ . }}"
-                 href="{{ partial "components/filter-url" (dict "Kind" "categories" "Value" $name) }}">{{ $name | lower }}</a>
+                 data-filter-label="{{ $name | lower }}"
+                 style="--cat: {{ $color }}"
+                 href="{{ partial "components/filter-url" (dict "Kind" "categories" "Value" $name) }}"><span class="chip-kind">CATEGORY</span>{{ $name | lower }}</a>
             {{ end }}
           </div>
+
+          {{ if gt (len $sectorKeys) 0 }}
+          <div class="filter-row">
+            <span class="label">sectors</span>
+            {{ range $sectorKeys }}
+              {{ $name := index $sectorMap . }}
+              {{ $tone := partial "components/sector-tone" (dict "Name" $name) | strings.TrimSpace }}
+              {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
+              {{ $color := index $colors $tone | default "#6a7a8a" }}
+              <a class="filter-chip category-chip-{{ $tone }}"
+                 data-filter-kind="sectors"
+                 data-filter-value="{{ . }}"
+                 data-filter-label="{{ $name | lower }}"
+                 style="--cat: {{ $color }}"
+                 href="{{ partial "components/filter-url" (dict "Kind" "sectors" "Value" $name) }}"><span class="chip-kind">SECTOR</span>{{ $name | lower }}</a>
+            {{ end }}
+          </div>
+          {{ end }}
 
           {{ if gt (len $tagList) 0 }}
           <div class="filter-row filter-row-tags">
@@ -106,6 +143,11 @@
             </span>
           </div>
           {{ end }}
+
+          <div class="filter-row filter-row-sparklines">
+            <span class="label">hot topics</span>
+            {{ partial "components/rising-topics" (dict "Page" . "Minimal" true) }}
+          </div>
         </div>
       </details>
 
@@ -147,14 +189,6 @@
                     <a href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Name) }}" data-post-tag="{{ .Name | urlize }}"><span class="tag-text">#{{ .Name }}</span> <span class="num">{{ .Count }}</span></a>
                   {{ end }}
                 {{ end }}
-                {{ if $isFirstMonth }}
-                  <div class="density-inline">
-                    <span class="muted"></span>
-                    <button type="button" class="filter-chip density-chip on" data-density-val="compact">compact</button>
-                    <button type="button" class="filter-chip density-chip" data-density-val="comfy">comfy</button>
-                  </div>
-                  {{ $isFirstMonth = false }}
-                {{ end }}
               </div>
               <div class="post-list">
             {{ $openGroup = true }}
@@ -167,16 +201,34 @@
              data-filter-item
              data-filter-categories="{{ delimit (apply (.Params.categories | default (slice)) "urlize" ".") "|" }}"
              data-filter-tags="{{ delimit (apply (.Params.tags | default (slice)) "urlize" ".") "|" }}"
-             data-filter-authors="{{ with .Params.author }}{{ . | urlize }}{{ end }}">
+             data-filter-authors="{{ with .Params.author }}{{ . | urlize }}{{ end }}"
+             data-filter-sectors="{{ with .Params.sector }}{{ . | urlize | lower }}{{ end }}">
             <span class="gutter"></span>
             <span class="date">{{ .Date.Format "02 Jan" }}</span>
             <span class="title">
               {{ .Title }}
-              {{ with .Params.tags }}
-              <span class="tags">{{ range $i, $t := . }}{{- if $i }} · {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
-              {{ end }}
+              {{ with .Summary }}<span class="post-summary">{{ . | plainify | truncate 160 }}</span>{{ end }}
+              <span class="chip-tag-row">
+                <span class="cat-group">
+                  {{ with $cat }}
+                  {{ $tone := partial "components/category-tone" (dict "Name" .) | strings.TrimSpace }}
+                  {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
+                  {{ $color := index $colors $tone | default "#6a7a8a" }}
+                  <span class="cat category-chip-{{ $tone }}" data-post-category="{{ . | urlize }}" style="--cat: {{ $color }}"><span class="chip-kind">CATEGORY</span>{{ . }}</span>
+                  {{ end }}
+                  {{ with .Params.sector }}
+                  {{ $tone := partial "components/sector-tone" (dict "Name" .) | strings.TrimSpace }}
+                  {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
+                  {{ $color := index $colors $tone | default "#6a7a8a" }}
+                  <span class="cat category-chip-{{ $tone }}" data-post-sector="{{ . | urlize | lower }}" style="--cat: {{ $color }}"><span class="chip-kind">SECTOR</span>{{ . }}</span>
+                  {{ end }}
+                </span>
+                {{ with .Params.tags }}
+                <span class="tags">{{ range $i, $t := . }}{{- if $i }} {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
+                {{ end }}
+              </span>
+              <span class="comfy-date">{{ .Date.Format "02 Jan" }}</span>
             </span>
-            {{ with $cat }}<span class="cat" data-post-category="{{ . | urlize }}">{{ . }}</span>{{ end }}
           </a>
         {{ end }}
         {{ if $openGroup }}</div></section>{{ end }}
@@ -227,6 +279,7 @@
       var params = new URLSearchParams(window.location.search);
       var activeTags = new Set(params.getAll('tags'));
       var activeCats = new Set(params.getAll('categories'));
+      var activeSectors = new Set(params.getAll('sectors'));
 
       root.querySelectorAll('[data-post-tag]').forEach(function (el) {
         el.classList.toggle('active', activeTags.has(el.dataset.postTag));
@@ -234,9 +287,12 @@
       root.querySelectorAll('[data-post-category]').forEach(function (el) {
         el.classList.toggle('active', activeCats.has(el.dataset.postCategory));
       });
+      root.querySelectorAll('[data-post-sector]').forEach(function (el) {
+        el.classList.toggle('active', activeSectors.has(el.dataset.postSector));
+      });
 
       var all = root.querySelector('.filter-chip-all');
-      if (all) all.classList.toggle('on', activeCats.size === 0 && activeTags.size === 0);
+      if (all) all.classList.toggle('on', activeCats.size === 0 && activeTags.size === 0 && activeSectors.size === 0);
 
 
       // Populate active labels next to "filters" in the summary bar.
@@ -259,6 +315,10 @@
             if (num) num.remove();
             labels.push({ label: clone.textContent.trim(), kind: 'tags', value: v });
           }
+        });
+        activeSectors.forEach(function (v) {
+          var ctrl = root.querySelector('[data-filter-kind="sectors"][data-filter-value="' + v + '"]');
+          if (ctrl) labels.push({ label: ctrl.dataset.filterLabel || ctrl.textContent.trim(), kind: 'sectors', value: v });
         });
         chipsEl.innerHTML = '';
         labels.forEach(function (item, i) {
@@ -304,21 +364,24 @@
       });
     }());
 
-    // Clicking post-row tags/categories toggles filters without opening the panel.
+    // Clicking post-row tags/categories/sectors toggles filters without opening the panel.
     root.querySelectorAll('.post-row').forEach(function (row) {
       row.addEventListener('click', function (e) {
         var tagEl = e.target.closest('[data-post-tag]');
         var catEl = e.target.closest('[data-post-category]');
-        if (!tagEl && !catEl) return;
+        var sectorEl = e.target.closest('[data-post-sector]');
+        if (!tagEl && !catEl && !sectorEl) return;
         e.preventDefault();
         e.stopPropagation();
-        var kind = tagEl ? 'tags' : 'categories';
-        var value = tagEl ? tagEl.dataset.postTag : catEl.dataset.postCategory;
+        var kind = tagEl ? 'tags' : sectorEl ? 'sectors' : 'categories';
+        var value = tagEl ? tagEl.dataset.postTag : sectorEl ? sectorEl.dataset.postSector : catEl.dataset.postCategory;
         var chip = root.querySelector('[data-filter-kind="' + kind + '"][data-filter-value="' + value + '"]');
         if (!chip) return;
         var details = root.querySelector('.filter-details');
         var wasOpen = details ? details.open : false;
+        var scrollY = window.scrollY;
         chip.click();
+        window.scrollTo({ top: scrollY, behavior: 'instant' });
         if (details) details.open = wasOpen;
       });
     });
@@ -333,7 +396,9 @@
         if (!chip) return;
         var details = root.querySelector('.filter-details');
         var wasOpen = details ? details.open : false;
+        var scrollY = window.scrollY;
         chip.click();
+        window.scrollTo({ top: scrollY, behavior: 'instant' });
         if (details) details.open = wasOpen;
       });
     });

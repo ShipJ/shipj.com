@@ -17,7 +17,7 @@
     {{ partialCached "essentials/style.html" . }}
   </head>
 
-  <body>
+  <body{{ if .IsHome }} class="is-home"{{ end }}>
     <!-- cache partial only in production -->
     {{ if hugo.IsProduction }} {{ partialCached "preloader.html" . }} {{
     partialCached "gtm-noscript.html" . }} {{ else }} {{ partial

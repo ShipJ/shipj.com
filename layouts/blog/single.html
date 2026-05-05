@@ -4,25 +4,18 @@
     <article>
         <div class="page-header-shell mb-8">
         {{ partial "components/page-eyebrow" (dict "Page" . "Class" "mb-4") }}
-        {{ $image := .Params.image }}
-        {{ if $image }}
-          <div class="mb-8">
-            {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title "Class" "w-full rounded-2xl border border-border dark:border-darkmode-border") }}
-          </div>
-        {{ end }}
-
-        <h1 class="h2 mb-0 tracking-[-0.03em]">{{ .Title }}</h1>
-
-        <hr class="mt-4 border-border/60 dark:border-darkmode-border/60" />
 
         <div class="content-meta-strip">
           <div class="content-meta-left">
-            <div class="content-meta-categories">
+            <div class="content-meta-categories flex flex-wrap gap-2">
               {{ $categories := .Params.categories }}
               {{ if $categories }}
                 {{ range $categories }}
-                  {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) "Class" "!px-4 !py-1.5 !text-[11px]") }}
+                  {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) "Class" "!px-4 !py-1.5 !text-[13px]") }}
                 {{ end }}
+              {{ end }}
+              {{ with .Params.sector }}
+                {{ partial "components/sector-chip" (dict "Name" . "Class" "!px-4 !py-1.5 !text-[13px]") }}
               {{ end }}
             </div>
             {{ $tags := .Params.tags }}
@@ -35,38 +28,97 @@
             {{ end }}
           </div>
 
-          <div class="content-meta-right">
-            <span>{{ .PublishDate.Format "2 Jan 2006" }}</span>
-            {{ with .Params.read_time }}
-              <span class="sep">&middot;</span>
-              <span>{{ . }} min read</span>
-            {{ end }}
-          </div>
         </div>
 
+        <h1 class="h2 mt-3 mb-0 tracking-[-0.03em]">{{ .Title }}</h1>
+
         {{ with .Params.description }}
-        <details class="tldr-box content-tldr-box group mt-14">
-          <summary class="tldr-box-summary content-tldr-summary">
-            <span class="inline-flex items-center gap-2">
-              <span>TL;DR</span>
-              <i class="fa-solid fa-chevron-down text-xs transition duration-200 group-open:rotate-180"></i>
-            </span>
-          </summary>
-          <div class="tldr-box-body content content-tldr-body">
-            <p>{{ . }}</p>
-          </div>
-        </details>
+        <p class="content-intro">{{ . }}</p>
         {{ end }}
 
-        <div class="mt-14 mb-12">
+        <div class="content-date mt-3">
+          <span>{{ .PublishDate.Format "2 Jan 2006" }}</span>
+          {{ with .Params.read_time }}
+            <span class="sep">&middot;</span>
+            <span>{{ . }} min read</span>
+          {{ end }}
+          <span class="sep">&middot;</span>
+          <details class="title-share">
+            <summary class="title-share-btn">share</summary>
+            <div class="title-share-panel">
+              {{ partial "social-share" (dict "Context" . "Class" "share-icons flex gap-2" "Linkedin" true "X" true "Email" true "Copy" true "Facebook" false "Reddit" false "Whatsapp" true "Telegram" false "Pinterest" false "Tumblr" false "Vk" false "Fediverse" false) }}
+            </div>
+          </details>
+        </div>
+    </article>
+  </div>
+
+  <hr class="mb-0 border-border/60 dark:border-darkmode-border/60" />
+
+  <div class="site-container">
+    <article>
+        {{ with .Params.image }}
+        <div class="mt-10 mb-2">
+          {{ partial "image" (dict "Src" . "Context" $.Page "Alt" $.Title "Class" "w-full rounded-2xl border border-border dark:border-darkmode-border") }}
+        </div>
+        {{ end }}
+
+        {{ with .Params.tldr }}
+        <div class="content-tldr-box mt-16">
+          <div class="content-tldr-label">▶ TL;DR</div>
+          <div class="content content-tldr-body">
+            <p>{{ . }}</p>
+          </div>
+        </div>
+        {{ end }}
+
+        <div class="mt-16 mb-12">
           <div class="content">
             <!-- {{ partial "toc.html" (dict "Class" "blog" "Collapsed" true "TableOfContents" .TableOfContents ) }} -->
             {{ .Content }}
           </div>
         </div>
 
-        <div class="ui-card-compact mb-10 flex flex-wrap items-center gap-3">
-          <span class="text-sm font-semibold">{{ T "share" }}</span>
+        {{ partial "components/series-nav" (dict "Page" . "Position" "bottom") }}
+
+        {{ $contentPool := where .Site.RegularPages "Section" "in" (slice "blog" "portfolio") }}
+        {{ $candidates := where $contentPool "RelPermalink" "ne" .RelPermalink }}
+        {{ $relatedPool := $candidates.Related . | first 12 }}
+        {{ $otherSection := "portfolio" }}
+        {{ $sameSectionRelated := where $relatedPool "Section" .Section | first 2 }}
+        {{ $crossSectionRelated := where $relatedPool "Section" $otherSection | first 1 }}
+        {{ $related := union $sameSectionRelated $crossSectionRelated }}
+        {{ if lt (len $related) 3 }}
+          {{ $related = union $related ($relatedPool | first 3) }}
+        {{ end }}
+        {{ if lt (len $related) 3 }}
+          {{ $crossSectionFallback := first 3 (sort (where $candidates "Section" $otherSection) "Date" "desc") }}
+          {{ $related = union $related $crossSectionFallback }}
+        {{ end }}
+        {{ $related = first 3 $related }}
+        {{ with $related }}
+          <div class="section pb-2">
+            <div class="mb-8 flex items-end justify-between gap-4">
+              <div>
+                <p class="ui-kicker mb-2">Keep reading</p>
+                <h2 class="h3">{{ T "related_posts" }}</h2>
+              </div>
+            </div>
+            <div class="row">
+              {{ range . }}
+                <div class="lg:col-4 md:col-6 mb-8">
+                  {{ if eq .Section "portfolio" }}
+                    {{ partial "components/portfolio-card-related" . }}
+                  {{ else }}
+                    {{ partial "components/blog-card-related" . }}
+                  {{ end }}
+                </div>
+              {{ end }}
+            </div>
+          </div>
+        {{ end }}
+
+        <div class="flex justify-center items-center gap-3 mt-4 mb-10">
           {{ partial "social-share" (dict "Context" . "Class" "share-icons flex gap-2" "Linkedin" true "X" true "Email" true "Copy" true "Facebook" false "Reddit" false "Whatsapp" true "Telegram" false "Pinterest" false "Tumblr" false "Vk" false "Fediverse" false) }}
         </div>
 
@@ -76,43 +128,6 @@
           </div>
         {{ end }}
     </article>
-
-    {{ $contentPool := where .Site.RegularPages "Section" "in" (slice "blog" "portfolio") }}
-    {{ $candidates := where $contentPool "RelPermalink" "ne" .RelPermalink }}
-    {{ $relatedPool := $candidates.Related . | first 12 }}
-    {{ $otherSection := "portfolio" }}
-    {{ $sameSectionRelated := where $relatedPool "Section" .Section | first 2 }}
-    {{ $crossSectionRelated := where $relatedPool "Section" $otherSection | first 1 }}
-    {{ $related := union $sameSectionRelated $crossSectionRelated }}
-    {{ if lt (len $related) 3 }}
-      {{ $related = union $related ($relatedPool | first 3) }}
-    {{ end }}
-    {{ if lt (len $related) 3 }}
-      {{ $crossSectionFallback := first 3 (sort (where $candidates "Section" $otherSection) "Date" "desc") }}
-      {{ $related = union $related $crossSectionFallback }}
-    {{ end }}
-    {{ $related = first 3 $related }}
-    {{ with $related }}
-      <div class="section pb-2">
-        <div class="mb-8 flex items-end justify-between gap-4">
-          <div>
-            <p class="ui-kicker mb-2">Keep reading</p>
-            <h2 class="h3">{{ T "related_posts" }}</h2>
-          </div>
-        </div>
-        <div class="row">
-          {{ range . }}
-            <div class="lg:col-4 md:col-6 mb-8">
-              {{ if eq .Section "portfolio" }}
-                {{ partial "components/portfolio-card-related" . }}
-              {{ else }}
-                {{ partial "components/blog-card-related" . }}
-              {{ end }}
-            </div>
-          {{ end }}
-        </div>
-      </div>
-    {{ end }}
   </div>
 </section>
 {{ end }}
