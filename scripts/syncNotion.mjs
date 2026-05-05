@@ -317,13 +317,17 @@ function mapFrontMatter(page) {
     title: rawTitle,
     meta_title: pickText(prop(props, "meta_title")),
     description: pickText(prop(props, "description")),
+    tldr: pickText(prop(props, "tldr")),
     slug: slugProp || slug(rawTitle), // slug from rawTitle (avoids emoji noise)
     date: pickDate(prop(props, "date")) || new Date().toISOString(),
     categories: pickMulti(prop(props, "categories")),
     tags: pickMulti(prop(props, "tags")),
     author: pickPeople(prop(props, "author")),
     length: pickSelect(prop(props, "length")),
+    sector: pickSelect(prop(props, "sector")),
     read_time: pickScalar(readTimeProp),
+    series: pickSelect(prop(props, "series")),
+    series_part: pickScalar(prop(props, "series_part")),
     type: pageType,
     draft: !pickCheck(prop(props, "is_published")),
     notion_id: page.id, // store original; we normalize on read
@@ -342,7 +346,7 @@ const dirForType = (t) => (t === "portfolio" ? DIRS.portfolio : t === "blog" ? D
 
 // Planned relative path for new pages (so internal links can be rewritten before files exist)
 function plannedRelPath(fm) {
-  const d = fm.date ? new Date(fm.date) : new Date();
+  const d = fm.created_at ? new Date(fm.created_at) : new Date();
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
@@ -351,7 +355,7 @@ function plannedRelPath(fm) {
 
 // Write markdown file (prefer overwriting existing path when known)
 function writeMd(fm, body, preferredAbs = null) {
-  const d = fm.date ? new Date(fm.date) : new Date();
+  const d = fm.created_at ? new Date(fm.created_at) : new Date();
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
