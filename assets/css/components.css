@@ -9,23 +9,23 @@
 
 /* container */
 .site-container {
-  width: 92vw;
-  max-width: 92vw;
+  width: calc(92vw - 1rem);
+  max-width: calc(92vw - 1rem);
   margin-inline: auto;
   padding-inline: 0;
 }
 
 @media (min-width: 768px) {
   .site-container {
-    width: 84vw;
-    max-width: 84vw;
+    width: calc(84vw - 1rem);
+    max-width: calc(84vw - 1rem);
   }
 }
 
 @media (min-width: 1280px) {
   .site-container {
-    width: 60vw;
-    max-width: 60vw;
+    width: calc(60vw - 1rem);
+    max-width: calc(60vw - 1rem);
   }
 }
 
@@ -89,9 +89,6 @@
   @apply font-normal normal-case tracking-normal;
 }
 
-.card-category-pill .ui-chip {
-  font-weight: 400;
-}
 
 .ui-chip-category {
 }
@@ -262,7 +259,7 @@
   display: none;
 }
 
-[data-list-view="compact"] [data-filter-results] .card-category-inline         { display: inline; color: #7a8898; font-weight: 400; }
+[data-list-view="compact"] [data-filter-results] .card-category-inline         { display: inline; color: #7a8898; font-weight: 600; }
 [data-list-view="compact"] [data-filter-results] .card-category-inline.tone-blue   { color: #4a75b5; }
 [data-list-view="compact"] [data-filter-results] .card-category-inline.tone-teal   { color: #3d8a85; }
 [data-list-view="compact"] [data-filter-results] .card-category-inline.tone-amber  { color: #9a6f28; }

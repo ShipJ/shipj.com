@@ -171,7 +171,7 @@
     const items = Array.from(root.querySelectorAll("[data-filter-item]"));
     const groups = Array.from(root.querySelectorAll("[data-filter-group]"));
     const emptyState = root.querySelector("[data-filter-empty]");
-    const kinds = ["categories", "tags", "authors"];
+    const kinds = ["categories", "tags", "authors", "sectors"];
 
     const parseValues = (value) =>
       (value || "")
@@ -211,14 +211,22 @@
         return acc;
       }, {});
 
-    const readTagMatchMode = () => {
+    const readFilterMatchMode = () => {
       const params = new URLSearchParams(window.location.search);
-      return params.get("tag_mode") === "and" ? "and" : "or";
+      const mode = params.get("match_mode") || params.get("tag_mode");
+      return mode === "and" ? "and" : "or";
     };
 
-    const syncTagMatchControls = (mode, currentSelected = selected) => {
+    const syncFilterMatchControls = (mode, currentSelected = selected) => {
       const activeTagCount = currentSelected.tags ? currentSelected.tags.size : 0;
-      const shouldShow = activeTagCount >= 2;
+      const activeCategoryCount = currentSelected.categories
+        ? currentSelected.categories.size
+        : 0;
+      const activeSectorCount = currentSelected.sectors
+        ? currentSelected.sectors.size
+        : 0;
+      const totalActiveCount = activeTagCount + activeCategoryCount + activeSectorCount;
+      const shouldShow = totalActiveCount >= 2;
 
       const toggleWrap = root.querySelector("[data-filter-match-toggle]");
       if (toggleWrap) {
@@ -232,7 +240,7 @@
       });
     };
 
-    const buildQuery = (selected, tagMatchMode) => {
+    const buildQuery = (selected, filterMatchMode) => {
       const params = new URLSearchParams();
 
       kinds.forEach((kind) => {
@@ -241,15 +249,15 @@
         });
       });
 
-      if (tagMatchMode === "and") {
-        params.set("tag_mode", "and");
+      if (filterMatchMode === "and") {
+        params.set("match_mode", "and");
       }
 
       return params.toString();
     };
 
-    const updateUrl = (selected, tagMatchMode, basePath = window.location.pathname) => {
-      const query = buildQuery(selected, tagMatchMode);
+    const updateUrl = (selected, filterMatchMode, basePath = window.location.pathname) => {
+      const query = buildQuery(selected, filterMatchMode);
       const targetUrl = query ? `${basePath}?${query}` : clearUrl;
       window.history.replaceState({}, "", targetUrl);
     };
@@ -269,7 +277,7 @@
             seen.add(control.dataset.filterValue);
             return true;
           })
-          .map((control) => control.textContent.replace(/\(\d+\)/, "").trim());
+          .map((control) => (control.dataset.filterLabel || control.textContent.replace(/\(\d+\)/, "").trim()).toLowerCase());
       });
 
       if (clearButton) {
@@ -293,32 +301,51 @@
       });
     };
 
-    const applyFilters = (selected, tagMatchMode) => {
+    const applyFilters = (selected, filterMatchMode) => {
       let visibleCount = 0;
       const selectedCategories = Array.from(selected.categories || []);
       const selectedTags = Array.from(selected.tags || []);
       const selectedAuthors = Array.from(selected.authors || []);
+      const selectedSectors = Array.from(selected.sectors || []);
 
       items.forEach((item) => {
         const itemCategories = parseItemValues(item.dataset.filterCategories);
         const itemTags = parseItemValues(item.dataset.filterTags);
         const itemAuthors = parseItemValues(item.dataset.filterAuthors);
+        const itemSectors = parseItemValues(item.dataset.filterSectors);
 
-        const matchesCategories =
-          selectedCategories.length === 0 ||
-          selectedCategories.some((value) => itemCategories.includes(value));
+        const categoryMatch = selectedCategories.length === 0 ||
+          (filterMatchMode === "and"
+            ? selectedCategories.every((value) => itemCategories.includes(value))
+            : selectedCategories.some((value) => itemCategories.includes(value)));
 
-        const matchesTags =
-          selectedTags.length === 0 ||
-          (tagMatchMode === "and"
+        const tagMatch = selectedTags.length === 0 ||
+          (filterMatchMode === "and"
             ? selectedTags.every((value) => itemTags.includes(value))
             : selectedTags.some((value) => itemTags.includes(value)));
 
-        const matchesAuthors =
-          selectedAuthors.length === 0 ||
+        const authorMatch = selectedAuthors.length === 0 ||
           selectedAuthors.some((value) => itemAuthors.includes(value));
 
-        const matches = matchesCategories && matchesTags && matchesAuthors;
+        const sectorMatch = selectedSectors.length === 0 ||
+          selectedSectors.some((value) => itemSectors.includes(value));
+
+        let matches;
+        if (filterMatchMode === "and") {
+          matches = categoryMatch && tagMatch && authorMatch && sectorMatch;
+        } else {
+          // OR mode: match if any selected filter type matches
+          const hasActiveFilters = selectedCategories.length > 0 || selectedTags.length > 0 || selectedAuthors.length > 0 || selectedSectors.length > 0;
+          if (!hasActiveFilters) {
+            matches = true;
+          } else {
+            matches =
+              (selectedCategories.length > 0 ? categoryMatch : false) ||
+              (selectedTags.length > 0 ? tagMatch : false) ||
+              (selectedAuthors.length > 0 ? authorMatch : false) ||
+              (selectedSectors.length > 0 ? sectorMatch : false);
+          }
+        }
 
         item.classList.toggle("hidden", !matches);
         if (matches) visibleCount += 1;
@@ -339,7 +366,7 @@
     };
 
     let selected = readSelected();
-    let tagMatchMode = readTagMatchMode();
+    let filterMatchMode = readFilterMatchMode();
     const initialSelections = getInitialSelections();
     const hasInitialSelections = kinds.some(
       (kind) => initialSelections[kind].length > 0,
@@ -349,32 +376,32 @@
 
     syncControls(selected);
     syncPanel(selected);
-    syncTagMatchControls(tagMatchMode, selected);
-    applyFilters(selected, tagMatchMode);
+    syncFilterMatchControls(filterMatchMode, selected);
+    applyFilters(selected, filterMatchMode);
     if (!isScopedArchivePage) {
-      updateUrl(selected, tagMatchMode, clearUrl);
+      updateUrl(selected, filterMatchMode, clearUrl);
     }
 
     filterPanel?.addEventListener("toggle", () => {
       filterPanel.dataset.userToggled = "true";
       syncPanel(readSelected());
-      syncTagMatchControls(readTagMatchMode(), readSelected());
+      syncFilterMatchControls(readFilterMatchMode(), readSelected());
     });
 
-    const applySelected = (nextSelected, nextTagMatchMode = tagMatchMode) => {
+    const applySelected = (nextSelected, nextFilterMatchMode = filterMatchMode) => {
       selected = nextSelected;
-      tagMatchMode = nextTagMatchMode;
-      updateUrl(nextSelected, tagMatchMode, clearUrl);
+      filterMatchMode = nextFilterMatchMode;
+      updateUrl(nextSelected, filterMatchMode, clearUrl);
       syncControls(nextSelected);
       syncPanel(nextSelected);
-      syncTagMatchControls(tagMatchMode, nextSelected);
-      applyFilters(nextSelected, tagMatchMode);
+      syncFilterMatchControls(filterMatchMode, nextSelected);
+      applyFilters(nextSelected, filterMatchMode);
     };
 
     clearButton?.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      applySelected(kinds.reduce((acc, kind) => { acc[kind] = new Set(); return acc; }, {}), tagMatchMode);
+      applySelected(kinds.reduce((acc, kind) => { acc[kind] = new Set(); return acc; }, {}), filterMatchMode);
     });
 
     controls.forEach((control) => {
@@ -457,4 +484,32 @@
 
     clearSearchModalPadding();
   }
+
+  // Close title share dropdown when focus moves away
+  var titleShare = document.querySelector('.title-share');
+  if (titleShare) {
+    document.addEventListener('click', function (e) {
+      if (!titleShare.contains(e.target)) {
+        titleShare.removeAttribute('open');
+      }
+    });
+  }
+
+  // Format blockquotes: "Text - Author" -> "Text" / -- Author
+  var quoteChars = /^[“”‘’"'\s]+|[“”‘’"'\s]+$/g;
+  document.querySelectorAll('.content blockquote p').forEach(function (p) {
+    if (p.dataset.quoteFormatted) return;
+    var text = p.textContent.trim();
+    var lastDash = text.lastIndexOf(' - ');
+    var quote = (lastDash !== -1 ? text.slice(0, lastDash) : text).replace(quoteChars, '');
+    var author = lastDash !== -1 ? text.slice(lastDash + 3).replace(quoteChars, '') : null;
+    p.textContent = '“' + quote + '”';
+    p.dataset.quoteFormatted = '1';
+    if (author) {
+      var attr = document.createElement('p');
+      attr.className = 'blockquote-attribution';
+      attr.textContent = '— ' + author;
+      p.parentNode.insertBefore(attr, p.nextSibling);
+    }
+  });
 })();
