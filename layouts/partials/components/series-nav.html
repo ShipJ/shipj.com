@@ -1,0 +1,41 @@
+{{ $page := .Page }}
+{{ $position := .Position | default "top" }}
+{{ $series := $page.Params.series }}
+{{ if $series }}
+  {{ $pool := where site.RegularPages "Section" "in" (slice "blog" "portfolio") }}
+  {{ $parts := where $pool "Params.series" $series }}
+  {{ $parts = sort $parts "Params.series_part" "asc" }}
+  {{ $total := len $parts }}
+  {{ if gt $total 1 }}
+    {{ $current := $page.Params.series_part | default 0 | int }}
+
+    {{ if eq $position "bottom" }}
+      {{ $prevPart := false }}
+      {{ $nextPart := false }}
+      {{ range $parts }}
+        {{ if eq (.Params.series_part | default 0 | int) (sub $current 1) }}{{ $prevPart = . }}{{ end }}
+        {{ if eq (.Params.series_part | default 0 | int) (add $current 1) }}{{ $nextPart = . }}{{ end }}
+      {{ end }}
+
+      <div class="series-pager">
+        <div class="series-pager-header">
+          <span class="series-pager-label">{{ $series | upper }}: PART {{ $current }} OF {{ $total }}</span>
+        </div>
+        <div class="series-pager-body{{ if and $prevPart $nextPart }} has-both{{ else if $prevPart }} has-prev{{ else }} has-next{{ end }}">
+          {{ if $prevPart }}
+            <a class="series-pager-cell is-prev" href="{{ $prevPart.RelPermalink }}">
+              <span class="series-pager-direction">← Part {{ $prevPart.Params.series_part | int }}</span>
+              <span class="series-pager-title">{{ $prevPart.Title }}</span>
+            </a>
+          {{ end }}
+          {{ if $nextPart }}
+            <a class="series-pager-cell is-next" href="{{ $nextPart.RelPermalink }}">
+              <span class="series-pager-direction">Part {{ $nextPart.Params.series_part | int }} →</span>
+              <span class="series-pager-title">{{ $nextPart.Title }}</span>
+            </a>
+          {{ end }}
+        </div>
+      </div>
+    {{ end }}
+  {{ end }}
+{{ end }}

@@ -1,0 +1,16 @@
+{{ $name := .Name }}
+{{ $href := partial "components/filter-url" (dict "Kind" "sectors" "Value" $name) }}
+{{ $class := .Class | default "" }}
+{{ $style := .Style | default "" }}
+{{ $slug := $name | urlize | lower }}
+
+{{ $tone := partial "components/sector-tone" (dict "Name" $name) | strings.TrimSpace }}
+{{ $toneClass := printf "category-chip-%s" $tone }}
+
+{{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
+{{ $color := index $colors $tone | default "#6a7a8a" }}
+
+<a href="{{ $href }}" data-filter-kind="sectors" data-filter-value="{{ $slug }}" data-filter-label="{{ $name | lower }}" class="ui-chip ui-chip-meta ui-chip-sector {{ $toneClass }} {{ $class }}" style="--cat: {{ $color }}{{ with $style }}; {{ . }}{{ end }}">
+  <span class="chip-kind">SECTOR</span>
+  {{ $name }}
+</a>
