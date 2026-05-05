@@ -1,41 +1,35 @@
 ---
 id: '7'
 title: 'TrendCurve AI: From Forecasting to Scalable Intelligence'
-meta_title: >-
-  TrendCurve AI: Transforming Fashion Forecasting with Scalable Intelligence and
-  Data-Driven Insights
+meta_title: ''
 description: >-
   They key data science and engineering principles behind building WGSN’s first
   customer-facing forecasting product
+tldr: >-
+  TrendCurve AI: Transforming Fashion Forecasting with Scalable Intelligence and
+  Data-Driven Insights
 slug: trendcurve-ai-from-forecasting-to-scalable-intelligence
-date: '2026-04-24T15:14:43.686Z'
+date: '2026-05-05T21:51:05.272Z'
 categories:
   - Data Science
-  - Data Engineering
-  - Data Architecture
-  - Management
 tags:
-  - tech-stack
   - time-series
-  - python
-  - prophet
-  - chronos
-  - LSTM
-  - machine-learning
-  - forecasting
   - automation
   - MLOps
   - R&D
-  - product-development
+  - product
 author: Jack
 length: Very Long (>12 months)
+sector: General
 read_time: 5
+series: A new career
+series_part: '8'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-8052-9ab2-f7b88aeb5a90
 created_at: '2026-03-01T13:54:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:43.686Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:05.273Z'
 math: true
 image: ''
 ---

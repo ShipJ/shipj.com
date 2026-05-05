@@ -1,41 +1,44 @@
 ---
 id: '26'
 title: A reminder of the maths for machine learning
-meta_title: >-
-  Essential Maths for Machine Learning: A Guide to Linear Algebra, Calculus, and
-  Probability
+meta_title: 'test'
 description: >-
   The article "A reminder of the maths for machine learning" provides an
   overview of essential mathematical concepts required for machine learning,
   focusing on Linear Algebra, Calculus, and Probability and Statistics. It
   explains foundational topics such as vectors, matrices, derivatives, and the
-  importance of optimization in model training. The article emphasizes the role
-  of these mathematical principles in understanding and applying machine
-  learning algorithms effectively.
+  importance of optimization in model training. 
+tldr: >-
+  Essential Maths for Machine Learning: A Guide to Linear Algebra, Calculus, and
+  Probability
 slug: a-reminder-of-the-maths-for-machine-learning
-date: '2026-04-24T15:14:50.102Z'
+date: '2026-05-05T21:51:13.844Z'
 categories:
   - Data Science
 tags:
-  - machine-learning
+  - ml
   - maths
   - stats
   - interviews
 author: Jack
 length: Very Short (1-2 days)
+sector: General
 read_time: 5
+series: A new career
+series_part: '1'
 type: blog
 draft: false
 notion_id: 31b7fd6b-fd0d-8055-9af9-e28d0f7fef92
 created_at: '2026-03-06T10:16:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:50.102Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:13.844Z'
 math: true
 image: ''
 ---
+#### What's going on 
 Here we’ll review basic concepts in Linear Algebra, Calculus, and Probability and Statistics to remind ourselves of the necessary ML pre-requisites.
 
-Side note  - we’ll see just how useful enabling $\text{\LaTeX}$ was! See more in [How I created this site with Hugo](hugo-ref:portfolio/2026-04-24-how-i-created-this-site-with-hugo.md) 
+Side note  - we’ll see just how useful enabling $\text{\LaTeX}$ was! See more in [How I created this site with Hugo](hugo-ref:portfolio/2026-03-02-how-i-created-this-site-with-hugo.md) 
 
 ## 1. Linear Algebra
 

@@ -3,13 +3,11 @@ id: '15'
 title: 'Monitoring & Alerting: Data Lineage, Documentation, and Team Enablement'
 meta_title: ''
 description: 'Monitoring & Alerting: Data Lineage, Documentation, and Team Enablement'
+tldr: ''
 slug: monitoring-and-alerting-data-lineage-documentation-and-team-enablement
-date: '2026-04-24T15:14:46.127Z'
+date: '2026-05-05T21:51:07.570Z'
 categories:
   - Data Engineering
-  - Data Analytics
-  - Data Governance
-  - Business Intelligence
 tags:
   - dbt
   - Snowflake
@@ -20,13 +18,16 @@ tags:
   - monitoring
 author: Jack
 length: Short (1-2 weeks)
+sector: General
 read_time: 5
+series: A new career
+series_part: '21'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-809d-9b72-fc83ada286b6
 created_at: '2026-03-01T14:17:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:46.127Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:07.570Z'
 math: true
 image: ''
 ---

@@ -3,32 +3,36 @@ id: '24'
 title: >-
   A step-by-step guide to sync your Notion content with a Hugo site using
   Notion’s API
-meta_title: >-
-  Sync Notion Content with Your Hugo Site Using the Notion API: A Step-by-Step
-  Guide
+meta_title: ''
 description: >-
   How to sync your notion content - blog posts, projects etc with a personal
   website via the Notion API
+tldr: >-
+  Sync Notion Content with Your Hugo Site Using the Notion API: A Step-by-Step
+  Guide
 slug: >-
   a-step-by-step-guide-to-sync-your-notion-content-with-a-hugo-site-using-notions-api
-date: '2026-04-24T15:14:49.485Z'
+date: '2026-05-05T21:51:13.369Z'
 categories:
-  - Vibe-Coding
+  - Web Development
 tags:
   - Notion
   - Hugo
   - git
   - SEO
-  - personal-goals
+  - goals
 author: Jack
 length: Very Short (1-2 days)
+sector: General
 read_time: 5
+series: A new career
+series_part: '3'
 type: blog
 draft: false
 notion_id: 3187fd6b-fd0d-8055-9e3f-e1f79643cb61
 created_at: '2026-03-03T09:11:00.000Z'
-last_edited_at: '2026-04-18T09:30:00.000Z'
-last_synced: '2026-04-24T15:14:49.485Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:13.369Z'
 math: true
 image: ''
 ---

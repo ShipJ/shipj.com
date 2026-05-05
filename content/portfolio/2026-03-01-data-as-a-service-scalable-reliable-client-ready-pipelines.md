@@ -3,28 +3,30 @@ id: '12'
 title: 'Data-as-a-Service: Scalable, Reliable, Client-Ready Pipelines'
 meta_title: ''
 description: 'Data-as-a-Service: Scalable, Reliable, Client-Ready Pipelines'
+tldr: ''
 slug: data-as-a-service-scalable-reliable-client-ready-pipelines
-date: '2026-04-24T15:14:47.194Z'
+date: '2026-05-05T21:51:08.619Z'
 categories:
-  - Data Governance
-  - Management
   - Data Engineering
 tags:
   - Snowflake
   - dbt
-  - recommender-systems
+  - recommenders
   - SLAs
   - monitoring
   - client-facing
 author: Jack
 length: Long (6-12 months)
+sector: General
 read_time: 5
+series: A new career
+series_part: '10'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-80a9-b462-e43f684ab24f
 created_at: '2026-03-01T14:07:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:47.194Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:08.619Z'
 math: true
 image: ''
 ---

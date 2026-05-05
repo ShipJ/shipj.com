@@ -1,32 +1,35 @@
 ---
 id: '8'
 title: 'Social Analytics: Raw Data to Real-Time Insights'
-meta_title: >-
+meta_title: ''
+description: Collecting live social data to predict scale of emerging trends
+tldr: >-
   Social Analytics: Transforming Raw Data into Real-Time Insights for Trend
   Prediction
-description: Collecting live social data to predict scale of emerging trends
 slug: social-analytics-raw-data-to-real-time-insights
-date: '2026-04-24T15:14:43.309Z'
+date: '2026-05-05T21:51:04.938Z'
 categories:
   - Data Engineering
-  - Management
 tags:
   - dbt
   - Snowflake
   - Looker
   - ETL
   - APIs
-  - product-development
-  - vendor-management
+  - product
+  - vendors
 author: Jack
 length: Medium (3-6 months)
+sector: General
 read_time: 5
+series: A new career
+series_part: '9'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-802a-8f8d-c0c65344dd13
 created_at: '2026-03-01T14:00:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:43.309Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:04.938Z'
 math: true
 image: ''
 ---

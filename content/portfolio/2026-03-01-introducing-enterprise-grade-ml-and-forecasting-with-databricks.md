@@ -3,12 +3,11 @@ id: '14'
 title: Introducing enterprise-grade ML and Forecasting with Databricks
 meta_title: ''
 description: Introducing enterprise-grade ML and Forecasting with Databricks
+tldr: ''
 slug: introducing-enterprise-grade-ml-and-forecasting-with-databricks
-date: '2026-04-24T15:14:45.759Z'
+date: '2026-05-05T21:51:07.276Z'
 categories:
-  - Data Science
   - Data Engineering
-  - Data Governance
 tags:
   - databricks
   - MLFlow
@@ -16,17 +15,20 @@ tags:
   - spark
   - python
   - SQL
-  - vendor-management
+  - vendors
   - MLOps
 author: Jack
 length: Medium (3-6 months)
+sector: General
 read_time: 5
+series: A new career
+series_part: '20'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-808f-85fd-dd38bf67b460
 created_at: '2026-03-01T14:15:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:45.759Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:07.276Z'
 math: true
 image: ''
 ---

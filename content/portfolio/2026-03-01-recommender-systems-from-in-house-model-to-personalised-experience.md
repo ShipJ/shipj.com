@@ -3,11 +3,11 @@ id: '11'
 title: 'Recommender Systems: From In-House Model to Personalised Experience'
 meta_title: ''
 description: 'Recommender Systems: From In-House Model to Personalised Experience'
+tldr: ''
 slug: recommender-systems-from-in-house-model-to-personalised-experience
-date: '2026-04-24T15:14:46.476Z'
+date: '2026-05-05T21:51:08.108Z'
 categories:
   - Data Science
-  - Data Architecture
 tags:
   - GCP
   - BigQuery
@@ -15,13 +15,16 @@ tags:
   - marketing
 author: Jack
 length: Medium (3-6 months)
+sector: General
 read_time: 5
+series: A new career
+series_part: '11'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-809d-a8f4-d5db23bfea04
 created_at: '2026-03-01T14:06:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:46.476Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:08.108Z'
 math: true
 image: ''
 ---

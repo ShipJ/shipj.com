@@ -1,14 +1,15 @@
 ---
 id: '1'
-title: About me as of 2025
-meta_title: >-
+title: Reinventing myself in 2026
+meta_title: ''
+description: A brief introduction to me and my blogging journey
+tldr: >-
   About Me: A Director's Cut on My Journey in Data Science, Management, and
   Personal Growth
-description: A brief introduction to me and my blogging journey
-slug: about-me-as-of-2025
-date: '2026-04-24T15:14:44.227Z'
+slug: reinventing-myself-in-2026
+date: '2026-05-05T21:51:05.650Z'
 categories:
-  - Personal Development
+  - Career
 tags:
   - remote-work
   - productivity
@@ -17,13 +18,16 @@ tags:
   - about-me
 author: Jack
 length: Very Short (1-2 days)
+sector: General
 read_time: 5
+series: A new career
+series_part: '4'
 type: blog
 draft: false
 notion_id: 3167fd6b-fd0d-8057-b381-c6d9813142ab
 created_at: '2026-03-01T10:42:00.000Z'
-last_edited_at: '2026-04-18T09:30:00.000Z'
-last_synced: '2026-04-24T15:14:44.227Z'
+last_edited_at: '2026-05-05T19:11:00.000Z'
+last_synced: '2026-05-05T21:51:05.650Z'
 math: true
 image: ''
 ---
@@ -31,13 +35,13 @@ image: ''
 
 After a gruelling 4-year Maths and Computer Science , and a brief stint in the research lab, my professional career began at Ascential (WGSN's parent company), where I joined as its first Data Scientist in May 2017. My boss quit by the end of the year and I was left to fend for myself. 
 
-Link on its own: [Migrating to Looker: Centralised Business Reporting & Analytics](hugo-ref:portfolio/2026-04-24-migrating-to-looker-centralised-business-reporting-and-analytics.md) 
+Link on its own: [Migrating to Looker: Centralised Business Reporting & Analytics](hugo-ref:portfolio/2026-03-01-migrating-to-looker-centralised-business-reporting-and-analytics.md) 
 
 At our annual conference in , I was asked to join WGSN from CEO Carla Buzasi. What had I done... Here I was, squinting at prints and patterns, trying to make sense of what gingham was as opposed to .
 
 Outside of that, I like long/slow books, odd maps, and trying to learn things the hard way.
 
-My role was made redundant in September 2025, and became [A Survival Guide to redundancy](hugo-ref:blog/2026-04-24-a-survival-guide-to-redundancy.md).
+My role was made redundant in September 2025, and became: __
 
 The final gift is my time back. Weekends, evenings, holidays, sickness were spent prepping 1-1 notes, monitoring pipelines, adding one extra feature, learning a new tool - getting the nth crazy project over the line because Y will be on annual leave from Wednesday.
 

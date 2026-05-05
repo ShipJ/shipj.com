@@ -1,16 +1,15 @@
 ---
 id: '18'
 title: 'Migrating to Looker: Centralised Business Reporting & Analytics'
-meta_title: >-
+meta_title: ''
+description: 'Migrating to Looker: Centralising Business Reporting & Analytics'
+tldr: >-
   Migrating to Looker: Centralising Business Reporting & Analytics for Enhanced
   Data Insights
-description: 'Migrating to Looker: Centralising Business Reporting & Analytics'
 slug: migrating-to-looker-centralised-business-reporting-and-analytics
-date: '2026-04-24T15:14:44.533Z'
+date: '2026-05-05T21:51:06.163Z'
 categories:
-  - Data Engineering
-  - Data Governance
-  - Business Intelligence
+  - Data Analytics
 tags:
   - Looker
   - dbt
@@ -21,13 +20,16 @@ tags:
   - LookML
 author: Jack
 length: Long (6-12 months)
+sector: General
 read_time: 5
+series: A new career
+series_part: '19'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-8077-839d-e90a57c8f299
 created_at: '2026-03-01T14:22:00.000Z'
-last_edited_at: '2026-04-18T09:30:00.000Z'
-last_synced: '2026-04-24T15:14:44.533Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:06.164Z'
 math: true
 image: /images/gallery/screenshot-2026-03-02-at-165238.png
 ---

@@ -1,27 +1,35 @@
 ---
 id: '3'
 title: A Survival Guide to redundancy
-meta_title: >-
+meta_title: ''
+description: What it’s like to be made redundant and how to make it work for you
+tldr: >-
   When Redundancy Becomes the Best Outcome: Understanding the Experience of
   Being Made Redundant
-description: What it’s like to be made redundant and how to make it work for you
 slug: a-survival-guide-to-redundancy
-date: '2026-04-24T15:14:42.597Z'
+date: '2026-05-05T21:51:04.340Z'
 categories:
-  - Personal Development
-  - Management
+  - Career
 tags:
   - general
-  - redundancy
+  - career
+  - tech-stack
+  - vendors
+  - ETL
+  - stats
+  - spark
 author: Jack
 length: Very Short (1-2 days)
+sector: General
 read_time: 5
+series: A new career
+series_part: '7'
 type: blog
 draft: false
 notion_id: 3167fd6b-fd0d-8025-8d25-c7ff2c4b340a
 created_at: '2026-03-01T11:28:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:42.597Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:04.340Z'
 math: true
 image: ''
 ---

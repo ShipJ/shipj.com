@@ -1,28 +1,39 @@
 ---
 id: '22'
 title: Lessons from Jury Service
-meta_title: >-
-  Lessons Learned from Jury Service: Overcoming Imposter Syndrome and Embracing
-  Life Skills
+meta_title: ''
 description: >-
-  Lessons learned from mandatory Jury service, including an absolute sense of
-  imposter syndrome
+  I was called for jury service as a fresh-faced graduate and immediately felt
+  underqualified. What surprised me was that jury service is not about being an
+  expert; it's about listening carefully, questioning assumptions, and making a
+  serious decision with imperfect information.
+tldr: >-
+  What makes someone qualified to decide the course of someone else's life? Jury
+  service taught me that responsibility does not wait for confidence, expertise,
+  or adulthood to properly arrive. It asks ordinary people to listen carefully,
+  question what they think they know, and make serious decisions with imperfect
+  information. This is a reflection on imposter syndrome, civic duty, and the
+  uncomfortable truth that sometimes being qualified simply means showing up and
+  taking the decision seriously.
 slug: lessons-from-jury-service
-date: '2026-04-24T15:14:48.331Z'
+date: '2026-05-05T21:51:11.384Z'
 categories:
-  - Lifestyle
+  - Career
 tags:
   - collaboration
-  - personal-goals
+  - goals
 author: Jack
 length: Very Short (1-2 days)
-read_time: 5
+sector: Society
+read_time: 10
+series: A new career
+series_part: '2'
 type: blog
 draft: false
 notion_id: 3177fd6b-fd0d-805c-9ab7-dfbc6c66e8e5
 created_at: '2026-03-02T21:52:00.000Z'
-last_edited_at: '2026-04-18T09:30:00.000Z'
-last_synced: '2026-04-24T15:14:48.331Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:11.384Z'
 math: true
 image: ''
 ---
@@ -42,11 +53,11 @@ In university, decisions had redo buttons. You could resubmit coursework. You co
 
 This was different. This was consequential in a way my CV had never prepared me for.
 
-### The imposter syndrome of responsibility
+### Imposter syndrome is real
 
-Everyone talks about imposter syndrome at work, but I did not realise how far it could travel. It followed me straight into the courtroom, dressed up as civic duty.
+Everyone talks about imposter syndrome at work, but I did not realise how far it could travel - it followed me right up to the courtroom, dressed up as civic responsibility.
 
-I remember looking around at the other jurors and thinking they all looked more qualified than me. Not necessarily older. Just… steadier. Like they already knew the rules of the world.
+I remember looking at the other jurors and thinking they all looked more qualified than me. Not older, but wiser, and steadier. Like they already knew the rules and how to apply them.
 
 I felt like a kid who had wandered into the wrong lecture theatre and now had to sit an exam anyway.
 
@@ -74,9 +85,7 @@ And it means accepting that you will not get certainty. You get what was present
 
 ### The weight of the decision
 
-The most unsettling part was how normal the mechanics of it all felt.
-
-You sit in a room. You talk. You debate. You ask each other questions. You try to be fair. You try to be careful.
+The most unsettling part was how normal the mechanics of it all felt. You sit in a room to talk, debate openly, and ask each other questions. You try to be fair. You try to be careful.
 
 From the outside, it could look like any group decision I had ever been part of.
 
@@ -86,21 +95,23 @@ That is where the fear came from, I think. Not from the law or the formality, bu
 
 When you have never been trusted with something that heavy before, it is hard to believe you should be trusted now.
 
-### What I learned (and what surprised me)
+### What surprised me the most
 
-I went in thinking jury service would prove I was out of my depth.
-
-Instead, it taught me something quietly reassuring:
+I went in thinking jury service would be a fun, life-changing experience, but it taught me something more profound and reassuring than that:
 
 - Responsibility is not reserved for people who feel ready.
 
 - Serious decisions are rarely made with perfect information.
 
-- Being careful, slow, and willing to question your own assumptions is a kind of competence.
+- Taking care and willing to question your own assumptions is a kind of competence.
 
 I also learned that humility can be useful. Not the self-deprecating kind that shuts you down, but the kind that keeps you open. The kind that says, *I might be wrong, so I will pay attention.*
 
-### Leaving with a different definition of “qualified”
+One of my favourite quotes:
+
+> What gets us into trouble is not what we don't know. It's what we know for sure that just ain't so - Mark Twain
+
+### Leaving with a different definition of “qualified” test
 
 By the end, I still did not feel like an expert. But I stopped believing that expertise was what was being asked of me.
 

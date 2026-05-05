@@ -3,31 +3,31 @@ id: '13'
 title: 'Finance Migration: From Legacy to Modern Cloud Analytics'
 meta_title: ''
 description: 'Finance Migration: From Legacy to Modern Cloud Analytics'
+tldr: ''
 slug: finance-migration-from-legacy-to-modern-cloud-analytics
-date: '2026-04-24T15:14:47.625Z'
+date: '2026-05-05T21:51:09.958Z'
 categories:
   - Data Engineering
-  - Data Analytics
-  - Data Governance
-  - Business Intelligence
 tags:
   - BigQuery
   - GCP
   - Looker
   - dbt
-  - finance
   - automation
   - monitoring
   - reporting
 author: Jack
 length: Very Long (>12 months)
+sector: Finance
 read_time: 5
+series: A new career
+series_part: '12'
 type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-80c4-a1bd-c810102c2198
 created_at: '2026-03-01T14:09:00.000Z'
-last_edited_at: '2026-04-18T10:27:00.000Z'
-last_synced: '2026-04-24T15:14:47.625Z'
+last_edited_at: '2026-05-05T18:59:00.000Z'
+last_synced: '2026-05-05T21:51:09.958Z'
 math: true
 image: ''
 ---
