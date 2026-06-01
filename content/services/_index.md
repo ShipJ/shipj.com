@@ -1,11 +1,11 @@
 ---
-title: "Work"
-meta_title: "Work"
+title: "Services"
+meta_title: "Services"
 description: "> How can we work together?"
 image: "/images/banner.png"
 
 consulting:
-  title: "Work"
+  title: "Services"
   intro: "Whether you're looking for a data science and engineering partner or some friendly advice - let's chat."
   services:
     - "**Demand forecasting** — Anticipate demand, optimise stock, reduce lost sales"

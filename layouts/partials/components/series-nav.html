@@ -9,6 +9,10 @@
   {{ if gt $total 1 }}
     {{ $current := $page.Params.series_part | default 0 | int }}
 
+    {{ if eq $position "top" }}
+      <p class="series-eyebrow">Part of the series: <span class="series-eyebrow-name">{{ $series }}</span></p>
+    {{ end }}
+
     {{ if eq $position "bottom" }}
       {{ $prevPart := false }}
       {{ $nextPart := false }}
@@ -17,25 +21,81 @@
         {{ if eq (.Params.series_part | default 0 | int) (add $current 1) }}{{ $nextPart = . }}{{ end }}
       {{ end }}
 
-      <div class="series-pager">
-        <div class="series-pager-header">
-          <span class="series-pager-label">{{ $series | upper }}: PART {{ $current }} OF {{ $total }}</span>
+      {{ if or $prevPart $nextPart }}
+        <div class="series-nav-section">
+          <div class="mb-8 flex items-end justify-between gap-4">
+            <div>
+              <p class="ui-kicker mb-2">Continue the series</p>
+              <h2 class="h3">{{ $series }} <span class="series-nav-part-label">Part {{ $current }} of {{ $total }}</span></h2>
+            </div>
+          </div>
+          <div class="series-nav-cards">
+            {{ if not $prevPart }}
+              {{ $cat := "" }}{{ with $page.Params.categories }}{{ $cat = index . 0 }}{{ end }}
+              <article class="portfolio-tree-card series-nav-card ptc-current">
+                <div class="ptc-bar">
+                  <span class="ptc-series-part">&#10003; Part {{ $current }} — read</span>
+                </div>
+                <div class="ptc-body">
+                  <span class="ptc-title">{{ $page.Title }}</span>
+                  <div class="ptc-chips">
+                    {{ with $cat }}{{ partial "components/category-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}{{ end }}
+                    {{ with $page.Params.sector }}{{ partial "components/sector-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}{{ end }}
+                  </div>
+                  {{ with $page.Params.tags }}<div class="ptc-tags">{{ range . }}<span class="ptc-tag">#{{ . }}</span>{{ end }}</div>{{ end }}
+                  {{ with $page.Params.description }}<p class="ptc-hook">{{ . }}</p>{{ end }}
+                </div>
+                <div class="ptc-footer">
+                  <span>{{ $page.Date.Format "2 Jan 2006" }}{{ with $page.Params.read_time }} · {{ . }} min{{ end }}</span>
+                  {{ with $page.Params.length }}<span>{{ . }}</span>{{ end }}
+                </div>
+              </article>
+            {{ end }}
+            {{ with $prevPart }}
+              {{ $cat := "" }}{{ with .Params.categories }}{{ $cat = index . 0 }}{{ end }}
+              <article class="portfolio-tree-card series-nav-card" data-card-link="{{ .RelPermalink }}">
+                <div class="ptc-bar">
+                  <span class="ptc-series-part">← Part {{ .Params.series_part | int }}</span>
+                </div>
+                <div class="ptc-body">
+                  <a class="ptc-title ptc-title-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                  <div class="ptc-chips">
+                    {{ with $cat }}{{ partial "components/category-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}{{ end }}
+                    {{ with .Params.sector }}{{ partial "components/sector-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}{{ end }}
+                  </div>
+                  {{ with .Params.tags }}<div class="ptc-tags">{{ range . }}<span class="ptc-tag">#{{ . }}</span>{{ end }}</div>{{ end }}
+                  {{ with .Params.description }}<p class="ptc-hook">{{ . }}</p>{{ end }}
+                </div>
+                <div class="ptc-footer">
+                  <span>{{ .Date.Format "2 Jan 2006" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
+                  {{ with .Params.length }}<span>{{ . }}</span>{{ end }}
+                </div>
+              </article>
+            {{ end }}
+            {{ with $nextPart }}
+              {{ $cat := "" }}{{ with .Params.categories }}{{ $cat = index . 0 }}{{ end }}
+              <article class="portfolio-tree-card series-nav-card series-nav-card-next" data-card-link="{{ .RelPermalink }}">
+                <div class="ptc-bar">
+                  <span class="ptc-series-part">Part {{ .Params.series_part | int }} →</span>
+                </div>
+                <div class="ptc-body">
+                  <a class="ptc-title ptc-title-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                  <div class="ptc-chips">
+                    {{ with $cat }}{{ partial "components/category-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}{{ end }}
+                    {{ with .Params.sector }}{{ partial "components/sector-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}{{ end }}
+                  </div>
+                  {{ with .Params.tags }}<div class="ptc-tags">{{ range . }}<span class="ptc-tag">#{{ . }}</span>{{ end }}</div>{{ end }}
+                  {{ with .Params.description }}<p class="ptc-hook">{{ . }}</p>{{ end }}
+                </div>
+                <div class="ptc-footer">
+                  <span>{{ .Date.Format "2 Jan 2006" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
+                  {{ with .Params.length }}<span>{{ . }}</span>{{ end }}
+                </div>
+              </article>
+            {{ end }}
+          </div>
         </div>
-        <div class="series-pager-body{{ if and $prevPart $nextPart }} has-both{{ else if $prevPart }} has-prev{{ else }} has-next{{ end }}">
-          {{ if $prevPart }}
-            <a class="series-pager-cell is-prev" href="{{ $prevPart.RelPermalink }}">
-              <span class="series-pager-direction">← Part {{ $prevPart.Params.series_part | int }}</span>
-              <span class="series-pager-title">{{ $prevPart.Title }}</span>
-            </a>
-          {{ end }}
-          {{ if $nextPart }}
-            <a class="series-pager-cell is-next" href="{{ $nextPart.RelPermalink }}">
-              <span class="series-pager-direction">Part {{ $nextPart.Params.series_part | int }} →</span>
-              <span class="series-pager-title">{{ $nextPart.Title }}</span>
-            </a>
-          {{ end }}
-        </div>
-      </div>
+      {{ end }}
     {{ end }}
   {{ end }}
 {{ end }}

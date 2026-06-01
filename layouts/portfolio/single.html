@@ -1,8 +1,9 @@
 {{ define "main" }}
-<section class="page-lead pb-20 lg:pb-24 xl:pb-28">
+<div class="blog-rail-host">
+<section class="page-lead pb-4">
   <div class="site-container">
     <article>
-        <div class="page-header-shell mb-8">
+        <div class="page-header-shell mb-3">
         {{ partial "components/page-eyebrow" (dict "Page" . "Class" "mb-4") }}
 
         <div class="content-meta-strip">
@@ -30,13 +31,13 @@
 
         </div>
 
-        <h1 class="h2 mt-3 mb-0 tracking-[-0.03em]">{{ .Title }}</h1>
+        <h1 class="h2 mt-5 mb-0 tracking-[-0.03em]">{{ .Title }}</h1>
 
         {{ with .Params.description }}
         <p class="content-intro">{{ . }}</p>
         {{ end }}
 
-        <div class="content-date mt-3">
+        <div class="content-date mt-5">
           <span>{{ time.Format ":date_long" .PublishDate }}</span>
           {{ with .Params.length }}
             <span class="sep">&middot;</span>
@@ -53,26 +54,42 @@
     </article>
   </div>
 
-  <hr class="mb-0 border-border/60 dark:border-darkmode-border/60" />
+  {{ partial "toc-rail.html" . }}
 
   <div class="site-container">
-    <article>
+    {{ if not .Params.intro }}<hr class="mb-0 border-border/60 dark:border-darkmode-border/60" />{{ end }}
+    <article class="pt-4 pb-12">
         {{ with .Params.image }}
-        <div class="mt-10 mb-2">
+        <div class="mb-2">
           {{ partial "image" (dict "Src" . "Context" $.Page "Alt" $.Title "Class" "w-full rounded-2xl border border-border dark:border-darkmode-border") }}
         </div>
         {{ end }}
 
+        {{ with .Params.intro }}
+        <div class="content-intro-section">
+          <div class="content-intro-rule">
+            <span class="content-intro-label">Context</span>
+            <span class="content-intro-line"></span>
+          </div>
+          <div class="content-intro-body">
+            {{ $.Page.RenderString (dict "display" "block") (. | replaceRE `\n{3,}` "\n\n") }}
+          </div>
+        </div>
+        {{ partial "components/jump-to-toc.html" $ }}
+        {{ end }}
+
         {{ with .Params.tldr }}
-        <div class="content-tldr-box mt-16">
+        <div class="content-tldr-box content-tldr-box--portfolio">
           <div class="content-tldr-label">▶ TL;DR</div>
-          <div class="content content-tldr-body">
-            <p>{{ . }}</p>
+          <div class="content-tldr-body">
+            {{ . | markdownify }}
           </div>
         </div>
         {{ end }}
 
-        <div class="mt-16 mb-12">
+        {{ partial "components/predictions-block" . }}
+
+        <div class="{{ if or .Params.intro .Params.tldr }}mt-16{{ else }}mt-8{{ end }} mb-0">
           <div class="content">
           <!-- {{ partial "toc.html" (dict "Class" "portfolio" "Collapsed" true "TableOfContents" .TableOfContents ) }} -->
           {{ .Content }}
@@ -80,7 +97,11 @@
         </div>
 
         {{ partial "components/series-nav" (dict "Page" . "Position" "bottom") }}
+    </article>
+  </div>
 
+  <div class="site-container">
+    <article class="pt-6 pb-12">
         <!-- Related posts -->
         {{ $contentPool := where .Site.RegularPages "Section" "in" (slice "blog" "portfolio") }}
         {{ $candidates := where $contentPool "RelPermalink" "ne" .RelPermalink }}
@@ -98,36 +119,82 @@
         {{ end }}
         {{ $related = first 3 $related }}
         {{ with $related }}
-          <div class="section pb-0">
-            <div class="mb-8">
-              <p class="ui-kicker mb-2">More work</p>
-              <h2 class="h3">{{ T "related_posts" }}</h2>
-            </div>
-            <div class="row">
-              {{ range . }}
-                <div class="lg:col-4 md:col-6 mb-8">
-                  {{ if eq .Section "portfolio" }}
-                    {{ partial "components/portfolio-card-related" . }}
-                  {{ else }}
-                    {{ partial "components/blog-card-related" . }}
-                  {{ end }}
-                </div>
-              {{ end }}
-            </div>
+          <div class="mb-8">
+            <p class="ui-kicker mb-2">More work</p>
+            <h2 class="h3">{{ T "related_posts" }}</h2>
+          </div>
+          <div class="row">
+            {{ range . }}
+              <div class="lg:col-4 md:col-6 mb-8">
+                {{ if eq .Section "portfolio" }}
+                  {{ partial "components/portfolio-card-related" . }}
+                {{ else }}
+                  {{ partial "components/blog-card-related" . }}
+                {{ end }}
+              </div>
+            {{ end }}
           </div>
         {{ end }}
-
-        <div class="flex justify-center items-center gap-3 mt-4 mb-10">
-          {{ partial "social-share" (dict "Context" . "Class" "share-icons flex gap-2" "Linkedin" true "X" true "Email" true "Copy" true "Facebook" false "Reddit" false "Whatsapp" true "Telegram" false "Pinterest" false "Tumblr" false "Vk" false "Fediverse" false) }}
-        </div>
-
-        {{ if site.Config.Services.Disqus.Shortname }}
-          <div class="mt-20">
-            {{ template "_internal/disqus.html" . }}
-          </div>
-        {{ end }}
-
     </article>
   </div>
+
+  <div class="site-container">
+    <div class="content-share-cell mt-4 mb-16">
+      <span class="content-share-label">Share</span>
+      {{ partial "social-share" (dict "Context" . "Class" "share-icons flex gap-2" "Linkedin" true "X" true "Email" true "Copy" true "Facebook" false "Reddit" false "Whatsapp" true "Telegram" false "Pinterest" false "Tumblr" false "Vk" false "Fediverse" false) }}
+    </div>
+  </div>
+
+  {{ if site.Config.Services.Disqus.Shortname }}
+  <div class="site-container">
+    <hr class="border-border/60 dark:border-darkmode-border/60" />
+    <article class="py-12">
+      {{ template "_internal/disqus.html" . }}
+    </article>
+  </div>
+  {{ end }}
+
 </section>
+
+{{ $allQuickReads := where (where site.RegularPages "Section" "blog") ".Params.length" "Quick Read" }}
+{{ $allQuickReads = where $allQuickReads ".RelPermalink" "ne" .RelPermalink }}
+{{ $quickReads := $allQuickReads }}
+{{ $newsReads := where $allQuickReads "Params.tags" "intersect" (slice "news") }}
+{{ $tutorialReads := where $allQuickReads "Params.tags" "intersect" (slice "tutorial") }}
+{{ $quickReads = first 5 $quickReads }}
+{{ $newsReads = first 5 $newsReads }}
+{{ $tutorialReads = first 5 $tutorialReads }}
+
+{{ if or $quickReads $newsReads $tutorialReads }}
+<div class="blog-rail-slot">
+<aside class="blog-rail">
+  <p class="blog-rail-label">Quick reads</p>
+  {{ range $group := slice (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
+  {{ if $group.items }}
+  <div class="home-quick-reads-group">
+    <p class="quick-reads-sublabel">{{ $group.label }}</p>
+    <div class="home-quick-reads">
+      {{ range $group.items }}
+      {{ if .Params.coming_soon }}
+      <span class="home-quick-read is-coming-soon">
+        <span class="hqr-title">{{ .Title }}</span>
+        <span class="hqr-sep">·</span>
+        <span class="hqr-date">Coming soon</span>
+      </span>
+      {{ else }}
+      <a class="home-quick-read" href="{{ .RelPermalink }}">
+        <span class="hqr-title">{{ .Title }}</span>
+        <span class="hqr-sep">·</span>
+        <span class="hqr-date">{{ .Date.Format "2 Jan" }}</span>
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+  {{ end }}
+</aside>
+</div>
+{{ end }}
+</div>
 {{ end }}

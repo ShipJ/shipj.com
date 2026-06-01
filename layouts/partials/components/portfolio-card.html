@@ -1,31 +1,44 @@
-{{ $cat := "" }}{{ with .Params.categories }}{{ $cat = index . 0 }}{{ end }}
+{{ $page := . }}
+{{ $hideSector := false }}
+{{ if reflect.IsMap . }}
+  {{ $page = .Page }}
+  {{ $hideSector = .HideSector | default false }}
+{{ end }}
+{{ $cat := "" }}{{ with $page.Params.categories }}{{ $cat = index . 0 }}{{ end }}
+{{ $cs := $page.Params.coming_soon }}
 
-<article class="portfolio-tree-card" data-card-link="{{ .RelPermalink }}">
+<article class="portfolio-tree-card{{ if $cs }} is-coming-soon{{ end }}" data-card-link="{{ if not $cs }}{{ $page.RelPermalink }}{{ end }}">
 
   <div class="ptc-bar">
     {{ with $cat }}
       {{ partial "components/category-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}
     {{ end }}
-    {{ with .Params.sector }}
+    {{ if not $hideSector }}
+    {{ with $page.Params.sector }}
       {{ partial "components/sector-chip" (dict "Name" (. | title) "Class" "ptc-chip") }}
+    {{ end }}
     {{ end }}
   </div>
 
   <div class="ptc-body">
-    <span class="ptc-title">{{ .Title }}</span>
+    <span class="ptc-title">{{ $page.Title }}</span>
 
-    {{ with .Params.tags }}
+    {{ with $page.Params.tags }}
     <div class="ptc-tags">
       {{ range . }}<span class="ptc-tag">#{{ . }}</span>{{ end }}
     </div>
     {{ end }}
 
-    {{ with .Params.description }}<p class="ptc-hook">{{ . }}</p>{{ end }}
+    {{ with $page.Params.description }}<p class="ptc-hook">{{ . }}</p>{{ end }}
   </div>
 
   <div class="ptc-footer">
-    <span>{{ .Date.Format "2 Jan 2006" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
-    {{ with .Params.length }}<span>{{ . }}</span>{{ end }}
+    {{ if $cs }}
+    <span class="ptc-coming-soon">Coming soon</span>
+    {{ else }}
+    <span>{{ $page.Date.Format "2 Jan 2006" }}{{ with $page.Params.read_time }} · {{ . }} min{{ end }}</span>
+    {{ with $page.Params.length }}<span>{{ . }}</span>{{ end }}
+    {{ end }}
   </div>
 
 </article>

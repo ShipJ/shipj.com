@@ -7,7 +7,7 @@
 }
 
 .btn-primary {
-  @apply border-primary bg-primary text-white hover:opacity-90 dark:border-darkmode-primary dark:bg-darkmode-primary dark:text-text-dark;
+  @apply border-primary bg-primary text-white hover:opacity-90 dark:border-darkmode-primary dark:bg-darkmode-primary dark:text-darkmode-body;
 }
 
 .btn-outline-primary {

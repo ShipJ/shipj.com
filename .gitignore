@@ -152,3 +152,7 @@ node_modules/
 public/
 hugo_stats.json
 resources/*
+
+# Claude Code — keep settings.json + commands/ tracked, ignore personal/local
+.claude/settings.local.json
+.claude/*.local.json

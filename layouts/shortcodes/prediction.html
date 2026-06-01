@@ -1,0 +1,62 @@
+{{ $id := .Get "id" }}
+{{ $pred := index (where .Site.Pages "Params.notion_id" $id) 0 }}
+{{ with $pred }}
+  {{ $statusSlug := .Params.status | lower | replaceRE "\\s+" "-" }}
+  <div class="prediction-card prediction-card-inline" data-status="{{ $statusSlug }}">
+    <div class="prediction-top">
+      <p class="prediction-text{{ if ne (.Params.status | lower) "open" }} prediction-text--resolved{{ end }}">{{- .Params.prediction -}}{{ with .Params.confidence }}<span class="prediction-confidence">&nbsp;&middot;&nbsp;I'm {{ int (math.Round (mul . 100)) }}% confident</span>{{ end }}</p>
+      <div class="prediction-badges">
+        {{ with .Params.status }}
+          <span class="prediction-status" data-status="{{ $statusSlug }}">{{ . }}</span>
+        {{ end }}
+      </div>
+    </div>
+    {{ $predCreated := .Params.created_time }}
+    {{ $predDate := .Date }}
+    {{ $confidence := .Params.confidence }}
+    {{ with .Params.target_date }}
+      {{ $target := time . }}
+      {{ $targetDay := time ($target.Format "2006-01-02") }}
+      {{ $startRaw := cond (ne $predCreated "") (time $predCreated) $predDate }}
+      {{ $startDay := time ($startRaw.Format "2006-01-02") }}
+      {{ $todayDay := time (now.Format "2006-01-02") }}
+      {{ $totalDays := int (div (sub $targetDay.Unix $startDay.Unix) 86400) }}
+      {{ $elapsedDays := int (div (sub $todayDay.Unix $startDay.Unix) 86400) }}
+      {{ $remainingDays := int (div (sub $targetDay.Unix $todayDay.Unix) 86400) }}
+      {{ if lt $elapsedDays 0 }}{{ $elapsedDays = 0 }}{{ end }}
+      {{ if lt $remainingDays 0 }}{{ $remainingDays = 0 }}{{ end }}
+      {{ $pct := 0 }}
+      {{ if gt $totalDays 0 }}
+        {{ $pct = int (math.Round (mul (div (float $elapsedDays) (float $totalDays)) 100)) }}
+        {{ if lt $pct 0 }}{{ $pct = 0 }}{{ end }}
+        {{ if gt $pct 100 }}{{ $pct = 100 }}{{ end }}
+      {{ end }}
+      <div class="prediction-timeline">
+        <div class="prediction-timeline-header">
+          <span>Prediction date</span>
+          <span>Target date</span>
+        </div>
+        <div class="prediction-timeline-track">
+          <div class="prediction-timeline-elapsed" style="width: {{ $pct }}%"></div>
+          <div class="prediction-timeline-tick-start"></div>
+          <div class="prediction-timeline-tick-now" style="left: {{ $pct }}%"></div>
+          <div class="prediction-timeline-tick-end"></div>
+        </div>
+        <div class="prediction-timeline-labels">
+          <span class="ptl-start">{{ $startDay.Format "Jan '06" }}</span>
+          <span class="ptl-end">{{ $target.Format "Jan '06" }}</span>
+        </div>
+        <div class="prediction-timeline-stats">
+          <span>Elapsed: {{ $elapsedDays }} days</span>
+          {{ if gt $remainingDays 0 }}<span>Remaining: {{ $remainingDays }} days</span>{{ end }}
+        </div>
+      </div>
+    {{ end }}
+    {{ if and (ne (.Params.status | lower) "open") .Params.outcome }}
+      <div class="prediction-outcome">
+        <span class="prediction-outcome-label">Outcome</span>
+        <p>{{ .Params.outcome }}</p>
+      </div>
+    {{ end }}
+  </div>
+{{ end }}

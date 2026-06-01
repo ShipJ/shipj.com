@@ -9,7 +9,7 @@
 {{ $tone := partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace }}
 {{ $toneClass := printf "category-chip-%s" $tone }}
 
-{{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
+{{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
 {{ $color := index $colors $tone | default "#6a7a8a" }}
 
 {{ $activeClass := "" }}

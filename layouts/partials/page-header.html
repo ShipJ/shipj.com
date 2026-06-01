@@ -1,23 +1,30 @@
-{{ $isSimpleSectionHeader := in (slice "blog" "portfolio" "about" "work-with-me") .Section }}
-{{ $isTighterSectionHeader := in (slice "portfolio" "about" "work-with-me") .Section }}
+{{ $isSimpleSectionHeader := in (slice "blog" "portfolio" "about" "services")
+.Section }} {{ $isTighterSectionHeader := in (slice "portfolio" "about"
+"services") .Section }}
 <section class="page-lead page-lead-{{ .Section }}">
   <div class="site-container">
     <div class="page-header-shell">
-      {{ partial "components/page-eyebrow" (dict "Page" .) }}
-      {{ if not $isSimpleSectionHeader }}
-      <h1 class="eyebrow-gap">{{ T (printf "%s" (lower .Title)) | default .Title | title }}<span class="cursor" aria-hidden="true"></span></h1>
-      {{ end }}
-      {{ with .Params.description }}
-      {{ if $isSimpleSectionHeader }}
-      <h1 class="page-header-title {{ if $isTighterSectionHeader }}eyebrow-gap-tight{{ else }}eyebrow-gap{{ end }} text-text-dark dark:text-darkmode-text-dark">
+      {{ partial "components/page-eyebrow" (dict "Page" .) }} {{ if not
+      $isSimpleSectionHeader }}
+      <h1 class="eyebrow-gap">
+        {{ T (printf "%s" (lower .Title)) | default .Title | title }}<span
+          class="cursor"
+          aria-hidden="true"
+        ></span>
+      </h1>
+      {{ end }} {{ with .Params.description }} {{ if $isSimpleSectionHeader }}
+      <h1
+        class="page-header-title {{ if $isTighterSectionHeader }}eyebrow-gap-tight{{ else }}eyebrow-gap{{ end }} text-text-dark dark:text-darkmode-text-dark"
+      >
         {{ . | safeHTML }}<span class="cursor" aria-hidden="true"></span>
       </h1>
       {{ else }}
-      <p class="page-header-lead mt-4 text-text-light dark:text-darkmode-text-light">
+      <p
+        class="page-header-lead mt-4 text-text-light dark:text-darkmode-text-light"
+      >
         {{ . }}
       </p>
-      {{ end }}
-      {{ end }}
+      {{ end }} {{ end }}
     </div>
   </div>
 </section>

@@ -33,17 +33,13 @@
 @import "module-overrides.css";
 @import "custom.css";
 
-/* Set hyperlinks to blue within content and prose only */
+/* Set hyperlinks to accent orange within content, prose, and intro sections */
 .content a:not(.btn),
-.prose a:not(.btn) {
-  color: #3b82f6;
+.prose a:not(.btn),
+.content-intro a,
+.content-intro-body a {
+  color: var(--color-accent);
   text-decoration: underline;
-}
-
-/* Set hyperlinks to blue within content and prose only in dark mode */
-.dark .content a:not(.btn),
-.dark .prose a:not(.btn) {
-  color: #60a5fa;
 }
 
 /* Target the TOC specifically */

@@ -1,0 +1,18 @@
+{{ if and .TableOfContents .Params.intro }}
+<nav class="toc-rail" aria-label="Table of contents">
+  <div class="toc-rail-collapsed">
+    <span class="toc-rail-pip"></span>
+    <span class="toc-rail-pip"></span>
+    <span class="toc-rail-pip"></span>
+    <span class="toc-rail-pip"></span>
+    <span class="toc-rail-pip"></span>
+    <span class="toc-rail-pip"></span>
+    <span class="toc-rail-pip"></span>
+    <span class="toc-rail-pip"></span>
+  </div>
+  <div class="toc-rail-expanded">
+    <p class="toc-rail-label">Contents</p>
+    {{ .TableOfContents }}
+  </div>
+</nav>
+{{ end }}

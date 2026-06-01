@@ -1,133 +1,76 @@
 # CLAUDE.md
 
+Personal site for Jack Shipsmith: blog, portfolio of data/ML work, predictions, and a services page. Content is authored in Notion, synced into Hugo, and deployed to GitHub Pages.
+
 ## Stack
-- Hugo
-- Tailwind CSS v4
-- Notion (synced via script)
+
+- Hugo (hugoplate boilerplate base)
+- Tailwind CSS v4 (`@tailwindcss/cli`) + maintained custom CSS
+- Notion → markdown via sync script
 - GitHub Actions → GitHub Pages
 
 ## Commands
-- Dev: npm run dev
-- Build: npm run build
-- Sync content: npm run sync:notion
-- Format: npm run format
-- Hugo only: hugo server
 
-Requires `.env`:
-- NOTION_TOKEN
-- NOTION_DATABASE_ID
+- Dev: `npm run dev` (syncs Notion, then `hugo server`)
+- Build: `npm run build`
+- Sync content: `npm run sync:notion`
+- Format: `npm run format`
+- Hugo only: `hugo server`
 
-## Core rules
-- Make minimal, reviewable changes
-- Read only files needed for the task
-- Do not scan the whole repo unless asked
-- Do not add dependencies unless necessary
-- Do not create new files unless clearly needed
-- Prefer editing existing files over creating new ones
-- Preserve structure and conventions
-- After edits: list changed files with reasons
+Requires `.env`: `NOTION_TOKEN`, `NOTION_DATABASE_ID`
 
----
+## How I work here
 
-## Behavioral guidelines
+- Make minimal, reviewable changes; modify only what the request needs.
+- Match existing style and conventions; reuse partials before creating new ones.
+- Don't refactor or clean up unrelated code; don't add dependencies or new files unless clearly needed.
+- Don't scan the whole repo; read only the files the task needs.
+- If unclear or there are multiple sensible interpretations, ask — don't guess. Flag simpler approaches when they exist.
+- After edits: list changed files with the reason for each.
 
-### 1. Think before coding
-- State assumptions explicitly
-- If multiple interpretations exist, present options
-- Ask when unclear - do not guess
-- Call out simpler approaches if they exist
-
-### 2. Simplicity first
-- Solve only the requested problem
-- No speculative features or abstractions
-- No unnecessary flexibility or configurability
-- Avoid overengineering
-- Prefer the smallest working solution
-
-### 3. Surgical changes
-- Modify only what is required
-- Do not refactor unrelated code
-- Match existing style
-- Do not clean up unrelated code
-- Remove only what your changes made unused
-
-Test: every changed line must trace to the request
-
-### 4. Goal-driven execution
-- Define clear success criteria before coding
-- For bugs: reproduce → fix → verify
-- For features: define expected outcome → implement → verify
-- For multi-step tasks:
-  1. Step → verify
-  2. Step → verify
-
-## Content system
+## Content system (Notion-sourced)
 
 - Source: Notion → `scripts/syncNotion.mjs`
-- Output: `/content/{blog,portfolio}/`
-- Front matter includes: `notion_id`, `last_synced`
+- Output: `content/{blog,portfolio,predictions,...}/`
+- Front matter includes `notion_id`, `last_synced`
 
 Rules:
-- Do NOT rename/remove front matter fields
-- Do NOT modify sync script unless explicitly asked
-- Preserve content structure and links
-- Assume markdown is machine-generated
-- Make minimal edits to generated content
 
-## Build
-Notion → sync script → `/content/` → Hugo → `/public/`
+- Do NOT rename/remove front-matter fields.
+- Do NOT modify the sync script unless explicitly asked.
+- Treat generated markdown as machine-output: make minimal edits, preserve structure and links.
 
 ## Paths
-- Config: hugo.toml or config.*
-- Content: content/
-- Layouts: layouts/
-- Partials: layouts/partials/
-- Shortcodes: layouts/shortcodes/
-- Assets: assets/
-- Static: static/
-- Workflow: .github/workflows/
 
-## Templates
-- Base: layouts/_default/
-- Sections: layouts/blog/, layouts/portfolio/
-- Components: layouts/partials/components/
-- Widgets: layouts/partials/widgets/
-
-Rules:
-- Reuse existing partials before creating new ones
-- Avoid broad template refactors
-- Keep templates simple and consistent
-
-## Styling
-- Entry: assets/css/main.css
-- Tailwind-based (theme-driven)
-
-Rules:
-- Prefer Tailwind utilities over custom CSS
-- Do not introduce new styling systems
-
-## JavaScript
-- Minimal JS in assets/js/main.js
-
-Rules:
-- Avoid adding JS unless necessary
-- Prefer Hugo/templates/CSS
+- Root config: `hugo.toml`
+- Other config: `config/_default/` (`menus.en.toml`, `module.toml`, `params.toml`)
+- Content: `content/`
+- Layouts: `layouts/` — base in `_default/`; per-section dirs `blog/`, `portfolio/`, `predictions/`, `services/`, `network/`, `about/`, `contact/`, `authors/`, `postcard/`, `date/`
+- Partials: `layouts/partials/` (`components/`, `widgets/`, `essentials/`)
+- Shortcodes: `layouts/shortcodes/`
+- Assets: `assets/` (CSS in `assets/css/`, JS in `assets/js/main.js`)
+- Static: `static/`
+- Workflows: `.github/workflows/`
 
 ## Routing
-- `/` homepage
-- `/blog/`
-- `/portfolio/`
-- `/about/`, `/contact/`
 
-## Token efficiency
-- Keep responses concise
-- Do not print large files or logs
-- Summarize instead of dumping content
-- Stop reading once sufficient context is found
-- Focus only on relevant files
+`/`, `/blog/`, `/portfolio/`, `/predictions/`, `/services/`, `/about/`, `/contact/`, `/network/`
+
+## Styling
+
+- Entry: `assets/css/main.css`; theme-driven Tailwind v4.
+- Custom CSS is a maintained layer: `assets/css/{buttons,components,custom}.css`.
+- Prefer Tailwind utilities for one-off styling; use the custom CSS files for shared/component styles utilities can't express cleanly. Don't introduce a new styling system.
+
+## JavaScript
+
+- Minimal JS in `assets/js/main.js`. Prefer Hugo/templates/CSS over adding JS.
 
 ## Output format
+
 1. Brief plan
 2. Minimal implementation
-3. Files changed
+3. Files changed (with reasons)
 4. Risks / follow-up
+
+Keep responses concise; summarize rather than dumping large files or logs.

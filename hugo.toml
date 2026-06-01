@@ -11,6 +11,11 @@ timeZone = "Europe/London"
 # post excerpt
 summaryLength = 20 # see https://gohugo.io/content-management/excerpts/
 
+# Include future-dated pages in lists. Per-page `build.render: never`
+# (added by syncNotion.mjs for future-dated posts) keeps their URLs 404'd
+# so listings can tease them as "coming soon" without leaking content.
+buildFuture = true
+
 # disable language
 disableLanguages = ["fr"] # added fr to its own content folder, and all works fine! Just remove this to enable
 
@@ -29,6 +34,10 @@ shortname = 'themefisher-template' # we use disqus to show comments in blog post
 ########################## Permalinks ############################
 [permalinks.page]
 "pages" = "/:slugorcontentbasename/"
+
+########################## Front matter ##########################
+[frontmatter]
+date = ["published_at", ":default"]
 
 ########################## Pagination ############################
 [pagination]
@@ -92,7 +101,7 @@ style = 'monokai' # see https://xyproto.github.io/splash/docs/all.html
 lineNumbersInTable = false
 
 [markup.tableOfContents]
-startLevel = 2
+startLevel = 1
 endLevel = 5
 ordered = true
 

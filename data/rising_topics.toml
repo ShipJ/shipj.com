@@ -1,6 +1,3 @@
-window_short = "last 4 weeks"
-window_long = "last 26 weeks"
-
 [[tags]]
 label = "#dbt"
 values = [3, 2, 3, 3, 4, 4, 5, 6]

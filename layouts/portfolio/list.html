@@ -1,14 +1,27 @@
 {{ define "main" }}
 {{ partial "page-header" . }}
-<section id="content-results" class="section pt-4 portfolio-list-page">
+
+<section
+  id="content-results"
+  class="section pt-4 portfolio-list-page"
+  data-filter-root
+  data-filter-clear-url="{{ .RelPermalink }}"
+>
   <div class="site-container">
     <div class="pt-6">
       <div class="row">
         {{ range .RegularPages.ByDate.Reverse }}
-          <div class="mb-5 md:col-6 lg:col-4">
-            {{ partial "components/portfolio-card" . }}
+          <div class="mb-5 md:col-6 lg:col-4"
+               data-filter-item
+               data-filter-categories="{{ delimit (apply (.Params.categories | default (slice)) "urlize" ".") "|" }}"
+               data-filter-sectors="{{ with .Params.sector }}{{ . | urlize | lower }}{{ end }}">
+            {{ partial "components/portfolio-card" (dict "Page" .) }}
           </div>
         {{ end }}
+      </div>
+
+      <div class="ui-shell hidden text-center" data-filter-empty>
+        <p class="text-text-light dark:text-darkmode-text-light">No portfolio items match the selected filters.</p>
       </div>
     </div>
 

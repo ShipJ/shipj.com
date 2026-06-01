@@ -1,0 +1,19 @@
+{{ $h1s := slice }}
+{{ range .Fragments.Headings }}
+  {{ if eq .Level 1 }}
+    {{ $h1s = $h1s | append . }}
+  {{ end }}
+{{ end }}
+{{ if $h1s }}
+<div class="jump-to-toc">
+  <span class="jump-to-toc-label">IN THIS POST</span>
+  <ol class="jump-to-toc-list">
+    {{ range $i, $h := $h1s }}
+    <li>
+      <span class="jump-to-toc-num">{{ printf "%02d" (add $i 1) }}</span>
+      <a href="#{{ .ID }}">{{ .Title | plainify }}</a>
+    </li>
+    {{ end }}
+  </ol>
+</div>
+{{ end }}

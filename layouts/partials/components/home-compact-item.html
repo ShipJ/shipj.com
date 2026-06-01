@@ -1,5 +1,8 @@
-<div class="home-compact-item">
-  <a href="{{ .RelPermalink }}" class="home-compact-link">
-    {{ .Title }}
-  </a>
+{{ $cs := .Params.coming_soon }}
+<div class="home-compact-item{{ if $cs }} is-coming-soon{{ end }}">
+  {{ if $cs }}
+  <span class="home-compact-link">{{ .Title }} <span class="home-compact-coming-soon">· Coming soon</span></span>
+  {{ else }}
+  <a href="{{ .RelPermalink }}" class="home-compact-link">{{ .Title }}</a>
+  {{ end }}
 </div>

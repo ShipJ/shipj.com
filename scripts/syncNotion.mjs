@@ -25,11 +25,25 @@ const notion = new Client({ auth: env("NOTION_TOKEN") });
 const DATABASE_ID = env("NOTION_DATABASE_ID");
 if (!env("NOTION_TOKEN") || !DATABASE_ID) die("Missing NOTION_TOKEN or NOTION_DATABASE_ID in env.");
 
+const PREDICTIONS_DATABASE_ID = env("NOTION_PREDICTIONS_DATABASE_ID");
+
 const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "content");
+
+const SITE_PATH_PREFIX = (() => {
+  try {
+    const toml = fs.readFileSync(path.join(ROOT, "hugo.toml"), "utf8");
+    const m = toml.match(/baseURL\s*=\s*"([^"]+)"/);
+    if (!m) return "";
+    const p = new URL(m[1]).pathname.replace(/\/$/, "");
+    return p === "" ? "" : p;
+  } catch { return ""; }
+})();
+
 const DIRS = {
   blog: path.join(CONTENT_DIR, "blog"),
   portfolio: path.join(CONTENT_DIR, "portfolio"),
+  predictions: path.join(CONTENT_DIR, "predictions"),
   default: path.join(CONTENT_DIR, "blog"),
   gallery: path.join(ROOT, "assets", "images", "gallery"),
 };
@@ -68,9 +82,14 @@ const notionIdFromUrl = (url) => {
   }
 };
 
-// Minimal escaping so markdown labels don’t break and $ doesn’t become math
+// Minimal escaping so markdown labels don’t break and $ doesn’t become math.
+// Footnote references [^label] and definitions [^label]: are un-escaped after.
 const escMd = (s) =>
-  (s ?? "").replaceAll("[", "\\[").replaceAll("]", "\\]").replaceAll("$", "\\$");
+  (s ?? "")
+    .replaceAll("[", "\\[")
+    .replaceAll("]", "\\]")
+    .replaceAll("$", "\\$")
+    .replace(/\\\[\^([\w-]+)\\\]/g, "[^$1]");
 
 // Apply Notion inline annotations to plain markdown text (NOT to the whole link wrapper)
 const applyAnn = (txt, ann = {}) => {
@@ -148,6 +167,7 @@ const pickPeople = (p) => (p?.type === "people" ? p.people?.[0]?.name ?? "" : ""
 const pickDate = (p) => p?.date?.start ?? null;
 const pickMulti = (p) => p?.multi_select?.map((x) => x.name) ?? [];
 const pickCheck = (p) => !!p?.checkbox;
+const pickRelation = (p) => p?.type === "relation" ? p.relation?.map((r) => r.id).filter(Boolean) ?? [] : [];
 
 // Pull first file from a Notion `files` property (supports both external + file)
 const pickFile = (p) => {
@@ -234,11 +254,12 @@ function renderRichText(richText = [], idToContentPath) {
       // Inline equation rich text
       if (rt.type === "equation") return applyAnn(`$${rt.equation?.expression ?? ""}$`, { ...ann, code: false });
 
-      // Mentioned page => internal hugo-ref (preferred) else external notion URL
+      // Mentioned page => shortcode for predictions, hugo-ref for other content, else notion URL
       if (rt.type === "mention" && rt.mention?.type === "page") {
         const targetId = normalizeNotionId(rt.mention.page.id);
         const label = rt.plain_text || "link";
         const targetPath = targetId ? idToContentPath.get(targetId) : null;
+        if (targetPath?.startsWith("predictions/")) return `{{< prediction id="${targetId}" >}}`;
         return targetPath
           ? mdLink(label, hugoRef(targetPath), ann)
           : mdLink(label, `https://www.notion.so/${String(rt.mention.page.id).replaceAll("-", "")}`, ann);
@@ -317,9 +338,10 @@ function mapFrontMatter(page) {
     title: rawTitle,
     meta_title: pickText(prop(props, "meta_title")),
     description: pickText(prop(props, "description")),
-    tldr: pickText(prop(props, "tldr")),
+    intro: (() => { const rt = renderRichText(prop(props, "intro")?.rich_text ?? [], new Map()); return rt ? linkifyFootnoteRefs(linkifyHashtags(rt.replace(/\n+/g, "\n\n"))) : undefined; })(),
+    tldr: (() => { const rt = renderRichText(prop(props, "tldr")?.rich_text ?? [], new Map()); return rt ? linkifyFootnoteRefs(rt.replace(/\n+/g, "\n\n")) : undefined; })(),
     slug: slugProp || slug(rawTitle), // slug from rawTitle (avoids emoji noise)
-    date: pickDate(prop(props, "date")) || new Date().toISOString(),
+    published_at: pickDate(prop(props, "published_at")) || new Date().toISOString(),
     categories: pickMulti(prop(props, "categories")),
     tags: pickMulti(prop(props, "tags")),
     author: pickPeople(prop(props, "author")),
@@ -346,7 +368,7 @@ const dirForType = (t) => (t === "portfolio" ? DIRS.portfolio : t === "blog" ? D
 
 // Planned relative path for new pages (so internal links can be rewritten before files exist)
 function plannedRelPath(fm) {
-  const d = fm.created_at ? new Date(fm.created_at) : new Date();
+  const d = fm.published_at ? new Date(fm.published_at) : new Date();
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
@@ -355,7 +377,7 @@ function plannedRelPath(fm) {
 
 // Write markdown file (prefer overwriting existing path when known)
 function writeMd(fm, body, preferredAbs = null) {
-  const d = fm.created_at ? new Date(fm.created_at) : new Date();
+  const d = fm.published_at ? new Date(fm.published_at) : new Date();
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
@@ -365,7 +387,12 @@ function writeMd(fm, body, preferredAbs = null) {
     path.join(dirForType(fm.type), `${yyyy}-${mm}-${dd}-${fm.slug}.md`);
 
   fs.mkdirSync(path.dirname(targetAbs), { recursive: true });
-  fs.writeFileSync(targetAbs, matter.stringify(body, fm), "utf8");
+  const cleanFm = Object.fromEntries(Object.entries(fm).filter(([, v]) => v !== undefined));
+  if (fm.published_at && new Date(fm.published_at) > new Date()) {
+    cleanFm.coming_soon = true;
+    cleanFm.build = { render: "never", list: "always" };
+  }
+  fs.writeFileSync(targetAbs, matter.stringify(body, cleanFm), "utf8");
   return targetAbs;
 }
 
@@ -399,6 +426,25 @@ async function fetchPublishedPages() {
   return pages;
 }
 
+// Convert [^label] refs in isolated fields (intro/tldr) to direct HTML links,
+// since those fields render without the footnote definitions from the main body.
+function linkifyFootnoteRefs(md) {
+  return md.replace(/\[\^([\w-]+)\](?!:)/g, (_, label) =>
+    `<sup><a href="#fn:${label}" class="footnote-ref">[${label}]</a></sup>`
+  );
+}
+
+function linkifyHashtags(md) {
+  // Split on fenced code blocks so we never touch code content
+  const parts = md.split(/(```[\s\S]*?```|`[^`]+`)/g);
+  return parts.map((part, i) => {
+    if (i % 2 === 1) return part; // odd indices are code spans/blocks — leave untouched
+    return part.replace(/(?<![`\w#])#([a-zA-Z][a-zA-Z0-9_-]*)/g, (_, tag) =>
+      `[#${tag}](${SITE_PATH_PREFIX}/blog/?tags=${tag.toLowerCase()})`
+    );
+  }).join("");
+}
+
 async function fetchPageMarkdown(pageId, idToContentPath) {
   const lines = [];
   let start_cursor;
@@ -410,12 +456,68 @@ async function fetchPageMarkdown(pageId, idToContentPath) {
     start_cursor = res.next_cursor;
   }
 
-  return lines.join("\n").trim() + "\n";
+  return linkifyHashtags(lines.join("\n").trim() + "\n");
+}
+
+/* ----------------------------- predictions sync --------------------------- */
+
+async function fetchAllPredictions() {
+  const data_source_id = await getPrimaryDataSourceId(PREDICTIONS_DATABASE_ID);
+  const pages = [];
+  let start_cursor;
+  while (true) {
+    const res = await notion.dataSources.query({ data_source_id, start_cursor });
+    pages.push(...res.results);
+    if (!res.has_more) break;
+    start_cursor = res.next_cursor;
+  }
+  return pages;
+}
+
+function mapPredictionFrontMatter(page) {
+  const props = page.properties || {};
+  return {
+    notion_id: page.id,
+    prediction: pickTitle(props),
+    status: pickSelect(prop(props, "status")),
+    confidence: pickScalar(prop(props, "confidence")),
+    outcome: pickText(prop(props, "outcome")),
+    target_date: pickDate(prop(props, "target_date")),
+    post_ids: pickRelation(prop(props, "posts")),
+    created_time: page.created_time || new Date().toISOString(),
+    last_edited_time: page.last_edited_time || new Date().toISOString(),
+    last_synced: new Date().toISOString(),
+    build: { render: "never", list: "always" },
+  };
+}
+
+async function syncPredictions(existingIdx) {
+  if (!PREDICTIONS_DATABASE_ID) {
+    console.log("NOTION_PREDICTIONS_DATABASE_ID not set — skipping predictions sync.");
+    return;
+  }
+  fs.mkdirSync(DIRS.predictions, { recursive: true });
+  const pages = await fetchAllPredictions();
+  console.log(`Predictions: found ${pages.length} prediction(s).`);
+
+  for (const page of pages) {
+    const id = normalizeNotionId(page.id);
+    const old = id ? existingIdx.get(id) : null;
+
+    const fm = mapPredictionFrontMatter(page);
+    const targetAbs = old?.filepath || path.join(DIRS.predictions, `${id}.md`);
+    fs.writeFileSync(targetAbs, matter.stringify("", fm), "utf8");
+    console.log(`Synced prediction: "${fm.prediction}" -> ${path.relative(ROOT, targetAbs)}`);
+  }
 }
 
 /* ---------------------------------- main --------------------------------- */
 
 async function main() {
+  // Sync predictions first so idToContentPath includes them for inline mention rewriting
+  const predIdx = buildIndex(DIRS.predictions);
+  await syncPredictions(predIdx);
+
   const existing = buildIndex(CONTENT_DIR); // notion_id(norm) -> { filepath, data }
   const pages = await fetchPublishedPages();
   console.log(`Notion: found ${pages.length} published page(s).`);

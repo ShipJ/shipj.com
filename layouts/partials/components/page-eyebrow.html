@@ -1,7 +1,7 @@
 {{ $page := .Page }}
 {{ $extras := .Extras | default (slice) }}
 <div class="eyebrow eyebrow-home{{ with .Class }} {{ . }}{{ end }}">
-  Jack Shipsmith on Mac
+  Jack on Mac
   {{ range $extras }}
     <span class="sep">·</span>
     {{ . }}

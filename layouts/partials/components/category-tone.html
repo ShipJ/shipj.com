@@ -1,9 +1,10 @@
 {{- $slug := .Name | urlize | lower -}}
 {{- $tone := "slate" -}}
-{{- if or (eq $slug "ai") -}}{{- $tone = "violet" -}}
-{{- else if or (eq $slug "data-analytics") (eq $slug "analytics") -}}{{- $tone = "blue" -}}
+{{- if eq $slug "career" -}}{{- $tone = "red" -}}
+{{- else if or (eq $slug "data-analytics") (eq $slug "analytics") -}}{{- $tone = "orange" -}}
+{{- else if or (eq $slug "data-engineering") (eq $slug "engineering") -}}{{- $tone = "slate" -}}
 {{- else if or (eq $slug "data-science") (eq $slug "science") -}}{{- $tone = "green" -}}
-{{- else if or (eq $slug "data-engineering") (eq $slug "engineering") -}}{{- $tone = "red" -}}
-{{- else if eq $slug "management" -}}{{- $tone = "orange" -}}
+{{- else if eq $slug "personal" -}}{{- $tone = "blue" -}}
+{{- else if eq $slug "web-development" -}}{{- $tone = "violet" -}}
 {{- end -}}
 {{- $tone -}}

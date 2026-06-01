@@ -1,0 +1,43 @@
+{{ $id := .Get "id" }}
+{{ $t := .Get "t" | default "0" }}
+{{ $caption := .Get "caption" }}
+<figure class="loom-figure my-8">
+  <div class="loom-block">
+    <div class="loom-embed-wrap">
+      <button
+        class="loom-facade"
+        data-src="https://www.loom.com/embed/{{ $id }}?t={{ $t }}&hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true"
+        aria-label="Play video">
+        <img
+          src="https://cdn.loom.com/sessions/thumbnails/{{ $id }}-00001.gif"
+          alt=""
+          loading="lazy"
+          class="loom-thumbnail"
+          onerror="this.style.display='none'" />
+        <span class="loom-play-btn" aria-hidden="true">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="29" stroke="white" stroke-opacity="0.8" stroke-width="2"/>
+            <polygon points="24,18 44,30 24,42" fill="white"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  {{ with $caption }}
+  <figcaption class="loom-caption">{{ . }}</figcaption>
+  {{ end }}
+</figure>
+<script>
+  (function () {
+    document.querySelectorAll('.loom-facade').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var iframe = document.createElement('iframe');
+        iframe.src = btn.dataset.src;
+        iframe.frameBorder = '0';
+        iframe.allowFullscreen = true;
+        iframe.className = 'loom-iframe';
+        btn.replaceWith(iframe);
+      }, { once: true });
+    });
+  })();
+</script>

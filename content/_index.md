@@ -1,12 +1,12 @@
 ---
 banner:
   title: "An <s>imposter</s> expert's guide to data science and engineering"
-  content: "I'm a data scientist by education, engineer by trade, and manager by accident. I've spent the last decade building the data and ML infrastructure to understand consumer behaviour across retail and ecommerce.<br><br>Responsible for an awful lot but not quite sure where to start? Let's talk.<br>"
+  content: "I'm a data scientist by education, engineer by trade, and manager by accident. I've spent the last decade building the data and ML infrastructure to understand and predict consumer behaviour across retail and ecommerce. I hope you find my thoughts, tutorials, and projects interesting.<br><br>Responsible for an awful lot but not quite sure where to start? Let's talk.<br>"
   image: "/images/banner.png"
   button:
     enable: true
-    label: "Work with me"
-    link: "/work-with-me/"
+    label: "Services"
+    link: "/services/"
   secondary_buttons:
     - label: "Read my blog"
       link: "/blog/"

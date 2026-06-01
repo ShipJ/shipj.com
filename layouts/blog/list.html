@@ -49,6 +49,7 @@
 {{ end }}
 {{ $tagList = sort $tagList "Count" "desc" }}
 
+<div class="blog-rail-host">
 <section class="page-lead blog-list-page">
   <div class="site-container">
     <div
@@ -89,8 +90,8 @@
             {{ range $catKeys }}
               {{ $name := index $catMap . }}
               {{ $tone := printf "category-chip-%s" (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) }}
-              {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
-              {{ $color := index $colors (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) | default "#6a7a8a" }}
+              {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
+              {{ $color := index $colors (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) | default "#607a92" }}
               <a class="filter-chip {{ $tone }}"
                  data-filter-kind="categories"
                  data-filter-value="{{ . }}"
@@ -106,8 +107,8 @@
             {{ range $sectorKeys }}
               {{ $name := index $sectorMap . }}
               {{ $tone := partial "components/sector-tone" (dict "Name" $name) | strings.TrimSpace }}
-              {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
-              {{ $color := index $colors $tone | default "#6a7a8a" }}
+              {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
+              {{ $color := index $colors $tone | default "#6a5a7a" }}
               <a class="filter-chip category-chip-{{ $tone }}"
                  data-filter-kind="sectors"
                  data-filter-value="{{ . }}"
@@ -145,7 +146,7 @@
           {{ end }}
 
           <div class="filter-row filter-row-sparklines">
-            <span class="label">hot topics</span>
+            <span class="label">hot topics <button class="hot-topics-info" data-tip="% change in posts: last 4 weeks vs. avg of last 26 weeks">i</button></span>
             {{ partial "components/rising-topics" (dict "Page" . "Minimal" true) }}
           </div>
         </div>
@@ -196,30 +197,30 @@
           {{ end }}
 
           {{ $cat := "" }}{{ with .Params.categories }}{{ $cat = index . 0 }}{{ end }}
-          <a class="post-row"
-             href="{{ .RelPermalink }}"
+          {{ $cs := .Params.coming_soon }}
+          {{ if $cs }}<span class="post-row is-coming-soon"{{ else }}<a class="post-row"
+             href="{{ .RelPermalink }}"{{ end }}
              data-filter-item
              data-filter-categories="{{ delimit (apply (.Params.categories | default (slice)) "urlize" ".") "|" }}"
              data-filter-tags="{{ delimit (apply (.Params.tags | default (slice)) "urlize" ".") "|" }}"
              data-filter-authors="{{ with .Params.author }}{{ . | urlize }}{{ end }}"
              data-filter-sectors="{{ with .Params.sector }}{{ . | urlize | lower }}{{ end }}">
             <span class="gutter"></span>
-            <span class="date">{{ .Date.Format "02 Jan" }}</span>
+            <span class="date">{{ if $cs }}Coming soon{{ else }}{{ .Date.Format "02 Jan" }}{{ end }}</span>
             <span class="title">
               {{ .Title }}
-              {{ with .Summary }}<span class="post-summary">{{ . | plainify | truncate 160 }}</span>{{ end }}
               <span class="chip-tag-row">
                 <span class="cat-group">
                   {{ with $cat }}
                   {{ $tone := partial "components/category-tone" (dict "Name" .) | strings.TrimSpace }}
-                  {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
-                  {{ $color := index $colors $tone | default "#6a7a8a" }}
+                  {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
+                  {{ $color := index $colors $tone | default "#607a92" }}
                   <span class="cat category-chip-{{ $tone }}" data-post-category="{{ . | urlize }}" style="--cat: {{ $color }}"><span class="chip-kind">CATEGORY</span>{{ . }}</span>
                   {{ end }}
                   {{ with .Params.sector }}
                   {{ $tone := partial "components/sector-tone" (dict "Name" .) | strings.TrimSpace }}
-                  {{ $colors := dict "blue" "#3a74b5" "violet" "#7d4fa6" "green" "#5c8a3a" "orange" "#c87030" "red" "#b84040" "slate" "#6a7a8a" }}
-                  {{ $color := index $colors $tone | default "#6a7a8a" }}
+                  {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
+                  {{ $color := index $colors $tone | default "#6a5a7a" }}
                   <span class="cat category-chip-{{ $tone }}" data-post-sector="{{ . | urlize | lower }}" style="--cat: {{ $color }}"><span class="chip-kind">SECTOR</span>{{ . }}</span>
                   {{ end }}
                 </span>
@@ -227,9 +228,10 @@
                 <span class="tags">{{ range $i, $t := . }}{{- if $i }} {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
                 {{ end }}
               </span>
-              <span class="comfy-date">{{ .Date.Format "02 Jan" }}</span>
+              {{ with .Params.description }}<span class="post-summary">{{ . }}</span>{{ else }}{{ with .Summary }}<span class="post-summary">{{ . | plainify | truncate 160 }}</span>{{ end }}{{ end }}
+              <span class="comfy-date">{{ if $cs }}Coming soon{{ else }}{{ .Date.Format "02 Jan" }}{{ end }}</span>
             </span>
-          </a>
+          {{ if $cs }}</span>{{ else }}</a>{{ end }}
         {{ end }}
         {{ if $openGroup }}</div></section>{{ end }}
 
@@ -417,4 +419,58 @@
   })();
 </script>
 
+<script>
+  document.querySelectorAll('.hot-topics-info').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      btn.classList.toggle('is-open');
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.hot-topics-info.is-open').forEach(function(btn) {
+      btn.classList.remove('is-open');
+    });
+  });
+</script>
+
+{{ $allQuickReads := where (where site.RegularPages "Section" "blog") ".Params.length" "Quick Read" }}
+{{ $quickReads := $allQuickReads }}
+{{ $newsReads := where $allQuickReads "Params.tags" "intersect" (slice "news") }}
+{{ $tutorialReads := where $allQuickReads "Params.tags" "intersect" (slice "tutorial") }}
+{{ $quickReads = first 5 $quickReads }}
+{{ $newsReads = first 5 $newsReads }}
+{{ $tutorialReads = first 5 $tutorialReads }}
+
+{{ if or $quickReads $newsReads $tutorialReads }}
+<div class="blog-rail-slot">
+<aside class="blog-rail">
+  <p class="blog-rail-label">Quick reads</p>
+  {{ range $group := slice (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
+  {{ if $group.items }}
+  <div class="home-quick-reads-group">
+    <p class="quick-reads-sublabel">{{ $group.label }}</p>
+    <div class="home-quick-reads">
+      {{ range $group.items }}
+      {{ if .Params.coming_soon }}
+      <span class="home-quick-read is-coming-soon">
+        <span class="hqr-title">{{ .Title }}</span>
+        <span class="hqr-sep">·</span>
+        <span class="hqr-date">Coming soon</span>
+      </span>
+      {{ else }}
+      <a class="home-quick-read" href="{{ .RelPermalink }}">
+        <span class="hqr-title">{{ .Title }}</span>
+        <span class="hqr-sep">·</span>
+        <span class="hqr-date">{{ .Date.Format "2 Jan" }}</span>
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+  {{ end }}
+</aside>
+</div>
+{{ end }}
+</div>
 {{ end }}

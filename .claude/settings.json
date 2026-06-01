@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run preview:*)",
+      "Bash(npm run format:*)",
+      "Bash(hugo:*)",
+      "Bash(npx prettier:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git add:*)",
+      "Bash(git mv:*)",
+      "Bash(ls:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r \".tool_response.filePath // .tool_input.file_path // empty\"); case \"$f\" in \"\"|content/*|*/content/*) exit 0;; esac; npx --no-install prettier --write --ignore-unknown \"$f\" 2>/dev/null || true",
+            "statusMessage": "Formatting with prettier"
+          }
+        ]
+      }
+    ]
+  }
+}

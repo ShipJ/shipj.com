@@ -58,7 +58,7 @@
         {{ range $i, $step := . }}
         <div class="md:col-3 mb-6">
           <div class="ui-card-compact h-full">
-            <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary dark:bg-darkmode-primary text-white font-bold text-sm">
+            <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary dark:bg-darkmode-primary text-white dark:text-darkmode-body font-bold text-sm">
               {{ add $i 1 }}
             </div>
             <p class="font-semibold text-sm mb-1">{{ $step.step }}</p>
