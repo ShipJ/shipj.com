@@ -8,6 +8,7 @@
       "Bash(npm run format:*)",
       "Bash(hugo:*)",
       "Bash(npx prettier:*)",
+      "Bash(npx:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -16,12 +17,10 @@
       "Bash(git mv:*)",
       "Bash(ls:*)",
       "Bash(rg:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(sed:*)"
     ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)"
-    ]
+    "deny": ["Read(./.env)", "Read(./.env.*)"]
   },
   "hooks": {
     "PostToolUse": [

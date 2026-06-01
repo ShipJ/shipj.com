@@ -447,21 +447,23 @@
   <p class="blog-rail-label">Quick reads</p>
   {{ range $group := slice (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
   {{ if $group.items }}
+  {{ $allComingSoon := true }}
+  {{ range $group.items }}{{ if not .Params.coming_soon }}{{ $allComingSoon = false }}{{ end }}{{ end }}
   <div class="home-quick-reads-group">
     <p class="quick-reads-sublabel">{{ $group.label }}</p>
-    <div class="home-quick-reads">
+    <div class="home-quick-reads{{ if $allComingSoon }} is-coming-soon{{ end }}">
       {{ range $group.items }}
       {{ if .Params.coming_soon }}
       <span class="home-quick-read is-coming-soon">
-        <span class="hqr-title">{{ .Title }}</span>
-        <span class="hqr-sep">·</span>
         <span class="hqr-date">Coming soon</span>
+        <span class="hqr-sep">·</span>
+        <span class="hqr-title">{{ .Title }}</span>
       </span>
       {{ else }}
       <a class="home-quick-read" href="{{ .RelPermalink }}">
-        <span class="hqr-title">{{ .Title }}</span>
-        <span class="hqr-sep">·</span>
         <span class="hqr-date">{{ .Date.Format "2 Jan" }}</span>
+        <span class="hqr-sep">·</span>
+        <span class="hqr-title">{{ .Title }}</span>
       </a>
       {{ end }}
       {{ end }}

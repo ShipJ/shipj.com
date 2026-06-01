@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "zeon.studio",
   "scripts": {
-    "dev": "npm run sync:notion && hugo server",
+    "dev": "npm run sync:notion && hugo server --disableFastRender --ignoreCache",
     "build": "npm run sync:notion && hugo --gc --minify --templateMetrics --templateMetricsHints --forceSyncStatic",
     "preview": "hugo server --disableFastRender --navigateToChanged --templateMetrics --templateMetricsHints --watch --forceSyncStatic -e production --minify",
     "dev:example": "cd exampleSite && hugo server",

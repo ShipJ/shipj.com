@@ -1,5 +1,5 @@
 {{ define "main" }}
-<div class="blog-rail-host">
+<div class="post-layout post-layout-centered">
 <section class="page-lead pb-4">
   <div class="site-container">
     <article>
@@ -156,45 +156,5 @@
 
 </section>
 
-{{ $allQuickReads := where (where site.RegularPages "Section" "blog") ".Params.length" "Quick Read" }}
-{{ $allQuickReads = where $allQuickReads ".RelPermalink" "ne" .RelPermalink }}
-{{ $quickReads := $allQuickReads }}
-{{ $newsReads := where $allQuickReads "Params.tags" "intersect" (slice "news") }}
-{{ $tutorialReads := where $allQuickReads "Params.tags" "intersect" (slice "tutorial") }}
-{{ $quickReads = first 5 $quickReads }}
-{{ $newsReads = first 5 $newsReads }}
-{{ $tutorialReads = first 5 $tutorialReads }}
-
-{{ if or $quickReads $newsReads $tutorialReads }}
-<div class="blog-rail-slot">
-<aside class="blog-rail">
-  <p class="blog-rail-label">Quick reads</p>
-  {{ range $group := slice (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
-  {{ if $group.items }}
-  <div class="home-quick-reads-group">
-    <p class="quick-reads-sublabel">{{ $group.label }}</p>
-    <div class="home-quick-reads">
-      {{ range $group.items }}
-      {{ if .Params.coming_soon }}
-      <span class="home-quick-read is-coming-soon">
-        <span class="hqr-title">{{ .Title }}</span>
-        <span class="hqr-sep">·</span>
-        <span class="hqr-date">Coming soon</span>
-      </span>
-      {{ else }}
-      <a class="home-quick-read" href="{{ .RelPermalink }}">
-        <span class="hqr-title">{{ .Title }}</span>
-        <span class="hqr-sep">·</span>
-        <span class="hqr-date">{{ .Date.Format "2 Jan" }}</span>
-      </a>
-      {{ end }}
-      {{ end }}
-    </div>
-  </div>
-  {{ end }}
-  {{ end }}
-</aside>
-</div>
-{{ end }}
 </div>
 {{ end }}

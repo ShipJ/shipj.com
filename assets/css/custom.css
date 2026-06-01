@@ -970,7 +970,7 @@ pre,
   line-height: 1.02;
   margin: 0;
   max-width: 100%;
-  text-wrap: wrap;
+  text-wrap: balance;
 }
 
 .page-header-title .accent,
@@ -980,17 +980,19 @@ pre,
 }
 
 .page-lead-portfolio .page-header-shell .page-header-title {
-  font-size: clamp(30px, 4vw, 48px);
-  max-width: 96%;
+  font-size: clamp(26px, 3.5vw, 52px);
+  max-width: 100%;
+  text-wrap: wrap;
 }
 
 .blog-list-page .editorial-list-hero h1 {
-  font-size: clamp(30px, 4vw, 48px);
-  max-width: 98%;
+  font-size: clamp(26px, 3.5vw, 52px);
+  max-width: 100%;
+  text-wrap: wrap;
 }
 
 .page-lead-services .page-header-title {
-  font-size: clamp(40px, 5vw, 72px);
+  font-size: clamp(26px, 3.5vw, 52px);
 }
 
 .eyebrow-gap {
@@ -1015,14 +1017,32 @@ pre,
   width: 92%;
   max-width: 100%;
 }
+/* Home hero: a single narrow column. Left edge sits at the shared
+   brand-right inset (via .site-container padding), matching other pages. */
+.home-page-lead .editorial-hero {
+  width: 100%;
+  max-width: 50rem;
+}
 .home-page-lead .editorial-hero h1 {
-  font-size: clamp(52px, 7vw, 88px);
+  font-size: clamp(36px, 4.6vw, 60px);
   line-height: 1.02;
   letter-spacing: -0.03em;
   font-weight: 600;
   margin-bottom: 0;
   max-width: 100%;
-  text-wrap: wrap;
+  text-wrap: balance;
+}
+.home-page-lead .editorial-hero .hero-body,
+.home-page-lead .editorial-hero .cta-row {
+  max-width: 100%;
+  margin-inline: 0;
+}
+.home-page-lead .editorial-hero .cta-row {
+  justify-content: center;
+  gap: 6px;
+}
+.home-page-lead .editorial-hero .cta-row .cta {
+  width: 160px;
 }
 .editorial-hero h1 .accent {
   color: var(--color-accent);
@@ -1030,8 +1050,8 @@ pre,
 .editorial-hero .hero-body {
   margin-top: 30px;
   width: 100%;
-  max-width: clamp(24rem, 100%, 60rem);
-  font-size: 16px;
+  max-width: 36rem;
+  font-size: 17px;
   line-height: 1.6;
   color: var(--color-text);
 }
@@ -1085,7 +1105,7 @@ pre,
 }
 
 .home-quick-reads {
-  border: 1px dashed var(--color-border);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -1096,11 +1116,21 @@ pre,
   gap: 0.5rem;
   padding: 10px 16px;
   text-decoration: none;
-  border-bottom: 1px dashed var(--color-border);
+  border-bottom: 1px solid var(--color-border);
   transition: background 0.15s;
 }
 
-.home-quick-read:last-child {
+.home-quick-reads.is-coming-soon {
+  border-style: dotted;
+}
+
+.home-quick-reads.is-coming-soon .home-quick-read,
+.home-quick-read.is-coming-soon {
+  border-bottom-style: dotted;
+}
+
+.home-quick-read:last-child,
+.home-quick-reads.is-coming-soon .home-quick-read:last-child {
   border-bottom: none;
 }
 
@@ -1114,13 +1144,36 @@ pre,
   cursor: default;
 }
 
+/* Avoid stacking opacity when the whole box is coming soon (container +
+   row both fade), which made all-coming-soon sections lighter than mixed
+   ones. Let only the container's fade apply. */
+.home-quick-reads.is-coming-soon .home-quick-read.is-coming-soon {
+  opacity: 1;
+}
+
 .home-quick-read.is-coming-soon:hover {
   background: transparent;
+}
+
+.home-quick-read.is-coming-soon .hqr-date {
+  color: var(--color-text-dark);
 }
 
 .portfolio-tree-card.is-coming-soon,
 .ui-card-compact.is-coming-soon {
   cursor: default;
+}
+
+.portfolio-tree-card.is-coming-soon {
+  border-style: dotted;
+}
+
+.portfolio-tree-card.is-coming-soon .ptc-bar {
+  border-bottom-style: dotted;
+}
+
+.portfolio-tree-card.is-coming-soon .ptc-footer {
+  border-top-style: dotted;
 }
 
 .portfolio-tree-card.is-coming-soon:hover,
@@ -1166,21 +1219,28 @@ pre,
   display: none;
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1024px) {
   .blog-rail-slot {
     position: absolute;
-    top: 14rem;
-    right: 1.5rem;
+    top: 42rem;
+    right: 1rem;
     bottom: 0;
-    width: 220px;
+    /* Rail lives in the right gutter. Cap width so its left edge can't cross
+       the search-icon-left vertical line (= content's right boundary, which
+       sits one --header-side-inset in from the container right). The gutter
+       width = side-margin + --header-side-inset, minus a 1rem clearance. */
+    width: min(
+      220px,
+      calc((100vw - min(78vw, 1200px)) / 2 + var(--header-side-inset) - 1rem)
+    );
     pointer-events: none;
   }
 
   .blog-rail {
     display: block;
     position: sticky;
-    top: calc(4rem + 2rem + 40px + 3rem);
-    width: 220px;
+    top: calc(4rem + 1.5rem + 2.5rem);
+    width: 100%;
     pointer-events: auto;
   }
 
@@ -1230,6 +1290,48 @@ pre,
   .blog-rail .hqr-date {
     font-size: 10px;
   }
+}
+
+/* ---- Site-wide content alignment ----
+   Single source of truth: every section-page's content is inset by
+   --header-side-inset on both sides. Header navbar uses the same value
+   for its outer grid columns, so the brand's right edge and the icons'
+   left edge sit on the same vertical lines as the content left/right
+   edges. Below 1024px (where the header collapses) the inset is removed. */
+:root {
+  --header-side-inset: 155px;
+}
+
+@media (min-width: 1024px) {
+  .site-container {
+    padding-inline: var(--header-side-inset);
+  }
+  /* Listings that should keep their grid at full container width */
+  .portfolio-list-page .site-container {
+    padding-inline: 0;
+  }
+}
+
+/* About page: hero + bio still capped at a comfortable column width,
+   but left-aligned within the inset so the eyebrow + title sit at the
+   shared brand-right vertical line. */
+.page-lead-about .page-header-shell,
+.about-bio .about-bio-content {
+  max-width: 50rem;
+}
+.page-lead-about .page-header-shell h1 {
+  font-size: clamp(26px, 3.5vw, 52px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+/* Portfolio list: cards span full container width (no inset). Compensate
+   for the .row negative inline margins so the first card visually aligns
+   with the container (and therefore the header brand) on the left. */
+.portfolio-list-page .site-container > .pt-6 {
+  padding-inline: 0.75rem;
 }
 
 /* ---- Homepage hot topics ---- */
@@ -1501,9 +1603,10 @@ pre,
   margin-top: 1em;
 }
 
-/* Page titles (blog, portfolio, etc.) */
+/* Page titles (blog, portfolio, etc.) — base; per-section rules below override font-size */
 .page-header-shell h1 {
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: clamp(44px, 6vw, 80px);
+  text-wrap: balance;
 }
 
 /* Shrink h1 used as section headings inside article body */
@@ -2552,7 +2655,7 @@ pre,
 
 /* ---- Portfolio card ---- */
 .portfolio-tree-card {
-  border: 1px dashed var(--color-border);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
   background: var(--color-body);
@@ -2578,7 +2681,7 @@ pre,
   flex-wrap: wrap;
   gap: 6px;
   padding: 11px 16px;
-  border-bottom: 1px dashed var(--color-border);
+  border-bottom: 1px solid var(--color-border);
   user-select: none;
 }
 
@@ -2660,7 +2763,7 @@ pre,
   justify-content: space-between;
   font-size: 11px;
   color: var(--color-text-light);
-  border-top: 1px dashed var(--color-border);
+  border-top: 1px solid var(--color-border);
   padding: 8px 18px 10px;
 }
 

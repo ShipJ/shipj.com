@@ -1,52 +1,60 @@
-{{ define "main" }}
-
-{{/* ========== HERO ========== */}}
-{{ with .Params.banner }}
+{{ define "main" }} {{/* ========== HERO ========== */}} {{ with .Params.banner
+}}
 <section class="page-lead home-page-lead">
   <div class="site-container">
     <div class="page-header-shell editorial-hero">
       {{ partial "components/page-eyebrow" (dict "Page" $) }}
-      <h1 class="eyebrow-gap">&gt; {{ .title | markdownify }}<span class="cursor" aria-hidden="true"></span></h1>
-      <div class="hero-body">
-        {{ .content | markdownify }}
-      </div>
+      <h1 class="eyebrow-gap">
+        &gt; {{ .title | markdownify }}<span
+          class="cursor"
+          aria-hidden="true"
+        ></span>
+      </h1>
+      <div class="hero-body">{{ .content | markdownify }}</div>
 
       <div class="cta-row">
         {{ with .button }}{{ if .enable }}
-        <a class="cta primary" href="{{ strings.TrimPrefix `/` .link | relURL }}">
+        <a
+          class="cta primary"
+          href="{{ strings.TrimPrefix `/` .link | relURL }}"
+        >
           {{ .label }} <span class="arrow">→</span>
         </a>
-        {{ end }}{{ end }}
-        {{ range .secondary_buttons }}
+        {{ end }}{{ end }} {{ range .secondary_buttons }}
         <a class="cta" href="{{ strings.TrimPrefix `/` .link | relURL }}">
-          {{ .label }}{{ with .icon }} <i class="fa-solid {{ . }} cta-icon"></i>{{ end }}
+          {{ .label }}{{ with .icon }}
+          <i class="fa-solid {{ . }} cta-icon"></i>{{ end }}
         </a>
         {{ end }}
       </div>
     </div>
 
-    {{/* ========== HOT TOPICS ========== */}}
-    {{ if site.Data.rising_topics }}
+    {{/* ========== HOT TOPICS ========== */}} {{ if site.Data.rising_topics }}
     <div class="home-hot-topics">
-      <p class="section-kicker">Hot topics <button class="hot-topics-info" data-tip="% change in posts: last 4 weeks vs. avg of last 26 weeks">i</button></p>
+      <p class="section-kicker">
+        Hot topics
+        <button
+          class="hot-topics-info"
+          data-tip="% change in posts: last 4 weeks vs. avg of last 26 weeks"
+        >
+          i
+        </button>
+      </p>
       {{ partial "components/rising-topics" (dict "Page" $ "Minimal" true) }}
     </div>
-    {{ end }}
-
-    {{/* ========== LATEST ========== */}}
-    {{ $latestPost := index (where (where site.RegularPages "Section" "blog") "Params.coming_soon" "!=" true) 0 }}
-    {{ $latestProject := index (where (where site.RegularPages "Section" "portfolio") "Params.coming_soon" "!=" true) 0 }}
-    {{ $allQuickReads := where (where site.RegularPages "Section" "blog") ".Params.length" "Quick Read" }}
-    {{ $quickReads := $allQuickReads }}
-    {{ if $latestPost }}
-      {{ $quickReads = where $quickReads ".RelPermalink" "ne" $latestPost.RelPermalink }}
-    {{ end }}
-    {{ $newsReads := where $allQuickReads "Params.tags" "intersect" (slice "news") }}
-    {{ $tutorialReads := where $allQuickReads "Params.tags" "intersect" (slice "tutorial") }}
-    {{ $quickReads = first 5 $quickReads }}
-    {{ $newsReads = first 5 $newsReads }}
-    {{ $tutorialReads = first 5 $tutorialReads }}
-    {{ if or $latestPost $latestProject $quickReads $newsReads $tutorialReads }}
+    {{ end }} {{/* ========== LATEST ========== */}} {{ $latestPost := index
+    (where (where site.RegularPages "Section" "blog") "Params.coming_soon" "!="
+    true) 0 }} {{ $latestProject := index (where (where site.RegularPages
+    "Section" "portfolio") "Params.coming_soon" "!=" true) 0 }} {{
+    $allQuickReads := where (where site.RegularPages "Section" "blog")
+    ".Params.length" "Quick Read" }} {{ $quickReads := $allQuickReads }} {{ if
+    $latestPost }} {{ $quickReads = where $quickReads ".RelPermalink" "ne"
+    $latestPost.RelPermalink }} {{ end }} {{ $newsReads := where $allQuickReads
+    "Params.tags" "intersect" (slice "news") }} {{ $tutorialReads := where
+    $allQuickReads "Params.tags" "intersect" (slice "tutorial") }} {{
+    $quickReads = first 5 $quickReads }} {{ $newsReads = first 5 $newsReads }}
+    {{ $tutorialReads = first 5 $tutorialReads }} {{ if or $latestPost
+    $latestProject $quickReads $newsReads $tutorialReads }}
     <div class="home-latest">
       {{ if or $latestPost $latestProject }}
       <div class="home-latest-row">
@@ -55,25 +63,27 @@
           <p class="section-kicker">Latest post</p>
           {{ partial "components/portfolio-card" . }}
         </div>
-        {{ end }}
-        {{ with $latestProject }}
+        {{ end }} {{ with $latestProject }}
         <div class="home-latest-col">
           <p class="section-kicker">Latest project</p>
           {{ partial "components/portfolio-card" . }}
         </div>
         {{ end }}
       </div>
-      {{ end }}
-      {{ if or $quickReads $newsReads $tutorialReads }}
+      {{ end }} {{ if or $quickReads $newsReads $tutorialReads }}
       <div class="home-latest-full">
         <p class="section-kicker">Quick reads</p>
-        {{ range $group := slice (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
-        {{ if $group.items }}
+        {{ range $group := slice (dict "label" "Popular" "items" $quickReads)
+        (dict "label" "In the news" "items" $newsReads) (dict "label"
+        "Tutorials" "items" $tutorialReads) }} {{ if $group.items }} {{
+        $allComingSoon := true }} {{ range $group.items }}{{ if not
+        .Params.coming_soon }}{{ $allComingSoon = false }}{{ end }}{{ end }}
         <div class="home-quick-reads-group">
           <p class="quick-reads-sublabel">{{ $group.label }}</p>
-          <div class="home-quick-reads">
-            {{ range $group.items }}
-            {{ if .Params.coming_soon }}
+          <div
+            class="home-quick-reads{{ if $allComingSoon }} is-coming-soon{{ end }}"
+          >
+            {{ range $group.items }} {{ if .Params.coming_soon }}
             <span class="home-quick-read is-coming-soon">
               <span class="hqr-date">Coming soon</span>
               <span class="hqr-sep">·</span>
@@ -85,12 +95,10 @@
               <span class="hqr-sep">·</span>
               <span class="hqr-title">{{ .Title }}</span>
             </a>
-            {{ end }}
-            {{ end }}
+            {{ end }} {{ end }}
           </div>
         </div>
-        {{ end }}
-        {{ end }}
+        {{ end }} {{ end }}
       </div>
       {{ end }}
     </div>
@@ -100,16 +108,18 @@
 {{ end }}
 
 <script>
-  document.querySelectorAll('.hot-topics-info').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
+  document.querySelectorAll(".hot-topics-info").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
       e.stopPropagation();
-      btn.classList.toggle('is-open');
+      btn.classList.toggle("is-open");
     });
   });
-  document.addEventListener('click', function() {
-    document.querySelectorAll('.hot-topics-info.is-open').forEach(function(btn) {
-      btn.classList.remove('is-open');
-    });
+  document.addEventListener("click", function () {
+    document
+      .querySelectorAll(".hot-topics-info.is-open")
+      .forEach(function (btn) {
+        btn.classList.remove("is-open");
+      });
   });
 </script>
 

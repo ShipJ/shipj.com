@@ -15,8 +15,52 @@
   min-height: calc(4rem + 1.5rem);
 }
 
+/* header bar spans its own wider track, independent of the 60vw reading column */
+.header-container {
+  width: min(78vw, 1200px);
+  max-width: min(78vw, 1200px);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+/* Lock the navbar's outer columns to --header-side-inset so the brand's
+   right edge and the icons' left edge sit on the same vertical lines as
+   the content's left/right edges across the site. */
+@media (min-width: 1024px) {
+  .navbar {
+    grid-template-columns: var(--header-side-inset) auto var(
+        --header-side-inset
+      );
+  }
+  .header-tools {
+    justify-self: start;
+  }
+}
+
 .header-menu-toggle {
   display: none !important;
+}
+
+/* language switcher pill (only rendered on multilingual builds) */
+.header-lang {
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-light);
+  padding-inline: 1rem;
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  transition: color 120ms;
+}
+.header-lang:hover {
+  color: var(--color-text-dark);
+}
+.dark .header-lang {
+  border-color: var(--color-darkmode-border);
+  background: var(--color-darkmode-light);
+  color: var(--color-darkmode-text-light);
+}
+.dark .header-lang:hover {
+  color: var(--color-darkmode-text-dark);
 }
 
 .navbar-brand {
@@ -25,7 +69,7 @@
   font-family: var(--font-primary);
   font-weight: 700;
   letter-spacing: -0.01em;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--color-text-dark);
   opacity: 1;
   white-space: nowrap;
@@ -93,7 +137,11 @@
 .dark .nav-link:hover {
   background: color-mix(in srgb, var(--color-darkmode-light) 88%, white 12%);
   color: var(--color-darkmode-text-dark);
-  border-color: color-mix(in srgb, var(--color-darkmode-border) 55%, var(--color-darkmode-text-light));
+  border-color: color-mix(
+    in srgb,
+    var(--color-darkmode-border) 55%,
+    var(--color-darkmode-text-light)
+  );
 }
 .dark .nav-link.active {
   background: var(--color-darkmode-text-dark);
@@ -146,7 +194,11 @@
 .dark .nav-dropdown-link:hover {
   background: color-mix(in srgb, var(--color-darkmode-light) 84%, white 10%);
   color: var(--color-darkmode-text-dark);
-  border-color: color-mix(in srgb, var(--color-darkmode-border) 50%, var(--color-darkmode-text-light));
+  border-color: color-mix(
+    in srgb,
+    var(--color-darkmode-border) 50%,
+    var(--color-darkmode-text-light)
+  );
 }
 .nav-dropdown-link.active {
   background: var(--color-text-dark);
@@ -159,147 +211,103 @@
   border-color: var(--color-darkmode-text-dark);
 }
 
-@media (min-width: 1024px) {
-  .navbar-nav {
-    gap: clamp(0.25rem, 0.9vw, 1.25rem);
-  }
-
-  .nav-link {
-    font-size: clamp(13px, 0.35vw + 11px, 16px);
-    padding: 7px clamp(10px, 0.9vw, 16px);
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1023.98px) {
+/* ===== Tablet & desktop: single-row horizontal nav (>=768px) ===== */
+@media (min-width: 768px) {
   .navbar {
     display: grid;
-    grid-template-columns: max-content minmax(0, 1.6fr) max-content;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     align-content: center;
-    gap: 0 0.25rem;
   }
 
+  /* navigation.css lives in @layer components, but the markup's order-*, w-full
+     and ml-auto are @layer utilities, which win by layer order regardless of
+     specificity. !important is required here to beat them and stop the nav
+     being reordered onto a second row. */
   .navbar > .order-0 {
     grid-column: 1;
-    grid-row: 1;
     justify-self: start;
-    min-width: 0;
-  }
-
-  .navbar-brand-label {
-    font-size: clamp(1rem, 1rem + 0.3vw, 1.2rem);
+    order: 0 !important;
   }
 
   .header-menu-toggle {
     display: none !important;
   }
 
-  .navbar-nav {
+  .navbar > #nav-menu.navbar-nav {
     grid-column: 2;
-    grid-row: 1;
-    order: 0;
-    display: flex !important;
-    width: 100%;
-    height: auto;
-    min-width: 0;
-    align-items: center;
-    align-self: center;
-    justify-content: center;
+    order: 0 !important;
+    display: flex;
+    flex-direction: row;
     flex-wrap: nowrap;
+    align-items: center;
     justify-self: center;
-    margin: 0;
-    gap: clamp(0.15rem, 0.35vw, 0.35rem) !important;
-    padding-top: 0;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
     border: 0;
     background: transparent;
     box-shadow: none;
+    gap: clamp(0.25rem, 0.9vw, 1rem);
   }
 
   .nav-link {
-    font-size: clamp(12px, 0.45vw + 9px, 15px);
-    min-height: 2.4rem;
-    padding: 6px clamp(6px, 0.55vw, 11px);
+    font-size: clamp(13px, 0.3vw + 12px, 15px);
+    padding: 7px clamp(10px, 0.9vw, 16px);
   }
 
-  .header-tools {
+  .navbar > .header-tools {
     grid-column: 3;
-    grid-row: 1;
-    order: 0;
-    margin-left: 0;
-    gap: 0.25rem;
-    align-self: center;
     justify-self: end;
-    min-width: 0;
+    margin-left: 0 !important;
+    order: 0 !important;
   }
 
-  .header-tools .kbd {
-    display: none;
-  }
-
+  /* single language only — hide the switcher until there's a real choice */
   .header-lang {
     display: none;
   }
-
-  .header-tools .theme-switcher {
-    display: inline-flex;
-  }
 }
 
+/* ===== Mobile: collapsible menu (<768px) ===== */
 @media (max-width: 767.98px) {
-  .navbar {
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1.8fr) max-content;
-    align-items: center;
-    align-content: center;
-    gap: 0 0.25rem;
-  }
-
-  .navbar > .order-0 {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: start;
-    min-width: 0;
-  }
-
   .header-menu-toggle {
-    display: none !important;
+    display: inline-flex !important;
   }
 
-  .header-tools {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    margin-left: 0;
-    order: 0;
-    gap: 0.35rem;
-  }
-
-  .navbar-nav {
-    grid-column: 2;
-    grid-row: 1;
+  #nav-menu.navbar-nav {
+    display: none;
     width: 100%;
-    min-width: 0;
-    align-items: center;
-    align-self: center;
-    justify-content: center;
-    justify-self: center;
-    flex-wrap: nowrap;
-    gap: clamp(0.1rem, 0.5vw, 0.3rem);
-    margin: 0;
-    padding-top: 0;
-    border: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--color-border);
     background: transparent;
     box-shadow: none;
   }
 
-  .navbar-brand-label {
-    font-size: clamp(0.9rem, 0.55rem + 1.15vw, 1.2rem);
+  .dark #nav-menu.navbar-nav {
+    border-top-color: var(--color-darkmode-border);
+  }
+
+  input#nav-toggle:checked ~ #nav-menu.navbar-nav {
+    display: flex;
   }
 
   .nav-link {
-    font-size: clamp(10px, 0.55rem + 0.6vw, 13px);
-    min-height: 2.15rem;
-    padding: 5px clamp(4px, 0.8vw, 8px);
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 15px;
+    min-height: 2.75rem;
+    padding: 10px 16px;
+  }
+
+  .nav-dropdown-list {
+    position: static;
+    margin-top: 0.25rem;
+    box-shadow: none;
   }
 
   .header-tools .header-lang {
@@ -307,49 +315,8 @@
   }
 
   .header-tools .search-trigger {
-    height: 30px;
-    width: 30px;
-  }
-
-  .header-tools .theme-switcher label {
-    height: 1.35rem;
-    width: 2.6rem;
-  }
-
-  .header-tools .theme-switcher span {
-    height: 1.05rem;
-    width: 1.05rem;
-  }
-
-  .header-tools .theme-switcher input:checked + label span {
-    left: 1.25rem;
-  }
-}
-
-@media (max-width: 599.98px) {
-  .navbar {
-    grid-template-columns: max-content minmax(0, 1fr) max-content;
-    gap: 0 0.15rem;
-  }
-
-  .navbar-nav {
-    gap: 0.1rem;
-  }
-
-  .nav-link {
-    font-size: clamp(9px, 0.48rem + 0.5vw, 12px);
-    min-height: 2rem;
-    padding: 4px 5px;
-  }
-
-  .header-tools .search-trigger {
-    height: 28px;
-    width: 28px;
-  }
-
-  .header-tools .theme-switcher label {
-    height: 1.3rem;
-    width: 2.45rem;
+    height: 32px;
+    width: 32px;
   }
 }
 

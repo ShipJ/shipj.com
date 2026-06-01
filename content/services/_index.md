@@ -1,7 +1,7 @@
 ---
 title: "Services"
 meta_title: "Services"
-description: "> How can we work together?"
+description: "> Can we work together?"
 image: "/images/banner.png"
 
 consulting:
