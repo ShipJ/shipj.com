@@ -71,11 +71,11 @@
         </div>
         {{ end }} {{ if $hasReads }}
         <div class="home-latest-col home-latest-reads">
-          {{ range $group := slice (dict "label" "Popular" "items" $quickReads)
-          (dict "label" "In the news" "items" $newsReads) (dict "label"
-          "Tutorials" "items" $tutorialReads) (dict "label" "Coming soon"
-          "items" $comingSoonReads) }} {{ if $group.items }} {{ $allComingSoon
-          := true }} {{ range $group.items }}{{ if not .Params.coming_soon }}{{
+          {{ range $group := slice (dict "label" "Coming soon" "items"
+          $comingSoonReads) (dict "label" "Popular" "items" $quickReads) (dict
+          "label" "In the news" "items" $newsReads) (dict "label" "Tutorials"
+          "items" $tutorialReads) }} {{ if $group.items }} {{ $allComingSoon :=
+          true }} {{ range $group.items }}{{ if not .Params.coming_soon }}{{
           $allComingSoon = false }}{{ end }}{{ end }}
           <div class="home-quick-reads-group">
             <p class="section-kicker">{{ $group.label }}</p>
@@ -90,7 +90,7 @@
               </span>
               {{ else }}
               <a class="home-quick-read" href="{{ .RelPermalink }}">
-                <span class="hqr-date">{{ .Date.Format "2 Jan" }}</span>
+                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
                 <span class="hqr-sep">·</span>
                 <span class="hqr-title">{{ .Title }}</span>
               </a>

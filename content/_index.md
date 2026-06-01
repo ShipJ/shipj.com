@@ -5,7 +5,7 @@ banner:
   image: "/images/banner.png"
   button:
     enable: true
-    label: "Services"
+    label: "Work with me"
     link: "/services/"
   secondary_buttons:
     - label: "Read my blog"

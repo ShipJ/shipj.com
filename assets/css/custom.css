@@ -76,7 +76,7 @@ pre,
   --rule: var(--color-border);
   --rule-2: var(--color-light);
   --accent: var(--color-accent);
-  --hover-bg: color-mix(in srgb, var(--color-light) 55%, var(--color-body));
+  --hover-bg: color-mix(in srgb, var(--color-accent) 8%, var(--color-body));
 }
 
 /* Remap base vars in dark mode so custom CSS classes switch automatically */
@@ -94,6 +94,9 @@ pre,
   --color-text-dark: var(--color-darkmode-text-dark);
   --color-text-light: var(--color-darkmode-text-light);
   --color-accent: var(--color-darkmode-accent);
+  /* Dark mode needs a slightly stronger accent tint to read against the
+     dark body. Keeps the orange highlight feel consistent across the site. */
+  --hover-bg: color-mix(in srgb, var(--color-accent) 12%, var(--color-body));
 }
 
 /* ---- Mono kickers everywhere ---- */
@@ -773,28 +776,36 @@ pre,
   color: color-mix(in srgb, var(--cat, var(--color-text-light)) 60%, white);
 }
 
-/* Hover */
+/* Hover
+   - Category (already filled): keep the fill, swap the matching border for a
+     darker solid `--cat` outline so the chip gains a defined edge.
+   - Sector (already outlined): fill the chip with a tint while keeping the
+     existing ring, so hover *adds* presence rather than changing the outline. */
 .ui-chip-category:hover,
 .filter-row [data-filter-kind="categories"].filter-chip:hover,
 .blog-list[data-density="comfy"] .post-row .cat:not([data-post-sector]):hover {
   color: color-mix(in srgb, var(--cat, var(--color-text-dark)) 92%, black);
   background: color-mix(
     in srgb,
-    var(--cat, transparent) 46%,
+    var(--cat, transparent) 34%,
     var(--color-body)
   );
-  border-color: color-mix(
-    in srgb,
-    var(--cat, transparent) 46%,
-    var(--color-body)
-  );
+  border-color: var(--cat, var(--color-text-dark));
 }
 .ui-chip-sector:hover,
 .filter-row [data-filter-kind="sectors"].filter-chip:hover,
 .blog-list[data-density="comfy"] .post-row .cat[data-post-sector]:hover {
   color: var(--cat, var(--color-text-dark));
-  border-color: var(--cat, var(--color-text-dark));
-  background: color-mix(in srgb, var(--cat, transparent) 8%, var(--color-body));
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 24%,
+    var(--color-body)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--cat, var(--color-border)) 60%,
+    var(--color-border)
+  );
 }
 
 /* Active / selected */
@@ -1007,7 +1018,7 @@ pre,
 }
 .home-page-lead .editorial-hero .cta-row {
   justify-content: center;
-  gap: 6px;
+  gap: 14px;
 }
 .home-page-lead .editorial-hero .cta-row .cta {
   width: 160px;
@@ -1089,6 +1100,7 @@ pre,
 @media (max-width: 1024px) {
   .home-latest-row-3 {
     grid-template-columns: 1fr;
+    row-gap: 3rem;
   }
 }
 
@@ -1117,7 +1129,8 @@ pre,
 }
 
 .home-latest-reads .hqr-title {
-  font-size: 11px;
+  font-size: 10.5px;
+  font-weight: 400;
 }
 
 .home-latest-reads .hqr-date {
@@ -1176,7 +1189,10 @@ pre,
 }
 
 .home-quick-read:hover {
-  background: color-mix(in srgb, var(--color-text-dark) 3%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-body));
+}
+.dark .home-quick-read:hover {
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-body));
 }
 
 /* ---- Coming soon teasers ---- */
@@ -1325,7 +1341,8 @@ pre,
   }
 
   .blog-rail .hqr-title {
-    font-size: 11px;
+    font-size: 10.5px;
+    font-weight: 400;
   }
 
   .blog-rail .hqr-date {
@@ -1414,6 +1431,7 @@ pre,
 @media (max-width: 600px) {
   .home-latest-row {
     grid-template-columns: 1fr;
+    row-gap: 3rem;
   }
 }
 
@@ -1448,6 +1466,24 @@ pre,
   gap: 10px;
 }
 
+/* Footer 3-col grid mirroring the navbar: left/right side columns are locked
+   to --header-side-inset at ≥1024px so socials + deploy-info sit on the same
+   vertical lines as the navbar brand + tools. */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 1rem;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: var(--header-side-inset) auto var(
+        --header-side-inset
+      );
+  }
+}
+
 .footer-signoff {
   font-size: 9px;
   color: var(--color-text-light);
@@ -1455,8 +1491,13 @@ pre,
   white-space: nowrap;
 }
 
+/* Footer nav + social: accent-tinted hover, matching cards and header. */
+.footer-nav-link:hover,
+.footer-social-link:hover {
+  background: var(--hover-bg) !important;
+}
 .dark .footer-nav-link:hover {
-  background: color-mix(in srgb, var(--color-darkmode-light) 88%, white 12%);
+  background: var(--hover-bg) !important;
   border-color: color-mix(
     in srgb,
     var(--color-darkmode-border) 55%,
@@ -1465,7 +1506,7 @@ pre,
 }
 
 .dark .footer-social-link:hover {
-  background: color-mix(in srgb, var(--color-darkmode-light) 88%, white 12%);
+  background: var(--hover-bg) !important;
   border-color: color-mix(
     in srgb,
     var(--color-darkmode-border) 55%,
@@ -2016,12 +2057,12 @@ pre,
   color: var(--color-darkmode-text-dark);
 }
 
+/* Theme switcher: accent-tinted hover (override inline Tailwind bg utilities). */
+.theme-switcher-track:hover {
+  background: var(--hover-bg) !important;
+}
 .dark .theme-switcher-track:hover {
-  background: color-mix(
-    in srgb,
-    var(--color-darkmode-light) 88%,
-    white 12%
-  ) !important;
+  background: var(--hover-bg) !important;
   border-color: color-mix(
     in srgb,
     var(--color-darkmode-border) 55%,
@@ -2030,11 +2071,7 @@ pre,
 }
 
 .dark .search-trigger:hover {
-  background: color-mix(
-    in srgb,
-    var(--color-darkmode-light) 88%,
-    white 12%
-  ) !important;
+  background: var(--hover-bg) !important;
   border-color: color-mix(
     in srgb,
     var(--color-darkmode-border) 55%,
@@ -2675,10 +2712,12 @@ pre,
   height: 100%;
   cursor: pointer;
   transition:
+    background 0.15s,
     border-color 0.15s,
     box-shadow 0.15s;
 }
 .portfolio-tree-card:hover {
+  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-body));
   border-color: color-mix(
     in srgb,
     var(--color-border) 60%,
@@ -2686,6 +2725,9 @@ pre,
   );
   box-shadow: 0 2px 12px
     color-mix(in srgb, var(--color-text-dark) 6%, transparent);
+}
+.dark .portfolio-tree-card:hover {
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-body));
 }
 .ptc-bar {
   display: flex;
@@ -2696,17 +2738,6 @@ pre,
   user-select: none;
 }
 
-.ptc-bar .ui-chip {
-  pointer-events: none;
-  cursor: default;
-}
-
-.ptc-bar .ui-chip:hover {
-  background: var(--bg, transparent) !important;
-  border-color: var(--cat, var(--color-border)) !important;
-  color: inherit !important;
-  opacity: 1 !important;
-}
 .ptc-body {
   padding: 16px 18px 14px;
   display: flex;
@@ -2719,14 +2750,6 @@ pre,
   margin-left: auto;
 }
 
-/* Inside a filter root, make card chips clickable filters */
-[data-filter-root] .ptc-bar .ui-chip {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-}
-[data-filter-root] .ptc-bar .ui-chip:hover {
-  opacity: 0.85 !important;
-}
 .ptc-title {
   font-size: 19px;
   font-weight: 600;
