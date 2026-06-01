@@ -880,10 +880,6 @@ pre,
     grid-column: 2;
     font-size: 16px;
   }
-  .blog-list[data-density="compact"] .post-row .cat,
-  .blog-list[data-density="compact"] .post-row .cat-group {
-    display: none;
-  }
 }
 
 /* ---- Git tree ---- */
@@ -2340,42 +2336,6 @@ pre,
   margin-left: 2px;
   font-weight: 500;
 }
-/* Density embedded in first month meta row */
-.month-meta .density-inline {
-  margin-left: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.month-meta .density-inline .muted {
-  color: var(--color-text-light);
-}
-.density-inline .density-chip {
-  padding: 3px 9px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  color: var(--color-text-light);
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-secondary);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  transition:
-    background 120ms,
-    border-color 120ms,
-    color 120ms;
-}
-.density-inline .density-chip:hover {
-  color: var(--color-text-dark);
-  background: var(--color-light);
-  border-color: transparent;
-}
-.density-inline .density-chip.on {
-  background: var(--color-light);
-  color: var(--color-text-dark);
-  border-color: var(--color-border);
-}
 .filter-row .filter-chip {
   padding: 4px 10px;
   border: 1px solid var(--color-border);
@@ -2413,18 +2373,12 @@ pre,
   text-transform: none;
   letter-spacing: 0;
   color: var(--color-text-light);
-  /* Weighted "tag cloud" — font-size + opacity scale with the tag's count
-     relative to the most-used tag (--tag-max set on the container, --w per
-     chip). Higher-count tags read bigger/bolder; rarer tags fade slightly. */
-  --tag-weight: calc(var(--w, 1) / var(--tag-max, 1));
-  font-size: calc(11px + var(--tag-weight) * 5px);
-  opacity: calc(0.55 + var(--tag-weight) * 0.45);
+  font-size: 12px;
   line-height: 1.4;
 }
 .filter-row [data-filter-kind="tags"].filter-chip:hover {
   color: var(--color-text-dark);
   border: none;
-  opacity: 1;
 }
 .filter-row [data-filter-kind="tags"].filter-chip.ui-chip-active {
   background: transparent !important;
@@ -2432,7 +2386,6 @@ pre,
   font-weight: 700;
   border: none !important;
   text-decoration: none;
-  opacity: 1;
 }
 .filter-row [data-filter-kind="tags"].filter-chip.ui-chip-active .tag-text {
   text-decoration: none;
@@ -2534,72 +2487,6 @@ pre,
 }
 
 /* ---- Density variants for post-row (compact = single line, comfy = spacious editorial) ---- */
-.blog-list[data-density="compact"] .post-row {
-  grid-template-columns: auto 1fr auto;
-  gap: 0 12px;
-  padding: 10px 0;
-  align-items: baseline;
-}
-.blog-list[data-density="compact"] .post-row .gutter {
-  display: none;
-}
-.blog-list[data-density="compact"] .post-row .date {
-  text-align: left;
-}
-.blog-list[data-density="compact"] .post-row .title {
-  font-size: 15px;
-  font-weight: 500;
-  min-width: 0;
-}
-.blog-list[data-density="compact"] .post-row .cat-group {
-  display: inline;
-  white-space: nowrap;
-}
-.blog-list[data-density="compact"] .post-row .cat {
-  display: inline;
-  padding: 0;
-  border: none;
-  background: transparent;
-  border-radius: 0;
-  font-family: var(--font-secondary);
-  font-size: 12px;
-  text-transform: lowercase;
-  letter-spacing: 0;
-  color: var(--color-text-light);
-  font-weight: 400;
-}
-.blog-list[data-density="compact"] .post-row .chip-kind {
-  display: none;
-}
-.blog-list[data-density="compact"] .post-row .cat:hover {
-  color: var(--color-text-dark);
-  cursor: pointer;
-}
-.blog-list[data-density="compact"] .post-row .cat.active {
-  color: var(--color-accent);
-  font-weight: 600;
-}
-.blog-list[data-density="compact"] .post-row .cat::before {
-  content: " · ";
-  margin: 0 4px;
-}
-.blog-list[data-density="compact"] .post-row .tags {
-  display: inline;
-  font-family: var(--font-secondary);
-  font-size: 12px;
-  color: var(--color-text-light);
-  font-weight: 400;
-}
-.blog-list[data-density="compact"] .post-row .tags::before {
-  content: " · ";
-  margin: 0 4px;
-}
-.blog-list[data-density="compact"] .post-row .post-tag {
-  margin-right: 2px;
-}
-.blog-list[data-density="compact"] .post-row .post-tag:hover {
-  text-decoration: none;
-}
 .comfy-date {
   display: none;
 }
@@ -2607,7 +2494,7 @@ pre,
 .blog-list[data-density="comfy"] .post-row {
   grid-template-columns: 1fr;
   gap: 0;
-  padding: 8px 0;
+  padding: 10px 0;
   align-items: start;
 }
 .blog-list[data-density="comfy"] .post-row .gutter {
@@ -2631,12 +2518,13 @@ pre,
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.02em;
+  line-height: 1.15;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   white-space: normal;
   overflow: visible;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
 }
 .chip-tag-row {
@@ -2648,7 +2536,7 @@ pre,
   flex-wrap: wrap;
   gap: 6px;
   order: -1;
-  margin-top: 12px;
+  margin-top: 0;
 }
 .blog-list[data-density="comfy"] .post-row .cat-group {
   display: flex;

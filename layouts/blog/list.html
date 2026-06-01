@@ -48,10 +48,6 @@
   {{ $tagList = $tagList | append (dict "Key" $k "Label" (index $tagLabels $k) "Count" $c) }}
 {{ end }}
 {{ $tagList = sort $tagList "Count" "desc" }}
-{{ $tagMaxCount := 1 }}
-{{ range $tagList }}
-  {{ if gt .Count $tagMaxCount }}{{ $tagMaxCount = .Count }}{{ end }}
-{{ end }}
 
 <div class="blog-rail-host">
 <section class="page-lead blog-list-page">
@@ -82,11 +78,6 @@
             <button type="button" class="filter-match-opt" data-filter-match-mode="and" title="show posts matching ALL selected filters">and</button>
           </span>
           <a class="clear-btn hidden" href="{{ .RelPermalink }}" data-clear-filters>clear</a>
-          <div class="density-inline ml-auto">
-            <span class="muted"></span>
-            <button type="button" class="filter-chip density-chip" data-density-val="compact">compact</button>
-            <button type="button" class="filter-chip density-chip on" data-density-val="comfy">comfy</button>
-          </div>
         </summary>
         <div class="filter-body">
           <div class="filter-row">
@@ -136,14 +127,13 @@
                 </button>
               </div>
             </div>
-            <span class="tag-chip-list" data-tag-list style="--tag-max: {{ $tagMaxCount }}">
+            <span class="tag-chip-list" data-tag-list>
               {{ range $tagList }}
                 <a class="filter-chip"
                    data-filter-kind="tags"
                    data-filter-value="{{ .Key }}"
                    data-sort-count="{{ .Count }}"
                    data-sort-alpha="{{ .Label | lower }}"
-                   style="--w: {{ .Count }}"
                    href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Label) }}"><span class="tag-text">#{{ .Label }}</span> <span class="num">{{ .Count }}</span></a>
               {{ end }}
             </span>
@@ -253,16 +243,6 @@
   (function () {
     var root = document.querySelector('.blog-list');
     if (!root) return;
-
-    // Density chip toggle (scoped to blog-list wrapper)
-    root.querySelectorAll('.density-chip').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        root.dataset.density = btn.dataset.densityVal;
-        root.querySelectorAll('.density-chip').forEach(function (x) {
-          x.classList.toggle('on', x === btn);
-        });
-      });
-    });
 
     // Tag sort toggle
     var tagList = root.querySelector('[data-tag-list]');
@@ -462,7 +442,7 @@
       {{ range $group.items }}
       {{ if .Params.coming_soon }}
       <span class="home-quick-read is-coming-soon">
-        <span class="hqr-date">Coming soon</span>
+        <span class="hqr-date">TBD</span>
         <span class="hqr-sep">·</span>
         <span class="hqr-title">{{ .Title }}</span>
       </span>
