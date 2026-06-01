@@ -159,9 +159,11 @@ pre,
 
 .rising-topics.is-minimal .rising-topics-grid {
   display: grid;
-  grid-template-columns: repeat(6, 11rem);
-  gap: 1rem;
-  justify-content: center;
+  /* Auto-fit lets cells share the row equally (1fr) and reflows to fewer
+     columns as the viewport shrinks, avoiding orphan-wrapped chart cells. */
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1rem 1.25rem;
+  justify-content: stretch;
   overflow: hidden;
 }
 
@@ -211,10 +213,12 @@ pre,
 }
 
 .rising-topic-chartline {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.1rem;
-  width: auto;
+  width: 100%;
+  min-width: 0;
 }
 
 .rising-topic-name {
@@ -324,10 +328,11 @@ pre,
 }
 
 .topic-sparkline {
-  width: 76px;
-  min-width: 76px;
+  width: 100%;
+  min-width: 60px;
+  max-width: 140px;
   height: 18px;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   color: color-mix(in srgb, var(--color-text-light) 70%, var(--color-border));
   overflow: visible;
 }
@@ -342,36 +347,9 @@ pre,
   }
 }
 
-@media (max-width: 1360px) {
-  .rising-topics.is-minimal .rising-topics-grid {
-    grid-template-columns: repeat(5, 11rem);
-  }
-}
-
-@media (max-width: 1180px) {
-  .rising-topics.is-minimal .rising-topics-grid {
-    grid-template-columns: repeat(4, 11rem);
-  }
-}
-
-@media (max-width: 980px) {
-  .rising-topics.is-minimal .rising-topics-grid {
-    grid-template-columns: repeat(3, 11rem);
-  }
-}
-
-@media (max-width: 760px) {
-  .rising-topics.is-minimal .rising-topics-grid {
-    grid-template-columns: repeat(2, 11rem);
-  }
-}
-
 @media (max-width: 540px) {
   .rising-topics.is-minimal .rising-topics-grid {
-    grid-template-columns: repeat(2, 11rem);
     gap: 0.75rem;
-    justify-content: center;
-    overflow: auto;
   }
 }
 
@@ -1067,10 +1045,83 @@ pre,
   margin-top: 1rem;
 }
 
+/* At ≥1024px expand the latest section to the header outer width (matching
+   the hot-topics section), giving the 3-column row room to breathe. */
+@media (min-width: 1024px) {
+  .home-latest {
+    margin-inline: calc(var(--header-side-inset) * -1);
+  }
+}
+
 .home-latest-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+}
+
+/* 3-column variant when the quick-reads list is present: latest cards on the
+   left, reads column on the right. Reads column is narrower because it's a
+   text list rather than a card. */
+.home-latest-row-3 {
+  grid-template-columns: 1.5fr 1.5fr 2fr;
+  gap: 1.5rem;
+}
+
+/* Slightly tighten the home cards so the row balances with the reads column. */
+.home-latest-col .ptc-body {
+  padding: 14px 16px 12px;
+  gap: 10px;
+}
+.home-latest-col .ptc-title {
+  font-size: 17px;
+}
+.home-latest-col .ptc-hook {
+  font-size: 12px;
+}
+.home-latest-col .ptc-footer {
+  padding: 8px 14px;
+  font-size: 10px;
+}
+.home-latest-col .ptc-bar {
+  padding: 9px 14px;
+}
+
+@media (max-width: 1024px) {
+  .home-latest-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Quick-reads column on the homepage */
+.home-latest-reads {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.home-latest-reads .home-quick-reads-group + .home-quick-reads-group {
+  margin-top: 1.25rem;
+}
+
+.home-latest-reads .home-quick-read {
+  display: block;
+  padding: 6px 12px;
+  line-height: 1.3;
+}
+
+.home-latest-reads .hqr-date,
+.home-latest-reads .hqr-sep,
+.home-latest-reads .hqr-title {
+  display: inline;
+  white-space: normal;
+}
+
+.home-latest-reads .hqr-title {
+  font-size: 11px;
+}
+
+.home-latest-reads .hqr-date {
+  font-size: 10px;
 }
 
 .home-latest-col > .section-kicker,
@@ -1212,7 +1263,7 @@ pre,
 @media (min-width: 1024px) {
   .blog-rail-slot {
     position: absolute;
-    top: 42rem;
+    top: 18rem;
     right: 1rem;
     bottom: 0;
     /* Rail lives in the right gutter. Cap width so its left edge can't cross
@@ -1330,6 +1381,16 @@ pre,
   padding-top: 2rem;
   padding-bottom: 0.2rem;
   position: relative;
+}
+
+/* Span the section to the full header outer width (header-container =
+   min(78vw, 1200px)). At ≥1024px .site-container has padding-inline =
+   var(--header-side-inset); pulling out by the same amount aligns this
+   section's left/right edges with the navbar brand/icons. */
+@media (min-width: 1024px) {
+  .home-hot-topics {
+    margin-inline: calc(var(--header-side-inset) * -1);
+  }
 }
 
 .home-hot-topics::before {
