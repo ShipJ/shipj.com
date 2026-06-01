@@ -12,11 +12,11 @@
               {{ $categories := .Params.categories }}
               {{ if $categories }}
                 {{ range $categories }}
-                  {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower)) "Class" "!px-4 !py-1.5 !text-[13px]") }}
+                  {{ partial "components/category-chip" (dict "Name" . "Href" (printf "%s%s/" ("categories/" | relURL) (. | urlize | lower))) }}
                 {{ end }}
               {{ end }}
               {{ with .Params.sector }}
-                {{ partial "components/sector-chip" (dict "Name" . "Class" "!px-4 !py-1.5 !text-[13px]") }}
+                {{ partial "components/sector-chip" (dict "Name" .) }}
               {{ end }}
             </div>
             {{ $tags := .Params.tags }}
