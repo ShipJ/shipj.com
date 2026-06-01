@@ -157,23 +157,25 @@
 
 {{ $allQuickReads := where (where site.RegularPages "Section" "blog") ".Params.length" "Quick Read" }}
 {{ $allQuickReads = where $allQuickReads ".RelPermalink" "ne" .RelPermalink }}
-{{ $quickReads := $allQuickReads }}
-{{ $newsReads := where $allQuickReads "Params.tags" "intersect" (slice "news") }}
-{{ $tutorialReads := where $allQuickReads "Params.tags" "intersect" (slice "tutorial") }}
+{{ $livePosts := where $allQuickReads "Params.coming_soon" "ne" true }}
+{{ $quickReads := $livePosts }}
+{{ $newsReads := where $livePosts "Params.tags" "intersect" (slice "news") }}
+{{ $tutorialReads := where $livePosts "Params.tags" "intersect" (slice "tutorial") }}
+{{ $comingSoonReads := where $allQuickReads "Params.coming_soon" true }}
 {{ $quickReads = first 5 $quickReads }}
 {{ $newsReads = first 5 $newsReads }}
 {{ $tutorialReads = first 5 $tutorialReads }}
+{{ $comingSoonReads = first 5 $comingSoonReads }}
 
-{{ if or $quickReads $newsReads $tutorialReads }}
+{{ if or $quickReads $newsReads $tutorialReads $comingSoonReads }}
 <div class="blog-rail-slot">
 <aside class="blog-rail">
-  <p class="blog-rail-label">Quick reads</p>
-  {{ range $group := slice (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
+  {{ range $group := slice (dict "label" "Coming soon" "items" $comingSoonReads) (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
   {{ if $group.items }}
   {{ $allComingSoon := true }}
   {{ range $group.items }}{{ if not .Params.coming_soon }}{{ $allComingSoon = false }}{{ end }}{{ end }}
   <div class="home-quick-reads-group">
-    <p class="quick-reads-sublabel">{{ $group.label }}</p>
+    <p class="section-kicker">{{ $group.label }}</p>
     <div class="home-quick-reads{{ if $allComingSoon }} is-coming-soon{{ end }}">
       {{ range $group.items }}
       {{ if .Params.coming_soon }}
@@ -184,7 +186,7 @@
       </span>
       {{ else }}
       <a class="home-quick-read" href="{{ .RelPermalink }}">
-        <span class="hqr-date">{{ .Date.Format "2 Jan" }}</span>
+        <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
         <span class="hqr-sep">·</span>
         <span class="hqr-title">{{ .Title }}</span>
       </a>

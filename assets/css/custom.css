@@ -596,7 +596,7 @@ pre,
   font-family: var(--font-secondary);
   color: color-mix(in srgb, var(--color-text-light) 35%, var(--color-border));
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -604,7 +604,6 @@ pre,
 .post-row .title {
   font-size: 18px;
   font-weight: 500;
-  letter-spacing: 0.01em;
   text-align: left;
 }
 .post-row .title .tags {
@@ -1118,7 +1117,8 @@ pre,
 .home-latest-reads .home-quick-read {
   display: block;
   padding: 6px 12px;
-  line-height: 1.3;
+  font-size: 10.5px;
+  line-height: 1.25;
 }
 
 .home-latest-reads .hqr-date,
@@ -1131,10 +1131,15 @@ pre,
 .home-latest-reads .hqr-title {
   font-size: 10.5px;
   font-weight: 400;
+  line-height: 1.1;
 }
 
-.home-latest-reads .hqr-date {
-  font-size: 10px;
+/* Match date + separator to the title font-size so all three pieces sit on
+   the same baseline and read as one line, then wrap consistently. */
+.home-latest-reads .hqr-date,
+.home-latest-reads .hqr-sep {
+  font-size: 10.5px;
+  line-height: 1.1;
 }
 
 .home-latest-col > .section-kicker,
@@ -1175,12 +1180,14 @@ pre,
 }
 
 .home-quick-reads.is-coming-soon {
-  border-style: dotted;
+  border-style: dashed;
+  border-width: 1.5px;
 }
 
 .home-quick-reads.is-coming-soon .home-quick-read,
 .home-quick-read.is-coming-soon {
-  border-bottom-style: dotted;
+  border-bottom-style: dashed;
+  border-bottom-width: 1.5px;
 }
 
 .home-quick-read:last-child,
@@ -1213,7 +1220,7 @@ pre,
 }
 
 .home-quick-read.is-coming-soon .hqr-date {
-  color: var(--color-text-dark);
+  color: var(--color-text-light);
 }
 
 .portfolio-tree-card.is-coming-soon,
@@ -1279,7 +1286,10 @@ pre,
 @media (min-width: 1024px) {
   .blog-rail-slot {
     position: absolute;
-    top: 18rem;
+    /* Push the rail below the initial viewport so it isn't visible until
+     the reader scrolls into the post/content area. clamp() bounds it on
+     very short or very tall screens. */
+    top: clamp(36rem, 95vh, 60rem);
     right: 1rem;
     bottom: 0;
     /* Rail lives in the right gutter. Cap width so its left edge can't cross
@@ -1330,7 +1340,8 @@ pre,
   .blog-rail .home-quick-read {
     display: block;
     padding: 6px 12px;
-    line-height: 1.3;
+    font-size: 10.5px;
+    line-height: 1.25;
   }
 
   .blog-rail .hqr-date,
@@ -1343,10 +1354,12 @@ pre,
   .blog-rail .hqr-title {
     font-size: 10.5px;
     font-weight: 400;
+    line-height: 1.1;
   }
-
-  .blog-rail .hqr-date {
-    font-size: 10px;
+  .blog-rail .hqr-date,
+  .blog-rail .hqr-sep {
+    font-size: 10.5px;
+    line-height: 1.1;
   }
 }
 
@@ -2400,17 +2413,26 @@ pre,
   text-transform: none;
   letter-spacing: 0;
   color: var(--color-text-light);
+  /* Weighted "tag cloud" — font-size + opacity scale with the tag's count
+     relative to the most-used tag (--tag-max set on the container, --w per
+     chip). Higher-count tags read bigger/bolder; rarer tags fade slightly. */
+  --tag-weight: calc(var(--w, 1) / var(--tag-max, 1));
+  font-size: calc(11px + var(--tag-weight) * 5px);
+  opacity: calc(0.55 + var(--tag-weight) * 0.45);
+  line-height: 1.4;
 }
 .filter-row [data-filter-kind="tags"].filter-chip:hover {
   color: var(--color-text-dark);
   border: none;
+  opacity: 1;
 }
 .filter-row [data-filter-kind="tags"].filter-chip.ui-chip-active {
   background: transparent !important;
-  color: #c85a2b !important;
+  color: var(--color-accent) !important;
   font-weight: 700;
   border: none !important;
   text-decoration: none;
+  opacity: 1;
 }
 .filter-row [data-filter-kind="tags"].filter-chip.ui-chip-active .tag-text {
   text-decoration: none;
@@ -2554,7 +2576,7 @@ pre,
   cursor: pointer;
 }
 .blog-list[data-density="compact"] .post-row .cat.active {
-  color: #c85a2b;
+  color: var(--color-accent);
   font-weight: 600;
 }
 .blog-list[data-density="compact"] .post-row .cat::before {
@@ -2596,15 +2618,18 @@ pre,
 }
 .blog-list[data-density="comfy"] .comfy-date {
   display: block;
-  font-size: 14px;
+  font-family: var(--font-secondary);
+  font-size: 12px;
   font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: color-mix(in srgb, var(--color-text-light) 65%, var(--color-border));
   order: 3;
 }
 
 .blog-list[data-density="comfy"] .post-row .title {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   display: flex;
   flex-direction: column;
@@ -2646,7 +2671,8 @@ pre,
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  font-size: 13px;
+  font-family: var(--font-secondary);
+  font-size: 12px;
   font-weight: 400;
   margin-top: 0;
   margin-left: 10px;
@@ -2668,7 +2694,6 @@ pre,
   font-weight: 400;
   color: var(--color-text-light);
   line-height: 1.55;
-  letter-spacing: 0.02em;
   order: 2;
   width: 100%;
 }

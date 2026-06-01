@@ -48,6 +48,10 @@
   {{ $tagList = $tagList | append (dict "Key" $k "Label" (index $tagLabels $k) "Count" $c) }}
 {{ end }}
 {{ $tagList = sort $tagList "Count" "desc" }}
+{{ $tagMaxCount := 1 }}
+{{ range $tagList }}
+  {{ if gt .Count $tagMaxCount }}{{ $tagMaxCount = .Count }}{{ end }}
+{{ end }}
 
 <div class="blog-rail-host">
 <section class="page-lead blog-list-page">
@@ -73,9 +77,9 @@
           <span>filters</span>
           <i class="chevron">▾</i>
           <span class="active-chips hidden" data-active-chips></span>
-          <span class="filter-match-toggle hidden" data-filter-match-toggle>
-            <button type="button" class="filter-match-opt on" data-filter-match-mode="or">or</button>
-            <button type="button" class="filter-match-opt" data-filter-match-mode="and">and</button>
+          <span class="filter-match-toggle hidden" data-filter-match-toggle title="match any (or) vs match all (and) selected filters">
+            <button type="button" class="filter-match-opt on" data-filter-match-mode="or" title="show posts matching ANY selected filter">or</button>
+            <button type="button" class="filter-match-opt" data-filter-match-mode="and" title="show posts matching ALL selected filters">and</button>
           </span>
           <a class="clear-btn hidden" href="{{ .RelPermalink }}" data-clear-filters>clear</a>
           <div class="density-inline ml-auto">
@@ -132,13 +136,14 @@
                 </button>
               </div>
             </div>
-            <span class="tag-chip-list" data-tag-list>
+            <span class="tag-chip-list" data-tag-list style="--tag-max: {{ $tagMaxCount }}">
               {{ range $tagList }}
                 <a class="filter-chip"
                    data-filter-kind="tags"
                    data-filter-value="{{ .Key }}"
                    data-sort-count="{{ .Count }}"
                    data-sort-alpha="{{ .Label | lower }}"
+                   style="--w: {{ .Count }}"
                    href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Label) }}"><span class="tag-text">#{{ .Label }}</span> <span class="num">{{ .Count }}</span></a>
               {{ end }}
             </span>
@@ -452,7 +457,7 @@
   {{ $allComingSoon := true }}
   {{ range $group.items }}{{ if not .Params.coming_soon }}{{ $allComingSoon = false }}{{ end }}{{ end }}
   <div class="home-quick-reads-group">
-    <p class="quick-reads-sublabel">{{ $group.label }}</p>
+    <p class="section-kicker">{{ $group.label }}</p>
     <div class="home-quick-reads{{ if $allComingSoon }} is-coming-soon{{ end }}">
       {{ range $group.items }}
       {{ if .Params.coming_soon }}
