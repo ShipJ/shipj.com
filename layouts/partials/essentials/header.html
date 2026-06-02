@@ -161,4 +161,9 @@
       {{ end }}
     </div>
   </nav>
+  {{ if and (eq .Kind "page") (in (slice "blog" "portfolio") .Section) }}
+  <div class="reading-progress" aria-hidden="true">
+    <div class="reading-progress-bar"></div>
+  </div>
+  {{ end }}
 </header>

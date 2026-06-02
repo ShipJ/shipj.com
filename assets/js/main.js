@@ -588,6 +588,34 @@
     }
   });
 
+  // Reading progress bar (blog/portfolio posts)
+  // ----------------------------------------
+  (function () {
+    var bar = document.querySelector(".reading-progress-bar");
+    if (!bar) return;
+    function update() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      bar.style.width = pct + "%";
+    }
+    var ticking = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          update();
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update);
+    update();
+  })();
+
   // Table-of-contents scroll spy
   // ----------------------------------------
   (function () {
