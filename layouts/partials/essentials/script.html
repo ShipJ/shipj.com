@@ -35,8 +35,31 @@ fingerprint }} {{ end }} {{/* scripts */}}
   src="{{ $scriptsLazy.RelPermalink }}"
 ></script>
 
-<!-- progressive web app -->
-{{ partialCached "pwa.html" . }}
+<!-- progressive web app (production only — avoids SW caching stale dev pages) -->
+{{ if hugo.IsProduction }} {{ partialCached "pwa.html" . }} {{ else }}
+<script>
+  // Dev mode: unregister any previously-registered service worker and clear
+  // its caches so stale production HTML can't shadow Hugo's live output.
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (regs) {
+      var hadSW = regs.length > 0;
+      regs.forEach(function (r) {
+        r.unregister();
+      });
+      if ("caches" in window) {
+        caches.keys().then(function (keys) {
+          keys.forEach(function (k) {
+            caches.delete(k);
+          });
+          if (hadSW) window.location.reload();
+        });
+      } else if (hadSW) {
+        window.location.reload();
+      }
+    });
+  }
+</script>
+{{ end }}
 
 <!-- cookie consent -->
 {{ partialCached "cookie-consent.html" . }}
