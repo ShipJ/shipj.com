@@ -3,7 +3,7 @@ id: '1'
 title: Reinventing myself in the wake of AI Engineering
 meta_title: ''
 description: A brief introduction to me and my blogging journey
-tldr: >-
+intro: >-
   About Me: A Director's Cut on My Journey in Data Science, Management, and
   Personal Growth
 slug: reinventing-myself-in-the-wake-of-ai-engineering
@@ -24,8 +24,8 @@ type: blog
 draft: false
 notion_id: 3167fd6b-fd0d-8057-b381-c6d9813142ab
 created_at: '2026-03-01T10:42:00.000Z'
-last_edited_at: '2026-05-16T16:48:00.000Z'
-last_synced: '2026-06-01T08:13:48.682Z'
+last_edited_at: '2026-06-01T21:52:00.000Z'
+last_synced: '2026-06-01T21:52:47.561Z'
 math: true
 image: ''
 ---
