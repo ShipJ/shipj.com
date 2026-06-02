@@ -1,10 +1,7 @@
-{{- $slug := .Name | urlize | lower -}}
-{{- $tone := "slate" -}}
-{{- if eq $slug "finance" -}}{{- $tone = "red" -}}
-{{- else if eq $slug "general" -}}{{- $tone = "orange" -}}
-{{- else if eq $slug "retail" -}}{{- $tone = "slate" -}}
-{{- else if eq $slug "society" -}}{{- $tone = "green" -}}
-{{- else if eq $slug "sport" -}}{{- $tone = "blue" -}}
-{{- else if eq $slug "transport" -}}{{- $tone = "violet" -}}
-{{- end -}}
-{{- $tone -}}
+{{- $slug := .Name | urlize | lower -}} {{- $tone := "slate" -}} {{- if eq $slug
+"finance" -}}{{- $tone = "red" -}} {{- else if eq $slug "tech" -}}{{- $tone =
+"green" -}} {{- else if eq $slug "general" -}}{{- $tone = "blue" -}} {{- else if
+eq $slug "retail" -}}{{- $tone = "slate" -}} {{- else if eq $slug "society"
+-}}{{- $tone = "green" -}} {{- else if eq $slug "sport" -}}{{- $tone = "orange"
+-}} {{- else if eq $slug "transport" -}}{{- $tone = "violet" -}} {{- end -}} {{-
+$tone -}}
