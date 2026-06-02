@@ -587,4 +587,65 @@
       p.parentNode.insertBefore(attr, p.nextSibling);
     }
   });
+
+  // Table-of-contents scroll spy
+  // ----------------------------------------
+  (function () {
+    var toc = document.querySelector(".toc-rail-expanded #TableOfContents");
+    if (!toc) return;
+    var col = document.querySelector(".toc-rail-col");
+    var content = document.querySelector(".content");
+    function positionRail() {
+      if (col && content) col.style.top = content.offsetTop + "px";
+    }
+    positionRail();
+    window.addEventListener("resize", positionRail);
+
+    var map = Array.prototype.slice
+      .call(toc.querySelectorAll("a[href^='#']"))
+      .map(function (link) {
+        var id = decodeURIComponent(link.getAttribute("href").slice(1));
+        var target = document.getElementById(id);
+        return target ? { link: link, target: target } : null;
+      })
+      .filter(Boolean);
+    if (!map.length) return;
+
+    var current = null;
+    function setActive(entry) {
+      if (entry === current) return;
+      if (current) current.link.classList.remove("is-active");
+      if (entry) entry.link.classList.add("is-active");
+      current = entry;
+    }
+
+    function onScroll() {
+      // Highlight the section once its heading reaches the bottom of the screen.
+      var offset = window.innerHeight;
+      var active = null;
+      for (var i = 0; i < map.length; i++) {
+        if (map[i].target.getBoundingClientRect().top - offset <= 0) {
+          active = map[i];
+        } else {
+          break;
+        }
+      }
+      setActive(active);
+    }
+
+    var ticking = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          onScroll();
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+    onScroll();
+  })();
 })();

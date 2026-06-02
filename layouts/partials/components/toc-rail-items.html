@@ -1,0 +1,11 @@
+{{ range . }} {{ if .Title }}
+<li>
+  <a href="#{{ .ID }}">{{ .Title | plainify }}</a>
+  {{ with .Headings }}
+  <ol class="toc-rail-list">
+    {{ partial "components/toc-rail-items.html" . }}
+  </ol>
+  {{ end }}
+</li>
+{{ else }} {{ with .Headings }}{{ partial "components/toc-rail-items.html" .
+}}{{ end }} {{ end }} {{ end }}

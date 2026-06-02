@@ -3433,7 +3433,11 @@ pre,
 }
 
 /* ---- TOC Rail ---- */
-.toc-rail {
+.post-layout {
+  position: relative;
+}
+
+.toc-rail-col {
   display: none;
 }
 
@@ -3463,77 +3467,35 @@ a.footnote-backref {
 }
 
 @media (min-width: 1280px) {
-  .toc-rail {
+  .toc-rail-col {
     display: block;
-    position: fixed;
+    position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
+    bottom: 0;
+    width: 0;
+  }
+
+  .toc-rail {
+    position: sticky;
+    top: 7.5rem;
     z-index: 39;
   }
 
-  .toc-rail-collapsed {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 14px;
-    padding: 2rem 0.85rem;
-    background: color-mix(in srgb, var(--color-light) 60%, var(--color-body));
-    border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
-    border-left: none;
-    border-radius: 0 8px 8px 0;
-    transition:
-      opacity 150ms,
-      visibility 150ms;
-  }
-
-  .toc-rail:hover .toc-rail-collapsed {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .toc-rail-pip {
-    display: block;
-    width: 16px;
-    height: 1.5px;
-    background: color-mix(
-      in srgb,
-      var(--color-text-light) 60%,
-      var(--color-border)
-    );
-    border-radius: 2px;
-  }
-
   .toc-rail-expanded {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%) translateX(-6px);
     padding: 1.75rem 1.5rem 1.75rem 1.25rem;
     background: var(--color-body);
     border: 1px solid var(--color-border);
     border-left: none;
     border-radius: 0 8px 8px 0;
-    min-width: 200px;
-    max-width: 240px;
+    width: max-content;
+    max-width: 18rem;
     max-height: 80vh;
     overflow-y: auto;
-    opacity: 0;
-    visibility: hidden;
-    transition:
-      opacity 180ms,
-      transform 180ms,
-      visibility 180ms;
   }
 
   .toc-rail-expanded #TableOfContents {
     background: transparent;
-  }
-
-  .toc-rail:hover .toc-rail-expanded {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(-50%) translateX(0);
   }
 
   .toc-rail-label {
@@ -3556,6 +3518,16 @@ a.footnote-backref {
     margin-bottom: 0.5rem;
   }
 
+  .toc-rail-expanded #TableOfContents ol ol {
+    padding-left: 0.7rem;
+    margin-top: 0.4rem;
+  }
+
+  .toc-rail-expanded #TableOfContents ol ol a {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+  }
+
   .toc-rail-expanded #TableOfContents a {
     font-size: 0.8rem;
     line-height: 1.5;
@@ -3575,7 +3547,8 @@ a.footnote-backref {
     margin-left: -0.35rem;
   }
 
-  .toc-rail-expanded #TableOfContents ol ol {
-    display: none;
+  .toc-rail-expanded #TableOfContents a.is-active {
+    color: var(--color-accent) !important;
+    font-weight: 600;
   }
 }

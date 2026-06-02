@@ -1,18 +1,14 @@
-{{ if and .TableOfContents .Params.intro }}
-<nav class="toc-rail" aria-label="Table of contents">
-  <div class="toc-rail-collapsed">
-    <span class="toc-rail-pip"></span>
-    <span class="toc-rail-pip"></span>
-    <span class="toc-rail-pip"></span>
-    <span class="toc-rail-pip"></span>
-    <span class="toc-rail-pip"></span>
-    <span class="toc-rail-pip"></span>
-    <span class="toc-rail-pip"></span>
-    <span class="toc-rail-pip"></span>
-  </div>
-  <div class="toc-rail-expanded">
-    <p class="toc-rail-label">Contents</p>
-    {{ .TableOfContents }}
-  </div>
-</nav>
+{{ if .Fragments.Headings }}
+<div class="toc-rail-col">
+  <nav class="toc-rail" aria-label="Table of contents">
+    <div class="toc-rail-expanded">
+      <p class="toc-rail-label">In this article</p>
+      <nav id="TableOfContents">
+        <ol class="toc-rail-list">
+          {{ partial "components/toc-rail-items.html" .Fragments.Headings }}
+        </ol>
+      </nav>
+    </div>
+  </nav>
+</div>
 {{ end }}
