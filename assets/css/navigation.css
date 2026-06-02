@@ -248,12 +248,12 @@
     border: 0;
     background: transparent;
     box-shadow: none;
-    gap: clamp(0.25rem, 0.9vw, 1rem);
+    gap: clamp(0.75rem, 2vw, 2.5rem);
   }
 
   .nav-link {
     font-size: clamp(13px, 0.3vw + 12px, 15px);
-    padding: 7px clamp(10px, 0.9vw, 16px);
+    padding: 7px clamp(14px, 1.3vw, 22px);
   }
 
   .navbar > .header-tools {

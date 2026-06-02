@@ -384,6 +384,9 @@ pre,
   vertical-align: -0.06em;
   animation: blink 1.05s steps(1) infinite;
 }
+.cursor-bind {
+  white-space: nowrap;
+}
 @keyframes blink {
   50% {
     opacity: 0;
@@ -476,10 +479,11 @@ pre,
 .section-kicker {
   font-family: var(--font-secondary);
   font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.12em;
   color: var(--color-text-light);
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
 }
 .section-head {
   display: flex;
@@ -572,18 +576,21 @@ pre,
 
 /* ---- Post-list (diff-style hover) ---- */
 .post-list {
-  border-top: 1px solid
-    color-mix(in srgb, var(--color-border) 50%, var(--color-body));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .post-row {
   display: grid;
   grid-template-columns: 28px 120px 1fr auto;
   align-items: baseline;
-  padding: 18px 0;
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--color-border) 50%, var(--color-body));
+  padding: 14px 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
   position: relative;
-  transition: background 120ms;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
   color: var(--color-text-dark);
 }
 .post-row .gutter {
@@ -836,10 +843,12 @@ pre,
   display: none !important;
 }
 .post-row:hover {
-  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-body));
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-body));
+  border-color: var(--color-accent);
 }
 .dark .post-row:hover {
-  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-body));
+  background: color-mix(in srgb, var(--color-accent) 10%, var(--color-body));
+  border-color: var(--color-accent);
 }
 .post-row:hover .gutter {
   color: var(--color-accent);
@@ -943,7 +952,7 @@ pre,
   font-weight: 600;
   line-height: 1.02;
   margin: 0;
-  max-width: 100%;
+  max-width: 18ch;
   text-wrap: balance;
 }
 
@@ -953,20 +962,21 @@ pre,
   font-style: italic;
 }
 
-.page-lead-portfolio .page-header-shell .page-header-title {
-  font-size: clamp(26px, 3.5vw, 52px);
-  max-width: 100%;
-  text-wrap: wrap;
+/* Section-page titles (blog, portfolio, services, about) share one size and
+   span the inner nav band. The header shell is a query container, so the title
+   scales with the band width (cqi) and shrinks in step with the column on
+   smaller screens instead of bleeding past the right inset. */
+.blog-list-page .editorial-list-hero,
+.page-lead-portfolio .page-header-shell,
+.page-lead-services .page-header-shell {
+  container-type: inline-size;
 }
-
+.page-lead-portfolio .page-header-shell .page-header-title,
+.page-lead-services .page-header-title,
 .blog-list-page .editorial-list-hero h1 {
-  font-size: clamp(26px, 3.5vw, 52px);
+  font-size: clamp(32px, 7cqi, 60px);
   max-width: 100%;
-  text-wrap: wrap;
-}
-
-.page-lead-services .page-header-title {
-  font-size: clamp(26px, 3.5vw, 52px);
+  text-wrap: pretty;
 }
 
 .eyebrow-gap {
@@ -998,12 +1008,12 @@ pre,
   max-width: 50rem;
 }
 .home-page-lead .editorial-hero h1 {
-  font-size: clamp(36px, 4.6vw, 60px);
+  font-size: clamp(46px, 5.8vw, 82px);
   line-height: 1.02;
   letter-spacing: -0.03em;
   font-weight: 600;
   margin-bottom: 0;
-  max-width: 100%;
+  max-width: 18ch;
   text-wrap: balance;
 }
 .home-page-lead .editorial-hero .hero-body,
@@ -1270,92 +1280,122 @@ pre,
   flex-shrink: 0;
 }
 
-/* ---- Blog sidebar rail ---- */
-.blog-rail-host {
-  position: relative;
+/* ---- Blog list top: header+feature on the left, recent rail on the right ---- */
+.blog-list-top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
 }
-
-.blog-rail {
-  display: none;
+.blog-list-main {
+  min-width: 0;
+}
+.blog-list-rail {
+  min-width: 0;
+}
+.blog-list-rail .home-quick-reads,
+.home-latest-reads .home-quick-reads {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.blog-list-rail .home-quick-read,
+.home-latest-reads .home-quick-read {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
+  margin: 0;
+  text-decoration: none;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+.blog-list-rail .home-quick-read:hover,
+.home-latest-reads .home-quick-read:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent) 60%,
+    var(--color-border)
+  );
+  background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+}
+.blog-list-rail .hqr-date,
+.blog-list-rail .hqr-sep,
+.home-latest-reads .hqr-date,
+.home-latest-reads .hqr-sep {
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: var(--color-text-light);
+  font-size: 11px;
+  line-height: 1.35;
+}
+.blog-list-rail .hqr-title,
+.home-latest-reads .hqr-title {
+  flex: 1;
+  min-width: 0;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--color-text);
+  white-space: normal;
+}
+.blog-list-rail .home-quick-reads.is-coming-soon .home-quick-read,
+.blog-list-rail .home-quick-read.is-coming-soon,
+.home-latest-reads .home-quick-reads.is-coming-soon .home-quick-read,
+.home-latest-reads .home-quick-read.is-coming-soon {
+  border: 1.5px dashed var(--color-border);
+  cursor: default;
+}
+.blog-list-rail .home-quick-reads.is-coming-soon .home-quick-read:last-child,
+.home-latest-reads
+  .home-quick-reads.is-coming-soon
+  .home-quick-read:last-child {
+  border-bottom: 1.5px dashed var(--color-border);
+}
+.blog-list-rail .home-quick-read.is-coming-soon:hover,
+.home-latest-reads .home-quick-read.is-coming-soon:hover {
+  border-color: var(--color-border);
+  background: transparent;
+}
+.blog-list-rail .home-quick-reads-group + .home-quick-reads-group,
+.home-latest-reads .home-quick-reads-group + .home-quick-reads-group {
+  margin-top: 14px;
 }
 
 @media (min-width: 1024px) {
-  .blog-rail-slot {
-    position: absolute;
-    /* Push the rail below the initial viewport so it isn't visible until
-     the reader scrolls into the post/content area. clamp() bounds it on
-     very short or very tall screens. */
-    top: clamp(36rem, 95vh, 60rem);
-    right: 1rem;
-    bottom: 0;
-    /* Rail lives in the right gutter. Cap width so its left edge can't cross
-       the search-icon-left vertical line (= content's right boundary, which
-       sits one --header-side-inset in from the container right). The gutter
-       width = side-margin + --header-side-inset, minus a 1rem clearance. */
-    width: min(
-      220px,
-      calc((100vw - min(78vw, 1200px)) / 2 + var(--header-side-inset) - 1rem)
-    );
-    pointer-events: none;
+  .blog-list-top {
+    /* Break out of the narrower header container to match the portfolio page's
+       80vw width. The header above keeps the inset; this row spans wider. */
+    margin-inline: calc(50% - 40vw);
+    grid-template-columns: minmax(0, 1fr) minmax(400px, 0.7fr);
+    column-gap: 28px;
+    align-items: stretch;
   }
-
-  .blog-rail {
-    display: block;
-    position: sticky;
-    top: calc(4rem + 1.5rem + 2.5rem);
-    width: 100%;
-    pointer-events: auto;
+  .blog-list-rail {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
-
-  .blog-rail-label {
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-text-light) 65%, var(--color-border));
-    margin-bottom: 0.6rem;
+  .blog-list-rail .home-quick-reads-group {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 0 0 auto;
   }
-
-  .blog-rail .home-quick-reads {
-    border-radius: 6px;
+  .blog-list-rail .home-quick-reads-group:last-child {
+    flex: 1;
   }
-
-  .blog-rail .home-quick-reads-group + .home-quick-reads-group {
-    margin-top: 1rem;
-  }
-
-  .blog-rail .quick-reads-sublabel {
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-text-light) 65%, var(--color-border));
-    margin-bottom: 4px;
-  }
-
-  .blog-rail .home-quick-read {
-    display: block;
-    padding: 6px 12px;
-    font-size: 10.5px;
-    line-height: 1.25;
-  }
-
-  .blog-rail .hqr-date,
-  .blog-rail .hqr-sep,
-  .blog-rail .hqr-title {
-    display: inline;
-    white-space: normal;
-  }
-
-  .blog-rail .hqr-title {
-    font-size: 10.5px;
-    font-weight: 400;
-    line-height: 1.1;
-  }
-  .blog-rail .hqr-date,
-  .blog-rail .hqr-sep {
-    font-size: 10.5px;
-    line-height: 1.1;
+  .blog-list-rail .home-quick-reads {
+    overflow-y: auto;
+    min-height: 0;
+    flex: 1;
   }
 }
 
@@ -1382,16 +1422,19 @@ pre,
 /* About page: hero + bio still capped at a comfortable column width,
    but left-aligned within the inset so the eyebrow + title sit at the
    shared brand-right vertical line. */
-.page-lead-about .page-header-shell,
 .about-bio .about-bio-content {
   max-width: 50rem;
 }
+.page-lead-about .page-header-shell {
+  container-type: inline-size;
+}
 .page-lead-about .page-header-shell h1 {
-  font-size: clamp(26px, 3.5vw, 52px);
+  font-size: clamp(32px, 7cqi, 60px);
   line-height: 1.02;
   letter-spacing: -0.03em;
   font-weight: 600;
-  text-wrap: balance;
+  max-width: 100%;
+  text-wrap: pretty;
 }
 
 /* Portfolio list: cards span full container width (no inset). Compensate
@@ -2108,6 +2151,13 @@ pre,
   margin-bottom: 8px;
   border: 1px solid var(--color-border);
   border-radius: 10px;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+.filter-details:not([open]):hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-body));
 }
 .filter-summary {
   display: flex;
@@ -2494,7 +2544,7 @@ pre,
 .blog-list[data-density="comfy"] .post-row {
   grid-template-columns: 1fr;
   gap: 0;
-  padding: 10px 0;
+  padding: 14px 18px;
   align-items: start;
 }
 .blog-list[data-density="comfy"] .post-row .gutter {
@@ -2600,7 +2650,7 @@ pre,
   line-height: 1.02;
   margin-top: 0.25rem;
   margin-bottom: 20px;
-  max-width: 100%;
+  max-width: 18ch;
   text-wrap: balance;
 }
 .editorial-list-hero .lead {
@@ -2612,6 +2662,282 @@ pre,
 }
 .editorial-list-hero .mono {
   font-family: var(--font-secondary);
+}
+
+/* ---- Homepage featured row (featured | latest post | latest project) ---- */
+.home-featured-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 28px;
+}
+.home-featured-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.home-featured-col > .blog-hero-card,
+.home-featured-col > .home-mini-card {
+  flex: 1;
+  min-height: 0;
+}
+@media (min-width: 1024px) {
+  .home-featured-row {
+    /* Break out of the site-container's --header-side-inset padding so the
+       left/right edges align with the navbar brand and theme switcher. */
+    margin-inline: calc(var(--header-side-inset) * -1);
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 24px;
+    align-items: stretch;
+  }
+}
+
+.home-mini-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-body, #fff);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+.home-mini-card:hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-body));
+}
+.home-mini-media {
+  flex: 1;
+  min-height: 140px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+.home-mini-media .img,
+.home-mini-media .home-mini-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.home-mini-body {
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.home-mini-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+.home-mini-date {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  color: var(--color-text-light);
+}
+
+/* ---- Card chips (category + sector) used on featured / mini cards ---- */
+.card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.card-chip {
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  line-height: 1;
+}
+.card-chip .chip-kind {
+  display: none;
+}
+/* Category = filled */
+.card-chip-category {
+  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 92%, black);
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 34%,
+    var(--color-body)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--cat, transparent) 34%,
+    var(--color-body)
+  );
+}
+.dark .card-chip-category {
+  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 60%, white);
+}
+/* Sector = outline */
+.card-chip-sector {
+  color: var(--cat, var(--color-text-light));
+  background: transparent;
+  border-color: color-mix(
+    in srgb,
+    var(--cat, var(--color-border)) 60%,
+    var(--color-border)
+  );
+}
+
+/* ---- Blog feature block: hero card + popular row ---- */
+.blog-feature-block {
+  margin: 0;
+}
+
+.blog-hero-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-body, #fff);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+.blog-hero-card:hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-body));
+}
+.blog-hero-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+.blog-hero-media .blog-hero-img,
+.blog-hero-media .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.blog-hero-body {
+  padding: 4px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.blog-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-secondary);
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+.blog-hero-title {
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+}
+.blog-hero-summary {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-light);
+  max-width: 60ch;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .blog-hero-card {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .blog-hero-media {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 280px;
+  }
+  .blog-hero-body {
+    padding: 26px 28px;
+    justify-content: center;
+    gap: 10px;
+  }
+}
+
+.blog-popular {
+  margin-top: 14px;
+}
+.blog-popular-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 640px) {
+  .blog-popular-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.blog-popular-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-body, #fff);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+.blog-popular-card:hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-body));
+}
+.blog-popular-media {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+.blog-popular-media .blog-popular-img,
+.blog-popular-media .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.blog-popular-body {
+  padding: 4px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.blog-popular-date {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  color: var(--color-text-light);
+}
+.blog-popular-title {
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--color-text);
 }
 
 /* ---- Portfolio card ---- */
