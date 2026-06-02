@@ -52,7 +52,8 @@
     }
 
     const fullText = link.textContent.trim();
-    let lo = 0, hi = fullText.length;
+    let lo = 0,
+      hi = fullText.length;
 
     while (lo < hi - 1) {
       const mid = Math.floor((lo + hi) / 2);
@@ -68,7 +69,8 @@
 
     const ellipsis = document.createElement("span");
     ellipsis.textContent = "...";
-    ellipsis.className = "cursor-pointer text-text-light hover:text-text-dark dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark";
+    ellipsis.className =
+      "cursor-pointer text-text-light hover:text-text-dark dark:text-darkmode-text-light dark:hover:text-darkmode-text-dark";
     ellipsis.addEventListener("click", (e) => {
       e.preventDefault();
       link.textContent = fullText;
@@ -192,7 +194,11 @@
         const initialValues =
           queryValues.length > 0
             ? []
-            : parseValues(root.dataset[`filterInitial${kind[0].toUpperCase()}${kind.slice(1)}`]);
+            : parseValues(
+                root.dataset[
+                  `filterInitial${kind[0].toUpperCase()}${kind.slice(1)}`
+                ],
+              );
         acc[kind] = new Set(
           [...queryValues, ...initialValues]
             .flatMap((value) => value.split(","))
@@ -218,14 +224,17 @@
     };
 
     const syncFilterMatchControls = (mode, currentSelected = selected) => {
-      const activeTagCount = currentSelected.tags ? currentSelected.tags.size : 0;
+      const activeTagCount = currentSelected.tags
+        ? currentSelected.tags.size
+        : 0;
       const activeCategoryCount = currentSelected.categories
         ? currentSelected.categories.size
         : 0;
       const activeSectorCount = currentSelected.sectors
         ? currentSelected.sectors.size
         : 0;
-      const totalActiveCount = activeTagCount + activeCategoryCount + activeSectorCount;
+      const totalActiveCount =
+        activeTagCount + activeCategoryCount + activeSectorCount;
       const shouldShow = totalActiveCount >= 2;
 
       const toggleWrap = root.querySelector("[data-filter-match-toggle]");
@@ -256,7 +265,11 @@
       return params.toString();
     };
 
-    const updateUrl = (selected, filterMatchMode, basePath = window.location.pathname) => {
+    const updateUrl = (
+      selected,
+      filterMatchMode,
+      basePath = window.location.pathname,
+    ) => {
       const query = buildQuery(selected, filterMatchMode);
       const targetUrl = query ? `${basePath}?${query}` : clearUrl;
       window.history.replaceState({}, "", targetUrl);
@@ -277,7 +290,12 @@
             seen.add(control.dataset.filterValue);
             return true;
           })
-          .map((control) => (control.dataset.filterLabel || control.textContent.replace(/\(\d+\)/, "").trim()).toLowerCase());
+          .map((control) =>
+            (
+              control.dataset.filterLabel ||
+              control.textContent.replace(/\(\d+\)/, "").trim()
+            ).toLowerCase(),
+          );
       });
 
       if (clearButton) {
@@ -297,7 +315,10 @@
         );
         control.classList.toggle("ui-chip-active", Boolean(isActive));
         control.classList.toggle("text-text-dark", Boolean(isActive));
-        control.classList.toggle("dark:text-darkmode-text-dark", Boolean(isActive));
+        control.classList.toggle(
+          "dark:text-darkmode-text-dark",
+          Boolean(isActive),
+        );
       });
     };
 
@@ -314,20 +335,28 @@
         const itemAuthors = parseItemValues(item.dataset.filterAuthors);
         const itemSectors = parseItemValues(item.dataset.filterSectors);
 
-        const categoryMatch = selectedCategories.length === 0 ||
+        const categoryMatch =
+          selectedCategories.length === 0 ||
           (filterMatchMode === "and"
-            ? selectedCategories.every((value) => itemCategories.includes(value))
-            : selectedCategories.some((value) => itemCategories.includes(value)));
+            ? selectedCategories.every((value) =>
+                itemCategories.includes(value),
+              )
+            : selectedCategories.some((value) =>
+                itemCategories.includes(value),
+              ));
 
-        const tagMatch = selectedTags.length === 0 ||
+        const tagMatch =
+          selectedTags.length === 0 ||
           (filterMatchMode === "and"
             ? selectedTags.every((value) => itemTags.includes(value))
             : selectedTags.some((value) => itemTags.includes(value)));
 
-        const authorMatch = selectedAuthors.length === 0 ||
+        const authorMatch =
+          selectedAuthors.length === 0 ||
           selectedAuthors.some((value) => itemAuthors.includes(value));
 
-        const sectorMatch = selectedSectors.length === 0 ||
+        const sectorMatch =
+          selectedSectors.length === 0 ||
           selectedSectors.some((value) => itemSectors.includes(value));
 
         let matches;
@@ -335,7 +364,11 @@
           matches = categoryMatch && tagMatch && authorMatch && sectorMatch;
         } else {
           // OR mode: match if any selected filter type matches
-          const hasActiveFilters = selectedCategories.length > 0 || selectedTags.length > 0 || selectedAuthors.length > 0 || selectedSectors.length > 0;
+          const hasActiveFilters =
+            selectedCategories.length > 0 ||
+            selectedTags.length > 0 ||
+            selectedAuthors.length > 0 ||
+            selectedSectors.length > 0;
           if (!hasActiveFilters) {
             matches = true;
           } else {
@@ -356,7 +389,8 @@
         .reverse()
         .forEach((group) => {
           const hasVisibleItems =
-            group.querySelectorAll("[data-filter-item]:not(.hidden)").length > 0;
+            group.querySelectorAll("[data-filter-item]:not(.hidden)").length >
+            0;
           group.classList.toggle("hidden", !hasVisibleItems);
         });
 
@@ -388,7 +422,10 @@
       syncFilterMatchControls(readFilterMatchMode(), readSelected());
     });
 
-    const applySelected = (nextSelected, nextFilterMatchMode = filterMatchMode) => {
+    const applySelected = (
+      nextSelected,
+      nextFilterMatchMode = filterMatchMode,
+    ) => {
       selected = nextSelected;
       filterMatchMode = nextFilterMatchMode;
       updateUrl(nextSelected, filterMatchMode, clearUrl);
@@ -401,7 +438,13 @@
     clearButton?.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      applySelected(kinds.reduce((acc, kind) => { acc[kind] = new Set(); return acc; }, {}), filterMatchMode);
+      applySelected(
+        kinds.reduce((acc, kind) => {
+          acc[kind] = new Set();
+          return acc;
+        }, {}),
+        filterMatchMode,
+      );
     });
 
     controls.forEach((control) => {
@@ -426,13 +469,18 @@
       button.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-        applySelected(readSelected(), button.dataset.filterMatchMode === "and" ? "and" : "or");
+        applySelected(
+          readSelected(),
+          button.dataset.filterMatchMode === "and" ? "and" : "or",
+        );
       });
     });
 
     const tagSearchBox = root.querySelector("[data-tag-filter-box]");
     const tagSearchInput = root.querySelector("[data-tag-filter-search]");
-    const tagOptions = Array.from(root.querySelectorAll("[data-tag-filter-option]"));
+    const tagOptions = Array.from(
+      root.querySelectorAll("[data-tag-filter-option]"),
+    );
     const tagEmptyMessage = root.querySelector("[data-tag-filter-empty]");
 
     if (tagSearchInput && tagOptions.length > 0) {
@@ -486,29 +534,56 @@
   }
 
   // Close title share dropdown when focus moves away
-  var titleShare = document.querySelector('.title-share');
+  var titleShare = document.querySelector(".title-share");
   if (titleShare) {
-    document.addEventListener('click', function (e) {
+    document.addEventListener("click", function (e) {
       if (!titleShare.contains(e.target)) {
-        titleShare.removeAttribute('open');
+        titleShare.removeAttribute("open");
       }
     });
   }
 
+  // Bind trailing .cursor to the last word so it can't wrap to its own line.
+  document.querySelectorAll(".cursor").forEach(function (cursor) {
+    if (cursor.dataset.bound) return;
+    var prev = cursor.previousSibling;
+    if (!prev || prev.nodeType !== Node.TEXT_NODE) return;
+    var text = prev.textContent;
+    if (!text || !text.trim()) return;
+    // Capture (leading whitespace)(last word)(optional trailing whitespace).
+    var match = text.match(/(\s+)(\S+)(\s*)$/);
+    if (!match) return;
+    var leadingSpace = match[1];
+    var lastWord = match[2];
+    // Keep the leading space in the preceding text node so words stay separated;
+    // move only the last word + cursor into the nowrap binder.
+    prev.textContent = text.slice(0, match.index + leadingSpace.length);
+    var wrap = document.createElement("span");
+    wrap.className = "cursor-bind";
+    wrap.textContent = lastWord;
+    cursor.parentNode.insertBefore(wrap, cursor);
+    wrap.appendChild(cursor);
+    cursor.dataset.bound = "1";
+  });
+
   // Format blockquotes: "Text - Author" -> "Text" / -- Author
   var quoteChars = /^[“”‘’"'\s]+|[“”‘’"'\s]+$/g;
-  document.querySelectorAll('.content blockquote p').forEach(function (p) {
+  document.querySelectorAll(".content blockquote p").forEach(function (p) {
     if (p.dataset.quoteFormatted) return;
     var text = p.textContent.trim();
-    var lastDash = text.lastIndexOf(' - ');
-    var quote = (lastDash !== -1 ? text.slice(0, lastDash) : text).replace(quoteChars, '');
-    var author = lastDash !== -1 ? text.slice(lastDash + 3).replace(quoteChars, '') : null;
-    p.textContent = '“' + quote + '”';
-    p.dataset.quoteFormatted = '1';
+    var lastDash = text.lastIndexOf(" - ");
+    var quote = (lastDash !== -1 ? text.slice(0, lastDash) : text).replace(
+      quoteChars,
+      "",
+    );
+    var author =
+      lastDash !== -1 ? text.slice(lastDash + 3).replace(quoteChars, "") : null;
+    p.textContent = "“" + quote + "”";
+    p.dataset.quoteFormatted = "1";
     if (author) {
-      var attr = document.createElement('p');
-      attr.className = 'blockquote-attribution';
-      attr.textContent = '— ' + author;
+      var attr = document.createElement("p");
+      attr.className = "blockquote-attribution";
+      attr.textContent = "— " + author;
       p.parentNode.insertBefore(attr, p.nextSibling);
     }
   });
