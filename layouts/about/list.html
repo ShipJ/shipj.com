@@ -1,122 +1,58 @@
-{{ define "main" }} {{ partial "page-header" . }}
+{{ define "main" }} {{ partial "page-header" . }} {{ $name := "Jack Shipsmith"
+}}
 
-<!-- Personal intro -->
-<section class="section-sm pt-4 about-bio">
+<section class="section-sm pt-2 about-bio">
   <div class="site-container">
-    <div class="about-bio-content">
-      {{ partial "image" (dict "Src" .Params.image "Context" .Page "Alt" .Title
-      "Class" "mx-auto mb-6 rounded-full object-cover w-48 h-auto" "Size" "") }}
-      <div class="content">{{ .Content }}</div>
+    <!-- Identity hero -->
+    <div class="about-hero">
+      <div class="about-hero-avatar">
+        {{ partial "image" (dict "Src" .Params.image "Context" .Page "Alt" $name
+        "Class" "about-avatar-img" "Size" "") }}
+      </div>
+      <p class="section-kicker">Data Scientist &amp; Engineer</p>
+      <h2 class="about-hero-name">{{ $name }}</h2>
+      {{ with .Params.lead }}
+      <div class="about-hero-lead">{{ . | markdownify }}</div>
+      {{ end }}
+      <div class="about-hero-links">
+        {{ range site.Data.social.main }}
+        <a
+          class="about-hero-link"
+          href="{{ .link }}"
+          target="_blank"
+          rel="noopener"
+          aria-label="{{ .name }}"
+        >
+          <i class="{{ .icon }}" aria-hidden="true"></i
+          ><span>{{ .name | title }}</span>
+        </a>
+        {{ end }}
+        <a class="about-hero-link is-cta" href="{{ `contact/` | relURL }}">
+          <span>Get in touch</span
+          ><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
     </div>
 
-    <a href="https://github.com/shipj" class="mt-10 block">
-      <div class="ui-shell flex items-center justify-center">
+    <!-- Bio + sections, full inner width -->
+    <div class="content about-prose">{{ .Content }}</div>
+
+    <!-- Contribution graph -->
+    <div class="about-github">
+      <p class="section-kicker">Contribution graph</p>
+      <a
+        href="https://github.com/shipj"
+        target="_blank"
+        rel="noopener"
+        class="about-github-card"
+      >
         <img
           loading="lazy"
           src="https://ghchart.rshah.org/shipj"
-          alt="GitHub chart for ShipJ"
-          width="75%"
-          height="auto"
+          alt="GitHub contribution chart for Jack Shipsmith"
         />
-      </div>
-    </a>
-  </div>
-</section>
-
-<!-- Work with me -->
-{{ with .Params.consulting }}
-<section class="section bg-gradient">
-  <div class="site-container">
-    <!-- Heading -->
-    <div class="row justify-center mb-12">
-      <div class="lg:col-8 text-center">
-        <p class="ui-kicker mb-3">Services</p>
-        <h2 class="mb-4">{{ .title }}</h2>
-        <p class="text-lg opacity-80">{{ .intro }}</p>
-      </div>
-    </div>
-
-    <!-- Services + Engagements -->
-    <div class="row justify-center mb-12">
-      <!-- Services -->
-      <div class="lg:col-5 mb-8 lg:mb-0">
-        <div class="ui-card h-full">
-          <h4 class="mb-5">What I do</h4>
-          <ul class="space-y-3">
-            {{ range .services }}
-            <li class="relative pl-6 text-sm">
-              <i
-                class="fa fa-check absolute left-0 top-1 text-primary dark:text-darkmode-primary"
-              ></i>
-              {{ . | markdownify }}
-            </li>
-            {{ end }}
-          </ul>
-        </div>
-      </div>
-
-      <!-- Engagements -->
-      <div class="lg:col-5 lg:col-offset-1">
-        <div class="ui-card h-full">
-          <h4 class="mb-5">How we can work together</h4>
-          <div class="space-y-4">
-            {{ range .engagements }}
-            <div
-              class="rounded-2xl border border-border bg-body p-4 dark:border-darkmode-border dark:bg-darkmode-body"
-            >
-              <p class="font-semibold text-sm mb-1">{{ .label }}</p>
-              <p class="text-sm opacity-75">{{ .description }}</p>
-            </div>
-            {{ end }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Process -->
-    {{ with .process }}
-    <div class="row justify-center mb-12">
-      <div class="lg:col-10">
-        <h4 class="mb-6 text-center">How it works</h4>
-        <div class="row">
-          {{ range $i, $step := . }}
-          <div class="md:col-3 mb-6 text-center">
-            <div class="ui-card-compact h-full">
-              <div
-                class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary dark:bg-darkmode-primary text-white font-bold text-sm"
-              >
-                {{ add $i 1 }}
-              </div>
-              <p class="font-semibold text-sm mb-1">{{ $step.step }}</p>
-              <p class="text-xs opacity-75">{{ $step.description }}</p>
-            </div>
-          </div>
-          {{ end }}
-        </div>
-      </div>
-    </div>
-    {{ end }}
-
-    <!-- CTA -->
-    <div class="row justify-center">
-      <div class="text-center">
-        <a
-          href="{{ .cta_primary_link }}"
-          target="_blank"
-          rel="noopener"
-          class="btn btn-primary mr-4"
-        >
-          {{ .cta_primary_label }}
-          <i class="fa fa-arrow-right pl-2"></i>
-        </a>
-        <a
-          href="{{ .cta_secondary_link | relURL }}"
-          class="btn btn-outline-primary"
-        >
-          {{ .cta_secondary_label }}
-        </a>
-      </div>
+      </a>
     </div>
   </div>
 </section>
-{{ end }} {{ end }}
+{{ end }}

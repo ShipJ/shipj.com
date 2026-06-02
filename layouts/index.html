@@ -12,6 +12,10 @@
       </h1>
       <div class="hero-body">{{ .content | markdownify }}</div>
 
+      {{ with .tagline }}
+      <div class="hero-tagline">{{ . | markdownify }}</div>
+      {{ end }}
+
       <div class="cta-row">
         {{ with .button }}{{ if .enable }}
         <a

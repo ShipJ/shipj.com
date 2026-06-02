@@ -131,6 +131,13 @@
     <div
       class="header-tools order-1 ml-auto flex items-center gap-3 md:order-2 lg:order-none lg:ml-0 lg:justify-self-end"
     >
+      <a
+        aria-label="Contact"
+        href="{{ `contact/` | relURL }}"
+        class="search-trigger flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-full border border-border text-text transition hover:border-text-light/30 hover:bg-[var(--hover-bg)] dark:border-darkmode-border dark:text-darkmode-text dark:hover:border-darkmode-text-light/30 dark:hover:bg-[var(--hover-bg)] dark:hover:text-darkmode-text-dark"
+      >
+        <i class="fa-solid fa-envelope text-[13px]"></i>
+      </a>
       {{ with site.Params.search }} {{ if .enable }}
       <button
         aria-label="search"
