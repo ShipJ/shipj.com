@@ -1,0 +1,23 @@
+{{- /* Renders category + sector chips for a card. Category = filled pill.
+Sector = outline pill. Usage: {{ partial "components/card-chips" (dict "Page" .)
+}} */ -}} {{- $page := .Page -}} {{- $cat := "" -}}{{- with
+$page.Params.categories -}}{{- $cat = index . 0 -}}{{- end -}} {{- $sector :=
+$page.Params.sector -}} {{- $colors := dict "blue" "#1a6ee0" "violet" "#9230d8"
+"green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" -}} {{-
+if or $cat $sector }}
+<div class="card-chips">
+  {{- with $cat -}} {{- $tone := partial "components/category-tone" (dict "Name"
+  .) | strings.TrimSpace -}} {{- $color := index $colors $tone | default
+  "#607a92" -}}
+  <span class="card-chip card-chip-category" style="--cat: {{ $color }}"
+    >{{ . }}</span
+  >
+  {{- end -}} {{- with $sector -}} {{- $tone := partial "components/sector-tone"
+  (dict "Name" .) | strings.TrimSpace -}} {{- $color := index $colors $tone |
+  default "#6a5a7a" -}}
+  <span class="card-chip card-chip-sector" style="--cat: {{ $color }}"
+    >{{ . }}</span
+  >
+  {{- end -}}
+</div>
+{{- end -}}

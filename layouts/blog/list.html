@@ -4,6 +4,25 @@
 {{ $pages := sort ($blog | union $portfolio) "Date" "desc" }}
 {{ $total := len $pages }}
 
+{{/* ---- Editorial: hero + popular feature selection ---- */}}
+{{ $livePages := where $pages "Params.coming_soon" "ne" true }}
+{{ $heroPost := index $livePages 0 }}
+{{ $heroPermalink := "" }}
+{{ with $heroPost }}{{ $heroPermalink = .RelPermalink }}{{ end }}
+{{ $popularCandidates := where $livePages "Params.length" "Quick Read" }}
+{{ $popularPool := where $popularCandidates "RelPermalink" "ne" $heroPermalink }}
+{{ if lt (len $popularPool) 3 }}
+  {{ $popularPool = where $livePages "RelPermalink" "ne" $heroPermalink }}
+{{ end }}
+{{ $popularPosts := first 3 $popularPool }}
+{{ $placeholders := slice "images/gallery/01.jpg" "images/gallery/02.jpg" "images/gallery/03.jpg" "images/gallery/04.jpg" "images/gallery/05.jpg" "images/gallery/06.jpg" }}
+
+{{/* Track permalinks shown above the rail (featured + popular) so the rail
+     groups can avoid duplicating them. */}}
+{{ $excludedPermalinks := slice }}
+{{ with $heroPermalink }}{{ $excludedPermalinks = $excludedPermalinks | append . }}{{ end }}
+{{ range $popularPosts }}{{ $excludedPermalinks = $excludedPermalinks | append .RelPermalink }}{{ end }}
+
 {{/* Collect unique categories (alphabetical) and tags (by frequency) for filter chips */}}
 {{ $catMap := dict }}
 {{ range $pages }}
@@ -49,7 +68,6 @@
 {{ end }}
 {{ $tagList = sort $tagList "Count" "desc" }}
 
-<div class="blog-rail-host">
 <section class="page-lead blog-list-page">
   <div class="site-container">
     <div
@@ -61,16 +79,120 @@
       data-filter-clear-url="{{ .RelPermalink }}"
     >
 
-      {{/* ---- Editorial hero ---- */}}
+      {{/* ---- Editorial hero (full width above the feature + rail) ---- */}}
       <div class="editorial-list-hero">
         {{ partial "components/page-eyebrow" (dict "Page" .) }}
         <h1 class="eyebrow-gap">{{ .Params.description | default "Notes on data, systems, and the decisions behind the work." | safeHTML }}<span class="cursor" aria-hidden="true"></span></h1>
       </div>
 
+      {{/* ---- Featured + popular on the left, recent rail on the right ---- */}}
+      <div class="blog-list-top">
+        <div class="blog-list-main">
+          {{ if $heroPost }}
+          <div class="blog-feature-block">
+            <p class="section-kicker">Featured</p>
+            {{ with $heroPost }}
+            {{ $heroImg := index $placeholders 0 }}
+            <a class="blog-hero-card" href="{{ .RelPermalink }}">
+              <div class="blog-hero-media">
+                {{ partial "image" (dict "Src" $heroImg "Context" .Page "Alt" .Title "Size" "1200x630 webp" "Command" "Fill" "Class" "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
+              </div>
+              <div class="blog-hero-body">
+                <h2 class="blog-hero-title">{{ .Title }}</h2>
+                {{ with (.Params.description | default (.Summary | plainify | truncate 220)) }}
+                  <p class="blog-hero-summary">{{ . }}</p>
+                {{ end }}
+                <div class="blog-hero-meta">
+                  <span class="blog-hero-date">{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
+                </div>
+                {{ partial "components/card-chips" (dict "Page" .) }}
+              </div>
+            </a>
+            {{ end }}
+
+            {{ if $popularPosts }}
+            <div class="blog-popular">
+              <p class="section-kicker">Popular</p>
+              <div class="blog-popular-row">
+                {{ range $i, $p := $popularPosts }}
+                {{ $img := index $placeholders (mod (add $i 1) (len $placeholders)) }}
+                <a class="blog-popular-card" href="{{ .RelPermalink }}">
+                  <div class="blog-popular-media">
+                    {{ partial "image" (dict "Src" $img "Context" .Page "Alt" .Title "Size" "480x320 webp" "Command" "Fill" "Class" "blog-popular-img") }}
+                  </div>
+                  <div class="blog-popular-body">
+                    <span class="blog-popular-date">{{ .Date.Format "02 Jan" }}</span>
+                    <span class="blog-popular-title">{{ .Title }}</span>
+                  </div>
+                </a>
+                {{ end }}
+              </div>
+            </div>
+            {{ end }}
+          </div>
+          {{ end }}
+        </div>
+
+        {{ $recentRail := first 18 (where $livePages "RelPermalink" "not in" $excludedPermalinks) }}
+        {{ $excludedAfterRecent := $excludedPermalinks }}
+        {{ range $recentRail }}{{ $excludedAfterRecent = $excludedAfterRecent | append .RelPermalink }}{{ end }}
+
+        {{ $tutorialsPool := where $livePages "Params.tags" "intersect" (slice "tutorial") }}
+        {{ $tutorialsRail := first 6 (where $tutorialsPool "RelPermalink" "not in" $excludedAfterRecent) }}
+
+        {{ $comingSoonRail := first 5 (where (where site.RegularPages "Section" "blog") "Params.coming_soon" true) }}
+        {{ if or $recentRail $tutorialsRail $comingSoonRail }}
+        <aside class="blog-list-rail">
+          {{ if $comingSoonRail }}
+          <div class="home-quick-reads-group">
+            <p class="section-kicker">Coming soon</p>
+            <div class="home-quick-reads is-coming-soon">
+              {{ range $comingSoonRail }}
+              <span class="home-quick-read is-coming-soon">
+                <span class="hqr-date">TBD</span>
+                <span class="hqr-sep">·</span>
+                <span class="hqr-title">{{ .Title }}</span>
+              </span>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+          {{ if $recentRail }}
+          <div class="home-quick-reads-group">
+            <p class="section-kicker">Recent</p>
+            <div class="home-quick-reads">
+              {{ range $recentRail }}
+              <a class="home-quick-read" href="{{ .RelPermalink }}">
+                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
+                <span class="hqr-sep">·</span>
+                <span class="hqr-title">{{ .Title }}</span>
+              </a>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+          {{ if $tutorialsRail }}
+          <div class="home-quick-reads-group">
+            <p class="section-kicker">Tutorials</p>
+            <div class="home-quick-reads">
+              {{ range $tutorialsRail }}
+              <a class="home-quick-read" href="{{ .RelPermalink }}">
+                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
+                <span class="hqr-sep">·</span>
+                <span class="hqr-title">{{ .Title }}</span>
+              </a>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+        </aside>
+        {{ end }}
+      </div>
+
       {{/* ---- Collapsible filters ---- */}}
       <details class="filter-details" data-filter-panel>
         <summary class="filter-summary">
-          <span>filters</span>
+          <span>all content</span>
           <i class="chevron">▾</i>
           <span class="active-chips hidden" data-active-chips></span>
           <span class="filter-match-toggle hidden" data-filter-match-toggle title="match any (or) vs match all (and) selected filters">
@@ -418,48 +540,4 @@
   });
 </script>
 
-{{ $allQuickReads := where (where site.RegularPages "Section" "blog") ".Params.length" "Quick Read" }}
-{{ $livePosts := where $allQuickReads "Params.coming_soon" "ne" true }}
-{{ $quickReads := $livePosts }}
-{{ $newsReads := where $livePosts "Params.tags" "intersect" (slice "news") }}
-{{ $tutorialReads := where $livePosts "Params.tags" "intersect" (slice "tutorial") }}
-{{ $comingSoonReads := where $allQuickReads "Params.coming_soon" true }}
-{{ $quickReads = first 5 $quickReads }}
-{{ $newsReads = first 5 $newsReads }}
-{{ $tutorialReads = first 5 $tutorialReads }}
-{{ $comingSoonReads = first 5 $comingSoonReads }}
-
-{{ if or $quickReads $newsReads $tutorialReads $comingSoonReads }}
-<div class="blog-rail-slot">
-<aside class="blog-rail">
-  {{ range $group := slice (dict "label" "Coming soon" "items" $comingSoonReads) (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
-  {{ if $group.items }}
-  {{ $allComingSoon := true }}
-  {{ range $group.items }}{{ if not .Params.coming_soon }}{{ $allComingSoon = false }}{{ end }}{{ end }}
-  <div class="home-quick-reads-group">
-    <p class="section-kicker">{{ $group.label }}</p>
-    <div class="home-quick-reads{{ if $allComingSoon }} is-coming-soon{{ end }}">
-      {{ range $group.items }}
-      {{ if .Params.coming_soon }}
-      <span class="home-quick-read is-coming-soon">
-        <span class="hqr-date">TBD</span>
-        <span class="hqr-sep">·</span>
-        <span class="hqr-title">{{ .Title }}</span>
-      </span>
-      {{ else }}
-      <a class="home-quick-read" href="{{ .RelPermalink }}">
-        <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
-        <span class="hqr-sep">·</span>
-        <span class="hqr-title">{{ .Title }}</span>
-      </a>
-      {{ end }}
-      {{ end }}
-    </div>
-  </div>
-  {{ end }}
-  {{ end }}
-</aside>
-</div>
-{{ end }}
-</div>
 {{ end }}

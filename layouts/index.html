@@ -42,65 +42,83 @@
       </p>
       {{ partial "components/rising-topics" (dict "Page" $ "Minimal" true) }}
     </div>
-    {{ end }} {{/* ========== LATEST ========== */}} {{ $latestPost := index
-    (where (where site.RegularPages "Section" "blog") "Params.coming_soon" "!="
-    true) 0 }} {{ $latestProject := index (where (where site.RegularPages
-    "Section" "portfolio") "Params.coming_soon" "!=" true) 0 }} {{
-    $allQuickReads := where (where site.RegularPages "Section" "blog")
-    ".Params.length" "Quick Read" }} {{ $livePosts := where $allQuickReads
-    "Params.coming_soon" "ne" true }} {{ $quickReads := $livePosts }} {{
-    $newsReads := where $livePosts "Params.tags" "intersect" (slice "news") }}
-    {{ $tutorialReads := where $livePosts "Params.tags" "intersect" (slice
-    "tutorial") }} {{ $comingSoonReads := where $allQuickReads
-    "Params.coming_soon" true }} {{ $quickReads = first 5 $quickReads }} {{
-    $newsReads = first 5 $newsReads }} {{ $tutorialReads = first 5
-    $tutorialReads }} {{ $comingSoonReads = first 5 $comingSoonReads }} {{
-    $hasReads := or $quickReads $newsReads $tutorialReads $comingSoonReads }} {{
-    if or $latestPost $latestProject $hasReads }}
-    <div class="home-latest">
-      <div class="home-latest-row{{ if $hasReads }} home-latest-row-3{{ end }}">
-        {{ with $latestPost }}
-        <div class="home-latest-col">
-          <p class="section-kicker">Latest post</p>
-          {{ partial "components/portfolio-card" . }}
-        </div>
-        {{ end }} {{ with $latestProject }}
-        <div class="home-latest-col">
-          <p class="section-kicker">Latest project</p>
-          {{ partial "components/portfolio-card" . }}
-        </div>
-        {{ end }} {{ if $hasReads }}
-        <div class="home-latest-col home-latest-reads">
-          {{ range $group := slice (dict "label" "Coming soon" "items"
-          $comingSoonReads) (dict "label" "Popular" "items" $quickReads) (dict
-          "label" "In the news" "items" $newsReads) (dict "label" "Tutorials"
-          "items" $tutorialReads) }} {{ if $group.items }} {{ $allComingSoon :=
-          true }} {{ range $group.items }}{{ if not .Params.coming_soon }}{{
-          $allComingSoon = false }}{{ end }}{{ end }}
-          <div class="home-quick-reads-group">
-            <p class="section-kicker">{{ $group.label }}</p>
-            <div
-              class="home-quick-reads{{ if $allComingSoon }} is-coming-soon{{ end }}"
-            >
-              {{ range $group.items }} {{ if .Params.coming_soon }}
-              <span class="home-quick-read is-coming-soon">
-                <span class="hqr-date">TBD</span>
-                <span class="hqr-sep">·</span>
-                <span class="hqr-title">{{ .Title }}</span>
-              </span>
-              {{ else }}
-              <a class="home-quick-read" href="{{ .RelPermalink }}">
-                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
-                <span class="hqr-sep">·</span>
-                <span class="hqr-title">{{ .Title }}</span>
-              </a>
-              {{ end }} {{ end }}
-            </div>
+    {{ end }} {{/* ========== FEATURED + LATEST ========== */}} {{ $liveBlogs :=
+    where (where site.RegularPages "Section" "blog") "Params.coming_soon" "ne"
+    true }} {{ $liveProjects := where (where site.RegularPages "Section"
+    "portfolio") "Params.coming_soon" "ne" true }} {{ $allLive := sort
+    ($liveBlogs | union $liveProjects) "Date" "desc" }} {{ $heroPost := index
+    $allLive 0 }} {{ $heroPermalink := "" }} {{ with $heroPost }}{{
+    $heroPermalink = .RelPermalink }}{{ end }} {{ $latestPost := index (where
+    $liveBlogs "RelPermalink" "ne" $heroPermalink) 0 }} {{ $latestProject :=
+    index (where $liveProjects "RelPermalink" "ne" $heroPermalink) 0 }} {{ if
+    $heroPost }}
+    <div class="home-featured-row">
+      <div class="home-featured-col home-featured-col-main">
+        <p class="section-kicker">Featured</p>
+        {{ with $heroPost }}
+        <a class="blog-hero-card" href="{{ .RelPermalink }}">
+          <div class="blog-hero-media">
+            {{ partial "image" (dict "Src" "images/gallery/01.jpg" "Context"
+            .Page "Alt" .Title "Size" "1200x630 webp" "Command" "Fill" "Class"
+            "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
           </div>
-          {{ end }} {{ end }}
-        </div>
+          <div class="blog-hero-body">
+            <h2 class="blog-hero-title">{{ .Title }}</h2>
+            {{ with (.Params.description | default (.Summary | plainify |
+            truncate 220)) }}
+            <p class="blog-hero-summary">{{ . }}</p>
+            {{ end }}
+            <div class="blog-hero-meta">
+              <span class="blog-hero-date"
+                >{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} ·
+                {{ . }} min{{ end }}</span
+              >
+            </div>
+            {{ partial "components/card-chips" (dict "Page" .) }}
+          </div>
+        </a>
         {{ end }}
       </div>
+
+      {{ with $latestPost }}
+      <div class="home-featured-col">
+        <p class="section-kicker">Latest post</p>
+        <a class="home-mini-card" href="{{ .RelPermalink }}">
+          <div class="home-mini-media">
+            {{ partial "image" (dict "Src" "images/gallery/02.jpg" "Context"
+            .Page "Alt" .Title "Size" "480x320 webp" "Command" "Fill" "Class"
+            "home-mini-img") }}
+          </div>
+          <div class="home-mini-body">
+            <h3 class="home-mini-title">{{ .Title }}</h3>
+            <span class="home-mini-date"
+              >{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{
+              . }} min{{ end }}</span
+            >
+            {{ partial "components/card-chips" (dict "Page" .) }}
+          </div>
+        </a>
+      </div>
+      {{ end }} {{ with $latestProject }}
+      <div class="home-featured-col">
+        <p class="section-kicker">Latest project</p>
+        <a class="home-mini-card" href="{{ .RelPermalink }}">
+          <div class="home-mini-media">
+            {{ partial "image" (dict "Src" "images/gallery/03.jpg" "Context"
+            .Page "Alt" .Title "Size" "480x320 webp" "Command" "Fill" "Class"
+            "home-mini-img") }}
+          </div>
+          <div class="home-mini-body">
+            <h3 class="home-mini-title">{{ .Title }}</h3>
+            <span class="home-mini-date"
+              >{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{
+              . }} min{{ end }}</span
+            >
+            {{ partial "components/card-chips" (dict "Page" .) }}
+          </div>
+        </a>
+      </div>
+      {{ end }}
     </div>
     {{ end }}
   </div>

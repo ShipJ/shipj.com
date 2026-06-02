@@ -1,5 +1,5 @@
 {{ define "main" }}
-<div class="post-layout post-layout-sidebar blog-rail-host">
+<div class="post-layout post-layout-sidebar">
 <section class="page-lead pb-4">
   <div class="site-container">
     <article>
@@ -155,49 +155,5 @@
 
 </section>
 
-{{ $allQuickReads := where (where site.RegularPages "Section" "blog") ".Params.length" "Quick Read" }}
-{{ $allQuickReads = where $allQuickReads ".RelPermalink" "ne" .RelPermalink }}
-{{ $livePosts := where $allQuickReads "Params.coming_soon" "ne" true }}
-{{ $quickReads := $livePosts }}
-{{ $newsReads := where $livePosts "Params.tags" "intersect" (slice "news") }}
-{{ $tutorialReads := where $livePosts "Params.tags" "intersect" (slice "tutorial") }}
-{{ $comingSoonReads := where $allQuickReads "Params.coming_soon" true }}
-{{ $quickReads = first 5 $quickReads }}
-{{ $newsReads = first 5 $newsReads }}
-{{ $tutorialReads = first 5 $tutorialReads }}
-{{ $comingSoonReads = first 5 $comingSoonReads }}
-
-{{ if or $quickReads $newsReads $tutorialReads $comingSoonReads }}
-<div class="blog-rail-slot">
-<aside class="blog-rail">
-  {{ range $group := slice (dict "label" "Coming soon" "items" $comingSoonReads) (dict "label" "Popular" "items" $quickReads) (dict "label" "In the news" "items" $newsReads) (dict "label" "Tutorials" "items" $tutorialReads) }}
-  {{ if $group.items }}
-  {{ $allComingSoon := true }}
-  {{ range $group.items }}{{ if not .Params.coming_soon }}{{ $allComingSoon = false }}{{ end }}{{ end }}
-  <div class="home-quick-reads-group">
-    <p class="section-kicker">{{ $group.label }}</p>
-    <div class="home-quick-reads{{ if $allComingSoon }} is-coming-soon{{ end }}">
-      {{ range $group.items }}
-      {{ if .Params.coming_soon }}
-      <span class="home-quick-read is-coming-soon">
-        <span class="hqr-date">TBD</span>
-        <span class="hqr-sep">·</span>
-        <span class="hqr-title">{{ .Title }}</span>
-      </span>
-      {{ else }}
-      <a class="home-quick-read" href="{{ .RelPermalink }}">
-        <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
-        <span class="hqr-sep">·</span>
-        <span class="hqr-title">{{ .Title }}</span>
-      </a>
-      {{ end }}
-      {{ end }}
-    </div>
-  </div>
-  {{ end }}
-  {{ end }}
-</aside>
-</div>
-{{ end }}
 </div>
 {{ end }}
