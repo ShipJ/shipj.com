@@ -3482,20 +3482,73 @@ a.footnote-backref {
     z-index: 39;
   }
 
+  .toc-rail-collapsed {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 1.5rem 0.85rem;
+    background: var(--color-body);
+    border: 1px solid var(--color-border);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+  }
+
+  .toc-rail-pip {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: color-mix(
+      in srgb,
+      var(--color-text-light) 60%,
+      var(--color-border)
+    );
+    border-radius: 2px;
+    transition: background 150ms;
+  }
+
+  .toc-rail-pip.is-passed {
+    background: var(--color-accent);
+  }
+
+  .toc-rail.is-collapsed .toc-rail-expanded {
+    display: none;
+  }
+
+  .toc-rail.is-collapsed .toc-rail-collapsed {
+    display: flex;
+  }
+
   .toc-rail-expanded {
-    padding: 1.75rem 1.5rem 1.75rem 1.25rem;
+    padding: 1.75rem 1rem 1.75rem 0.85rem;
     background: var(--color-body);
     border: 1px solid var(--color-border);
     border-left: none;
     border-radius: 0 8px 8px 0;
     width: max-content;
-    max-width: 18rem;
+    max-width: 14rem;
     max-height: 80vh;
     overflow-y: auto;
   }
 
   .toc-rail-expanded #TableOfContents {
     background: transparent;
+  }
+
+  .toc-rail-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0;
+    margin: 0 0 0.85rem 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-light);
   }
 
   .toc-rail-label {
@@ -3505,7 +3558,19 @@ a.footnote-backref {
     text-transform: uppercase;
     color: var(--color-text-light);
     font-weight: 700;
-    margin: 0 0 0.85rem 0;
+    margin: 0;
+  }
+
+  .toc-rail-chevron {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    transition: opacity 120ms;
+    opacity: 0.6;
+  }
+
+  .toc-rail-toggle:hover .toc-rail-chevron {
+    opacity: 1;
   }
 
   .toc-rail-expanded #TableOfContents ol {
@@ -3524,12 +3589,12 @@ a.footnote-backref {
   }
 
   .toc-rail-expanded #TableOfContents ol ol a {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--color-text-light);
   }
 
   .toc-rail-expanded #TableOfContents a {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     line-height: 1.5;
     color: var(--color-text);
     text-decoration: none;

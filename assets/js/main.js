@@ -616,6 +616,20 @@
     update();
   })();
 
+  // Table-of-contents rail collapse toggle
+  // ----------------------------------------
+  (function () {
+    var rail = document.querySelector(".toc-rail");
+    if (!rail) return;
+    rail
+      .querySelectorAll(".toc-rail-collapsed, .toc-rail-toggle")
+      .forEach(function (el) {
+        el.addEventListener("click", function () {
+          rail.classList.toggle("is-collapsed");
+        });
+      });
+  })();
+
   // Table-of-contents scroll spy
   // ----------------------------------------
   (function () {
@@ -623,6 +637,7 @@
     if (!toc) return;
     var col = document.querySelector(".toc-rail-col");
     var content = document.querySelector(".content");
+    var pips = document.querySelectorAll(".toc-rail-pip");
     function positionRail() {
       if (col && content) col.style.top = content.offsetTop + "px";
     }
@@ -648,6 +663,16 @@
     }
 
     function onScroll() {
+      // Fill the collapsed-view pips in line with overall scroll progress.
+      if (pips.length) {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = max > 0 ? window.scrollY / max : 0;
+        var passed = Math.round(progress * pips.length);
+        for (var p = 0; p < pips.length; p++) {
+          pips[p].classList.toggle("is-passed", p < passed);
+        }
+      }
+
       // Highlight the section once its heading reaches the bottom of the screen.
       var offset = window.innerHeight;
       var active = null;

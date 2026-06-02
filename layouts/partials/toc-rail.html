@@ -1,8 +1,38 @@
 {{ if .Fragments.Headings }}
 <div class="toc-rail-col">
   <nav class="toc-rail" aria-label="Table of contents">
+    <button
+      type="button"
+      class="toc-rail-collapsed"
+      aria-label="Expand contents"
+    >
+      <span class="toc-rail-pip"></span>
+      <span class="toc-rail-pip"></span>
+      <span class="toc-rail-pip"></span>
+      <span class="toc-rail-pip"></span>
+      <span class="toc-rail-pip"></span>
+      <span class="toc-rail-pip"></span>
+      <span class="toc-rail-pip"></span>
+      <span class="toc-rail-pip"></span>
+    </button>
     <div class="toc-rail-expanded">
-      <p class="toc-rail-label">In this article</p>
+      <button
+        type="button"
+        class="toc-rail-toggle"
+        aria-label="Collapse contents"
+      >
+        <span class="toc-rail-label">In this article</span>
+        <svg class="toc-rail-chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M10 3 5 8l5 5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
       <nav id="TableOfContents">
         <ol class="toc-rail-list">
           {{ partial "components/toc-rail-items.html" .Fragments.Headings }}
