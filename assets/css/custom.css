@@ -3519,7 +3519,37 @@ pre,
 .content h4,
 .footnotes li,
 sup[id^="fnref"] {
-  scroll-margin-top: 6rem;
+  scroll-margin-top: var(--sticky-top-height, 6rem);
+}
+
+/* Pin the current section heading just beneath the sticky header as you scroll
+   the article body (blog + portfolio). The opaque background matches the page,
+   so it's invisible in normal flow and only reads as a bar once pinned. */
+.post-layout .content :is(h1, h2, h3) {
+  position: sticky;
+  top: var(--sticky-top-height, 6rem);
+  z-index: 10;
+  background: var(--color-body);
+  padding-block: 0.35rem;
+}
+
+/* Heading sections (built in main.js) keep each sticky heading bounded so it
+   pushes out as the next arrives. position:sticky is constrained by the
+   container's CONTENT box (not padding/margin), so headings sit flush at the
+   top of their section and breathing room goes at the END of each section as a
+   spacer (::after) — inside the content box. That way the previous heading
+   stays pinned over the breathing space until the next heading's text rises and
+   pushes it out, so the visible text hands off with no dead zone. */
+.post-layout .content .pinned-section > :is(h1, h2, h3) {
+  margin-top: 0;
+}
+.post-layout .content .pinned-section > :last-child {
+  margin-bottom: 0;
+}
+.post-layout .content .pinned-section::after {
+  content: "";
+  display: block;
+  height: 1.5rem;
 }
 
 /* Render inline footnote refs as [1] rather than bare superscript */

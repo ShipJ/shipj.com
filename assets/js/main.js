@@ -701,4 +701,48 @@
     );
     onScroll();
   })();
+
+  // Expose the sticky-top (banner + header) height as a CSS variable so content
+  // headings pin directly beneath it (not tucked under it). Runs first and on
+  // load/resize so the value is correct even after fonts settle.
+  // ----------------------------------------
+  (function () {
+    var stickyTop = document.querySelector(".site-sticky-top");
+    if (!stickyTop) return;
+    function setHeight() {
+      document.documentElement.style.setProperty(
+        "--sticky-top-height",
+        Math.round(stickyTop.getBoundingClientRect().height) + "px",
+      );
+    }
+    setHeight();
+    window.addEventListener("load", setHeight);
+    window.addEventListener("resize", setHeight, { passive: true });
+  })();
+
+  // Group flat article content into per-heading sections so sticky headings
+  // push each other out of view instead of stacking. A heading can only stay
+  // pinned while its own section is on screen; the next section's top edge then
+  // pushes it up and out. Runs on blog + portfolio post bodies only.
+  // ----------------------------------------
+  (function () {
+    var content = document.querySelector(".post-layout .content");
+    if (!content) return;
+    var headingSel = "h1, h2, h3";
+    var section = null;
+    Array.prototype.slice.call(content.childNodes).forEach(function (node) {
+      var isHeading =
+        node.nodeType === 1 && node.matches && node.matches(headingSel);
+      if (isHeading) {
+        section = document.createElement("div");
+        section.className = "pinned-section";
+        content.insertBefore(section, node);
+        section.appendChild(node);
+      } else if (section) {
+        // Pull trailing content up into the current section. Nodes before the
+        // first heading are left untouched.
+        section.appendChild(node);
+      }
+    });
+  })();
 })();
