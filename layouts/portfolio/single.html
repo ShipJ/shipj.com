@@ -61,7 +61,7 @@
     <article class="pt-4 pb-12">
         {{ with .Params.image }}
         <div class="mb-2">
-          {{ partial "image" (dict "Src" . "Context" $.Page "Alt" $.Title "Class" "w-full rounded-2xl border border-border dark:border-darkmode-border") }}
+          {{ partial "image" (dict "Src" . "Context" $.Page "Alt" $.Title "Class" "w-full max-h-[32rem] object-cover rounded-2xl border border-border dark:border-darkmode-border") }}
         </div>
         {{ end }}
 

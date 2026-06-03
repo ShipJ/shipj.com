@@ -411,7 +411,9 @@ function mapFrontMatter(page) {
     last_synced: new Date().toISOString(),
     math: true,
     image: "",
+    image_vertical: "",
     _mainImageFile: pickFile(prop(props, "main_image")), // internal temp field
+    _verticalImageFile: pickFile(prop(props, "image_vertical")), // internal temp field
   };
 
   return fm;
@@ -648,6 +650,11 @@ async function main() {
     if (fm._mainImageFile?.url)
       fm.image = (await downloadGallery(fm._mainImageFile, fm.slug)).publicPath;
     delete fm._mainImageFile;
+    if (fm._verticalImageFile?.url)
+      fm.image_vertical = (
+        await downloadGallery(fm._verticalImageFile, fm.slug + "-vertical")
+      ).publicPath;
+    delete fm._verticalImageFile;
 
     // Body markdown from Notion blocks
     const body = await fetchPageMarkdown(p.id, idToContentPath);

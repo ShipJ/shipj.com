@@ -64,11 +64,15 @@
           class="blog-hero-card cursor-pointer"
           data-card-link="{{ .RelPermalink }}"
         >
+          {{ $heroVert := .Params.image_vertical }} {{ $heroSize := cond (ne
+          ($heroVert | default "") "") "900x1200 webp" "1200x630 webp" }} {{
+          with ($heroVert | default .Params.image) }}
           <div class="blog-hero-media">
-            {{ partial "image" (dict "Src" "images/gallery/01.jpg" "Context"
-            .Page "Alt" .Title "Size" "1200x630 webp" "Command" "Fill" "Class"
+            {{ partial "image" (dict "Src" . "Context" $heroPost "Alt"
+            $heroPost.Title "Size" $heroSize "Command" "Fill" "Class"
             "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
           </div>
+          {{ end }}
           <div class="blog-hero-body">
             <div class="blog-hero-meta">
               <span class="blog-hero-date"

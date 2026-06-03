@@ -15,7 +15,6 @@
   {{ $popularPool = where $livePages "RelPermalink" "ne" $heroPermalink }}
 {{ end }}
 {{ $popularPosts := first 3 $popularPool }}
-{{ $placeholders := slice "images/gallery/01.jpg" "images/gallery/02.jpg" "images/gallery/03.jpg" "images/gallery/04.jpg" "images/gallery/05.jpg" "images/gallery/06.jpg" }}
 
 {{/* Track permalinks shown above the rail (featured + popular) so the rail
      groups can avoid duplicating them. */}}
@@ -93,11 +92,14 @@
           <div class="blog-feature-block">
             <p class="section-kicker">Featured</p>
             {{ with $heroPost }}
-            {{ $heroImg := index $placeholders 0 }}
             <div class="blog-hero-card cursor-pointer" data-card-link="{{ .RelPermalink }}">
+              {{ $heroVert := .Params.image_vertical }}
+              {{ $heroSize := cond (ne ($heroVert | default "") "") "900x1200 webp" "1200x630 webp" }}
+              {{ with ($heroVert | default .Params.image) }}
               <div class="blog-hero-media">
-                {{ partial "image" (dict "Src" $heroImg "Context" .Page "Alt" .Title "Size" "1200x630 webp" "Command" "Fill" "Class" "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
+                {{ partial "image" (dict "Src" . "Context" $heroPost "Alt" $heroPost.Title "Size" $heroSize "Command" "Fill" "Class" "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
               </div>
+              {{ end }}
               <div class="blog-hero-body">
                 <div class="blog-hero-meta">
                   <span class="blog-hero-date">{{ .Date.Format "02 Jan" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
@@ -111,43 +113,27 @@
             </div>
             {{ end }}
 
-            {{ if $popularPosts }}
-            <div class="blog-popular">
-              <p class="section-kicker">Popular</p>
-              <div class="card-grid">
-                {{ range $popularPosts }}
-                {{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}
-                {{ end }}
-              </div>
+            {{/* ---- Hot topics sparklines (compact, replaces the old rails) ---- */}}
+            {{ if site.Data.rising_topics }}
+            <div class="blog-hot-inline">
+              <p class="section-kicker">
+                Hot topics
+                <button class="hot-topics-info" data-tip="% change in posts: last 4 weeks vs. avg of last 26 weeks">i</button>
+              </p>
+              {{ partial "components/rising-topics" (dict "Page" $ "Minimal" true) }}
             </div>
             {{ end }}
           </div>
           {{ end }}
 
-          {{/* ---- Coming soon / Tutorials / News (latest of each, 3 across) ---- */}}
-          {{ $comingSoonRail := first 1 (where (where site.RegularPages "Section" "blog") "Params.coming_soon" true) }}
-          {{ $tutorialsRail := first 1 (where (where $livePages "Params.tags" "intersect" (slice "tutorial")) "RelPermalink" "not in" $excludedPermalinks) }}
-          {{ $newsRail := first 1 (where (where $livePages "Params.tags" "intersect" (slice "news")) "RelPermalink" "not in" $excludedPermalinks) }}
-          {{ if or $comingSoonRail $tutorialsRail $newsRail }}
-          <div class="blog-popular-rails">
-            {{ if $comingSoonRail }}
-            <div class="rail-card-group">
-              <p class="section-kicker">Coming soon</p>
-              {{ range $comingSoonRail }}{{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}{{ end }}
+          {{ if $popularPosts }}
+          <div class="blog-popular">
+            <p class="section-kicker">Popular</p>
+            <div class="card-grid">
+              {{ range $popularPosts }}
+              {{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}
+              {{ end }}
             </div>
-            {{ end }}
-            {{ if $tutorialsRail }}
-            <div class="rail-card-group">
-              <p class="section-kicker">Tutorials</p>
-              {{ range $tutorialsRail }}{{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}{{ end }}
-            </div>
-            {{ end }}
-            {{ if $newsRail }}
-            <div class="rail-card-group">
-              <p class="section-kicker">News</p>
-              {{ range $newsRail }}{{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}{{ end }}
-            </div>
-            {{ end }}
           </div>
           {{ end }}
         </div>
@@ -275,7 +261,7 @@
                   {{ end }}
                 </span>
                 {{ with .Params.tags }}
-                <span class="tags">{{ range $i, $t := first 3 . }}{{- if $i }} {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
+                <span class="tags">{{ range $i, $t := . }}{{- if $i }} {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
                 {{ end }}
               </span>
               {{ .Title }}
@@ -295,39 +281,28 @@
         </div>{{/* /.blog-allcontent */}}
       </div>{{/* /.blog-list-top */}}
 
-      {{/* ---- Hot topics charts (same as homepage) ---- */}}
-      {{ if site.Data.rising_topics }}
-      <section class="blog-hot-topics">
-        <div class="home-hot-topics">
-          <p class="section-kicker">
-            Hot topics
-            <button
-              class="hot-topics-info"
-              data-tip="% change in posts: last 4 weeks vs. avg of last 26 weeks"
-            >
-              i
-            </button>
-          </p>
-          {{ partial "components/rising-topics" (dict "Page" $ "Minimal" true) }}
-        </div>
-      </section>
-      {{ end }}
-
-      {{/* ---- Continue the series (any multi-part series, parts in order) ---- */}}
+      {{/* ---- Continue the series (multi-part series, newest start first) ---- */}}
       {{ $seriesPool := sort (where site.RegularPages "Section" "in" (slice "blog" "portfolio")) "Date" "desc" }}
       {{ $seriesNames := slice }}
       {{ range $seriesPool }}{{ with .Params.series }}{{ if not (in $seriesNames .) }}{{ $seriesNames = $seriesNames | append . }}{{ end }}{{ end }}{{ end }}
-      {{ $hasSeries := false }}
-      {{ range $seriesNames }}{{ if gt (len (where $seriesPool "Params.series" .)) 0 }}{{ $hasSeries = true }}{{ end }}{{ end }}
-      {{ if $hasSeries }}
+      {{ $seriesList := slice }}
+      {{ range $seriesNames }}
+        {{ $parts := sort (where $seriesPool "Params.series" .) "Params.series_part" "asc" }}
+        {{ if gt (len $parts) 0 }}{{ $seriesList = $seriesList | append (dict "name" . "parts" $parts "start" (index $parts 0).Date) }}{{ end }}
+      {{ end }}
+      {{ $seriesList = sort $seriesList "start" "desc" }}
+      {{ if $seriesList }}
       <section class="blog-series">
         <p class="section-kicker">Continue the series</p>
-        {{ range $seriesNames }}
-          {{ $name := . }}
-          {{ $parts := sort (where $seriesPool "Params.series" $name) "Params.series_part" "asc" }}
-          {{ if gt (len $parts) 0 }}
+        {{ range $seriesList }}
+          {{ $name := .name }}
+          {{ $parts := .parts }}
+          {{ $start := .start }}
           <div class="blog-series-group">
-            <h3 class="blog-series-name">{{ $name }}</h3>
+            <div class="blog-series-head">
+              <h3 class="blog-series-name">{{ $name }}</h3>
+              <p class="blog-series-start"><span class="blog-series-arrow" aria-hidden="true">↳</span> {{ $start.Format "Jan 2006" }}</p>
+            </div>
             <div class="series-track">
               {{ range $i, $p := $parts }}
                 {{ if $i }}<span class="series-arrow" aria-hidden="true">→</span>{{ end }}
@@ -347,7 +322,6 @@
               {{ end }}
             </div>
           </div>
-          {{ end }}
         {{ end }}
       </section>
       {{ end }}
@@ -428,7 +402,7 @@
         labels.forEach(function (item) {
           var ctrl = root.querySelector('[data-filter-kind="' + item.kind + '"][data-filter-value="' + item.value + '"]');
           var s = document.createElement('span');
-          s.className = 'summary-active-chip';
+          s.className = 'summary-active-chip' + (item.kind === 'tags' ? ' is-tag' : '');
           var cat = item.kind === 'tags' ? '#c85a2b' : (ctrl ? ctrl.style.getPropertyValue('--cat').trim() : '');
           if (cat) s.style.setProperty('--cat', cat);
           s.appendChild(document.createTextNode(item.label));

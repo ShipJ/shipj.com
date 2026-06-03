@@ -1689,11 +1689,15 @@ html {
 }
 
 /* Hot topics charts section beneath the editorial top. */
-.blog-hot-topics {
-  margin-top: 44px;
+/* Hot topics sparklines, inline in the left column (beneath Popular). */
+.blog-hot-inline {
+  margin-top: 24px;
 }
-.blog-hot-topics .home-hot-topics::before {
-  display: none;
+.blog-hot-inline > .section-kicker {
+  margin-bottom: 12px;
+}
+.blog-hot-inline .rising-topics.is-minimal .rising-topics-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 /* Continue the series: per-series horizontal track of ordered parts. */
@@ -1702,11 +1706,9 @@ html {
 }
 /* Match the featured row (.blog-list-top), which breaks out to an 80vw span via
    margin-inline: calc(50% - 40vw). Same containing block (.blog-list), so the
-   same value aligns these sections' left/right edges with the featured content.
-   Applied to the Hot topics section too so both share that span. */
+   same value aligns this section's left/right edges with the featured content. */
 @media (min-width: 1024px) {
-  .blog-series,
-  .blog-hot-topics .home-hot-topics {
+  .blog-series {
     margin-inline: calc(50% - 40vw);
   }
 }
@@ -1716,12 +1718,27 @@ html {
   gap: 16px;
   margin-top: 18px;
 }
-.blog-series-name {
+.blog-series-head {
   flex: 0 0 130px;
+}
+.blog-series-name {
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
   margin: 0;
+}
+.blog-series-start {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--color-text-light);
+}
+.blog-series-arrow {
+  color: var(--color-accent);
+  font-size: 13px;
+  line-height: 1;
 }
 .series-track {
   flex: 1;
@@ -1767,7 +1784,8 @@ html {
     background 0.15s;
 }
 .series-part:hover {
-  border-color: var(--color-text-dark);
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 7%, var(--color-body));
 }
 .series-arrow {
   align-self: center;
@@ -1809,20 +1827,6 @@ html {
   border-color: var(--color-border);
 }
 
-/* Coming soon / Tutorials / News rails, 3 across beneath Popular. */
-.blog-popular-rails {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 18px;
-}
-.blog-popular-rails .rail-card-group {
-  display: flex;
-  flex-direction: column;
-}
-.blog-popular-rails .rail-card-group .section-kicker {
-  margin-bottom: 8px;
-}
 /* Larger section headings on the blog list page (Featured, Popular, Recent…). */
 .blog-list-page .section-kicker {
   font-size: 14px;
@@ -2878,6 +2882,30 @@ html {
 .summary-active-chip:hover .chip-remove {
   opacity: 1;
 }
+/* Active-filter summary: one accent highlight for all category/sector chips
+   (ignoring per-category hues); active tags render as plain accent text in
+   their original case rather than as pills. */
+.blog-list .summary-active-chip {
+  background: var(--color-accent);
+  color: var(--color-body);
+  border-color: var(--color-accent);
+}
+.blog-list .summary-active-chip:hover {
+  background: color-mix(in srgb, var(--color-accent) 85%, black);
+  border-color: color-mix(in srgb, var(--color-accent) 85%, black);
+}
+.blog-list .summary-active-chip.is-tag {
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-accent);
+}
+.blog-list .summary-active-chip.is-tag:hover {
+  background: transparent;
+  color: color-mix(in srgb, var(--color-accent) 80%, black);
+}
 .filter-summary .clear-btn {
   color: var(--color-text-light);
   padding: 2px 8px;
@@ -3566,27 +3594,22 @@ a.card-chip:hover {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
-.blog-popular .post-card-body,
-.blog-popular-rails .post-card-body {
+.blog-popular .post-card-body {
   padding: 9px 10px 11px;
   gap: 5px;
 }
-.blog-popular .post-card-meta,
-.blog-popular-rails .post-card-meta {
+.blog-popular .post-card-meta {
   font-size: 10px;
 }
-.blog-popular .post-card-title,
-.blog-popular-rails .post-card-title {
+.blog-popular .post-card-title {
   font-size: 18px;
   line-height: 1.25;
   letter-spacing: 0.015em;
 }
-.blog-popular .post-card-summary,
-.blog-popular-rails .post-card-summary {
+.blog-popular .post-card-summary {
   display: none;
 }
-.blog-popular .card-chip,
-.blog-popular-rails .card-chip {
+.blog-popular .card-chip {
   font-size: 11px;
   padding: 3px 10px;
 }
@@ -3596,8 +3619,8 @@ a.card-chip:hover {
 }
 
 /* On laptop-class widths (incl. 13"/14" MacBooks, which report ~1280–1512px)
-   the 2-col layout makes the rail/popular cards narrow, so shrink the title +
-   chip type to keep them proportional. Large desktops (≥1536px) keep full size. */
+   the 2-col layout makes the popular cards narrow, so shrink the title + chip
+   type to keep them proportional. Large desktops (≥1536px) keep full size. */
 @media (max-width: 1535px) {
   .blog-hero-title {
     font-size: clamp(20px, 4.6vw, 28px);
@@ -3606,12 +3629,10 @@ a.card-chip:hover {
     font-size: 10px;
     padding: 3px 9px;
   }
-  .blog-popular .post-card-title,
-  .blog-popular-rails .post-card-title {
+  .blog-popular .post-card-title {
     font-size: 15px;
   }
-  .blog-popular .card-chip,
-  .blog-popular-rails .card-chip {
+  .blog-popular .card-chip {
     font-size: 9.5px;
     padding: 2px 8px;
   }
