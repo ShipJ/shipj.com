@@ -6,14 +6,14 @@ filter controls (used on the portfolio list). Usage: {{ partial
 "components/card-chips" (dict "Page" . "Filterable" true) }} */ -}} {{- $page :=
 .Page -}} {{- $filterable := .Filterable -}} {{- $cat := "" -}}{{- with
 $page.Params.categories -}}{{- $cat = index . 0 -}}{{- end -}} {{- $sector :=
-$page.Params.sector -}} {{- $base := "" -}}{{- with $page.CurrentSection -}}{{-
-$base = .RelPermalink -}}{{- end -}} {{- $catColors := dict "ai" "#c07a2c"
-"career" "#c04d5e" "personal" "#2f74c9" "data-analytics" "#8a55bf" "analytics"
-"#8a55bf" "data-science" "#2f9e6f" "science" "#2f9e6f" "data-engineering"
-"#5c7390" "engineering" "#5c7390" "web-development" "#6f5fcf" -}} {{- $secColors
-:= dict "tech" "#4a9d8e" "finance" "#3f8f3f" "general" "#7b7f8a" "retail"
-"#c1568f" "society" "#a9742f" "sport" "#cf5a3a" "transport" "#b58a2b" -}} {{- if
-or $cat $sector }}
+$page.Params.sector -}} {{- $base := .FilterBase -}}{{- if not $base -}}{{- with
+$page.CurrentSection -}}{{- $base = .RelPermalink -}}{{- end -}}{{- end -}} {{-
+$catColors := dict "ai" "#c07a2c" "career" "#c04d5e" "personal" "#2f74c9"
+"data-analytics" "#8a55bf" "analytics" "#8a55bf" "data-science" "#2f9e6f"
+"science" "#2f9e6f" "data-engineering" "#5c7390" "engineering" "#5c7390"
+"web-development" "#6f5fcf" -}} {{- $secColors := dict "tech" "#4a9d8e"
+"finance" "#3f8f3f" "general" "#7b7f8a" "retail" "#c1568f" "society" "#a9742f"
+"sport" "#cf5a3a" "transport" "#b58a2b" -}} {{- if or $cat $sector }}
 <div class="card-chips">
   {{- with $cat -}} {{- $color := index $catColors (. | urlize | lower) |
   default "#607a92" -}} {{- if $filterable -}}

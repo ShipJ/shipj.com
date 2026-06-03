@@ -55,12 +55,15 @@
     $heroPermalink = .RelPermalink }}{{ end }} {{ $latestPost := index (where
     $liveBlogs "RelPermalink" "ne" $heroPermalink) 0 }} {{ $latestProject :=
     index (where $liveProjects "RelPermalink" "ne" $heroPermalink) 0 }} {{ if
-    $heroPost }}
+    $heroPost }} {{ $blogURL := (site.GetPage "/blog").RelPermalink }}
     <div class="home-featured-row">
       <div class="home-featured-col home-featured-col-main">
         <p class="section-kicker">Featured</p>
         {{ with $heroPost }}
-        <a class="blog-hero-card" href="{{ .RelPermalink }}">
+        <div
+          class="blog-hero-card cursor-pointer"
+          data-card-link="{{ .RelPermalink }}"
+        >
           <div class="blog-hero-media">
             {{ partial "image" (dict "Src" "images/gallery/01.jpg" "Context"
             .Page "Alt" .Title "Size" "1200x630 webp" "Command" "Fill" "Class"
@@ -73,25 +76,30 @@
                 {{ . }} min{{ end }}</span
               >
             </div>
-            <h2 class="blog-hero-title">{{ .Title }}</h2>
+            <h2 class="blog-hero-title">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h2>
             {{ with (.Params.description | default (.Summary | plainify |
             truncate 220)) }}
             <p class="blog-hero-summary">{{ . }}</p>
-            {{ end }} {{ partial "components/card-chips" (dict "Page" .) }}
+            {{ end }} {{ partial "components/card-chips" (dict "Page" .
+            "Filterable" true "FilterBase" $blogURL) }}
           </div>
-        </a>
+        </div>
         {{ end }}
       </div>
 
       {{ with $latestPost }}
       <div class="home-featured-col">
         <p class="section-kicker">Latest post</p>
-        {{ partial "components/post-card" . }}
+        {{ partial "components/post-card" (dict "Page" . "Filterable" true
+        "FilterBase" $blogURL) }}
       </div>
       {{ end }} {{ with $latestProject }}
       <div class="home-featured-col">
         <p class="section-kicker">Latest project</p>
-        {{ partial "components/post-card" . }}
+        {{ partial "components/post-card" (dict "Page" . "Filterable" true
+        "FilterBase" $blogURL) }}
       </div>
       {{ end }}
     </div>

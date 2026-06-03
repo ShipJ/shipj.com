@@ -2,13 +2,14 @@
 · read time, and a short text preview. Used for portfolio, taxonomy, and
 related-post grids. Accepts a Page directly or a dict with "Page". Falls back to
 a gallery placeholder (deterministic per post) when the post has no image set.
-*/ -}} {{ $page := . }} {{ $filterable := false }} {{ if reflect.IsMap . }}{{
-$page = .Page }}{{ $filterable = .Filterable }}{{ end }} {{ $cs :=
-$page.Params.coming_soon }} {{ $placeholders := slice "images/gallery/01.jpg"
-"images/gallery/02.jpg" "images/gallery/03.jpg" "images/gallery/04.jpg"
-"images/gallery/05.jpg" "images/gallery/06.jpg" }} {{ $img := $page.Params.image
-}} {{ if not $img }}{{ $img = index $placeholders (mod (hash.FNV32a
-$page.RelPermalink) (len $placeholders)) }}{{ end }}
+*/ -}} {{ $page := . }} {{ $filterable := false }} {{ $hideYear := false }} {{
+$filterBase := "" }} {{ if reflect.IsMap . }}{{ $page = .Page }}{{ $filterable =
+.Filterable }}{{ $hideYear = .HideYear }}{{ $filterBase = .FilterBase }}{{ end
+}} {{ $cs := $page.Params.coming_soon }} {{ $placeholders := slice
+"images/gallery/01.jpg" "images/gallery/02.jpg" "images/gallery/03.jpg"
+"images/gallery/04.jpg" "images/gallery/05.jpg" "images/gallery/06.jpg" }} {{
+$img := $page.Params.image }} {{ if not $img }}{{ $img = index $placeholders
+(mod (hash.FNV32a $page.RelPermalink) (len $placeholders)) }}{{ end }}
 
 <article
   class="post-card{{ if $cs }} is-coming-soon{{ end }}{{ if not $cs }} cursor-pointer{{ end }}"
@@ -21,8 +22,9 @@ $page.RelPermalink) (len $placeholders)) }}{{ end }}
 
   <div class="post-card-body">
     <p class="post-card-meta">
-      {{ if $cs }}Coming soon{{ else }}{{ $page.Date.Format "02 Jan 2006" }}{{
-      with $page.Params.read_time }} · {{ . }} min{{ end }}{{ end }}
+      {{ if $cs }}Coming soon{{ else }}{{ $page.Date.Format "02 Jan" }}{{ if not
+      $hideYear }} {{ $page.Date.Format "2006" }}{{ end }}{{ with
+      $page.Params.read_time }} · {{ . }} min{{ end }}{{ end }}
     </p>
 
     <h3 class="post-card-title">
@@ -35,6 +37,6 @@ $page.RelPermalink) (len $placeholders)) }}{{ end }}
     truncate 160)) }}
     <p class="post-card-summary">{{ . }}</p>
     {{ end }} {{ partial "components/card-chips" (dict "Page" $page "Filterable"
-    $filterable) }}
+    $filterable "FilterBase" $filterBase) }}
   </div>
 </article>
