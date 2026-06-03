@@ -4,14 +4,14 @@ meta_title: "About Jack Shipsmith"
 description: "> A bit about me"
 image: "/images/favicon.png"
 draft: false
-lead: "I'm a Data Scientist and Engineer with 10+ years of experience building products people actually use. From internal analytics to client-facing AI, I've focused on trend forecasting in retail and e-commerce, where data is messy, questions are ambiguous, and everyone would like an answer _yesterday_."
+lead: "Jack is a Data Scientist and Engineer who has spent the last 10 years navigating the intricacies of trend forecasting in retail and e-commerce. He builds data products that improve decision-making at scale, and intentionally multiplies his impact by bridging the gap between technical, commercial, and human needs."
 ---
 
 ## Professional background
 
-My computer science and mathematics degree at UCL made me the optim<u>ist</u> and optim<u>iser</u> - two principles I apply to everything from fitness and travel to [reinventing myself in the wake of AI](hugo-ref:blog/2026-03-09-reinventing-myself-in-the-wake-of-ai-engineering.md).
+A degree in computer science and maths from UCL made me the optimiser I am today, and has shaped how I approach everything from fitness and cooking, to travel and [reinventing myself in the wake of AI](hugo-ref:blog/2026-03-09-reinventing-myself-in-the-wake-of-ai-engineering.md).
 
-I then spent 10 years at Ascential and WGSN — the world's leading trend authority - most recently heading up the Data Science and Engineering team. My role was to evolve a traditional publishing business into a data-driven powerhouse: building the systems, teams, and culture required to make that shift tangible.
+I spent the following decade at Ascential and WGSN (the world's leading trend authority), most recently heading up the Data Science and Engineering team. My role was to evolve a traditional publishing business into a data-driven powerhouse: building the systems, teams, and culture required to make that shift tangible.
 
 [Redundancy in October 2025](hugo-ref:blog/2025-10-08-a-survival-guide-to-redundancy-in-data.md) was the catalyst to [building this site](hugo-ref:portfolio/2026-03-26-how-i-created-this-site-with-hugo.md) - part notebook, part portfolio, and part evidence that side projects can come to fruition.
 

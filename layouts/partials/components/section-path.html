@@ -1,4 +1,16 @@
-{{- if .IsHome -}} ~/{{- else if .Section -}} {{- $sectionPath := .Section -}}
-{{- if and .IsPage (in (slice "blog" "portfolio") .Section) (.Params.id) -}} {{-
-printf "~/%s/post_%03d" $sectionPath (int .Params.id) -}} {{- else -}} {{-
-printf "~/%s" $sectionPath -}} {{- end -}} {{- else -}} ~/{{- end -}}
+{{- $home := site.Home.RelPermalink -}} {{- if .IsHome -}}
+<span class="path-seg path-current">~/</span>
+{{- else -}}
+<a class="path-seg path-link" href="{{ $home }}">~</a
+><span class="path-sep">/</span>
+{{- with .Section -}} {{- if and $.IsPage (in (slice "blog" "portfolio") .)
+($.Params.id) -}}
+<a class="path-seg path-link" href="{{ $.CurrentSection.RelPermalink }}"
+  >{{ . }}</a
+><span class="path-sep">/</span
+><span class="path-seg path-current"
+  >{{ printf "post_%03d" (int $.Params.id) }}</span
+>
+{{- else -}}
+<span class="path-seg path-current">{{ . }}</span>
+{{- end -}} {{- end -}} {{- end -}}
