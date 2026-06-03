@@ -23,7 +23,7 @@ tags:
   - SEO
   - claude
   - tutorial
-author: Jack
+author: ''
 length: Short (1-2 weeks)
 sector: Tech
 read_time: 5
@@ -33,10 +33,11 @@ type: blog
 draft: false
 notion_id: 3187fd6b-fd0d-8055-9e3f-e1f79643cb61
 created_at: '2026-03-03T09:11:00.000Z'
-last_edited_at: '2026-06-01T23:13:00.000Z'
-last_synced: '2026-06-01T23:13:53.943Z'
+last_edited_at: '2026-06-03T19:22:00.000Z'
+last_synced: '2026-06-03T19:25:47.617Z'
 math: true
-image: ''
+image: /images/gallery/chatgpt-image-jun-3-2026-082136-pm.png
+image_vertical: /images/gallery/chatgpt-image-jun-3-2026-081626-pm.png
 ---
 Avoid copying and pasting Markdown, managing files, and maintaining two parallel systems, you want Notion to be your CMS - while keeping full control of your static site.
 

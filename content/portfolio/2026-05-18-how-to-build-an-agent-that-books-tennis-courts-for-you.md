@@ -13,7 +13,7 @@ tags:
   - agents
   - automation
   - python
-author: Jack
+author: ''
 length: Short (1-2 weeks)
 sector: Tech
 read_time: 8
@@ -23,10 +23,11 @@ type: portfolio
 draft: false
 notion_id: 3617fd6b-fd0d-80b1-8f6e-de7b784a13eb
 created_at: '2026-05-15T12:37:00.000Z'
-last_edited_at: '2026-06-01T23:13:00.000Z'
-last_synced: '2026-06-01T23:13:50.411Z'
+last_edited_at: '2026-06-03T18:39:00.000Z'
+last_synced: '2026-06-03T18:39:23.879Z'
 math: true
-image: ''
+image: /images/gallery/chatgpt-image-jun-3-2026-071355-pm.png
+image_vertical: /images/gallery/chatgpt-image-jun-3-2026-073900-pm.png
 ---
 If, like me, you get frustrated. Here’s how I spent a few hours building a system that:
 

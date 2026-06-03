@@ -11,7 +11,9 @@ lead: "Jack is a Data Scientist and Engineer who has spent the last 10 years nav
 
 A degree in computer science and maths from UCL made me the optimiser I am today, and has shaped how I approach everything from fitness and cooking, to travel and [reinventing myself in the wake of AI](hugo-ref:blog/2026-03-09-reinventing-myself-in-the-wake-of-ai-engineering.md).
 
-I spent the following decade at Ascential and WGSN (the world's leading trend authority), most recently heading up the Data Science and Engineering team. My role was to evolve a traditional publishing business into a data-driven powerhouse: building the systems, teams, and culture required to make that shift tangible.
+I spent the following decade at Ascential and WGSN, most recently heading up the Data Science and Engineering team. My role was to evolve a traditional publishing business into a data-driven powerhouse: building the systems, teams, and culture required to make that shift tangible.
+
+I began as a [tableau](/shipj.com/blog/?tags=tableau) guru, evolved into a SQL and cloud data-warehousing specialist, and grew into the leader of an exceptional team.
 
 [Redundancy in October 2025](hugo-ref:blog/2025-10-08-a-survival-guide-to-redundancy-in-data.md) was the catalyst to [building this site](hugo-ref:portfolio/2026-03-26-how-i-created-this-site-with-hugo.md) - part notebook, part portfolio, and part evidence that side projects can come to fruition.
 
@@ -26,11 +28,11 @@ I worked in a range of problem spaces, but one theme was consistent: turn ambigu
 
 ## How I work
 
-I think in terms of systems, constraints, and trade-offs - shaped by my degree, but mostly by working in an industry where decisions are fast, stakes are high, and feedback loops can be slow. I focus on building platforms that reduce cognitive load and create leverage: making the _right way_ the easy way.
+I begin thinking in terms of systems, constraints, and trade-offs. Working in an industry where decisions are fast, stakes are high, and feedback loops can be slow has allowed me to focus on building platforms that reduce cognitive load and create leverage: making the _right way_ the easy way.
 
 ###### Leadership style
 
-I align most strongly with **servant leadership** - not as a philosophy, but a practical strategy to multiply my impact. I don't believe in choosing between technical and managerial tracks; technical leadership requires both, and so far I've spent my career staying hands-on while building and leading teams.
+I align most strongly with **servant leadership** - not as a philosophy, but as a practical strategy to multiply my impact. I don't believe in choosing between technical and managerial tracks; technical leadership requires both, and so far I've spent my career staying hands-on while building and leading teams.
 
 ###### Traits of the best
 

@@ -23,10 +23,11 @@ type: blog
 draft: false
 notion_id: 3617fd6b-fd0d-8073-83de-df92e0f8b5ea
 created_at: '2026-05-15T12:59:00.000Z'
-last_edited_at: '2026-06-03T09:05:00.000Z'
-last_synced: '2026-06-03T09:06:14.332Z'
+last_edited_at: '2026-06-03T18:51:00.000Z'
+last_synced: '2026-06-03T18:56:38.391Z'
 math: true
-image: ''
+image: /images/gallery/chatgpt-image-jun-3-2026-064725-pm.png
+image_vertical: /images/gallery/chatgpt-image-jun-3-2026-064725-pm.png
 coming_soon: true
 build:
   render: never

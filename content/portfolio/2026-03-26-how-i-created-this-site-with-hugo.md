@@ -18,7 +18,7 @@ tags:
   - Notion
   - claude
   - tutorial
-author: Jack
+author: ''
 length: Short (1-2 weeks)
 sector: Tech
 read_time: 5
@@ -28,10 +28,11 @@ type: portfolio
 draft: false
 notion_id: 3177fd6b-fd0d-80fd-ae51-d136cfde666d
 created_at: '2026-03-02T14:07:00.000Z'
-last_edited_at: '2026-06-01T23:13:00.000Z'
-last_synced: '2026-06-01T23:13:54.612Z'
+last_edited_at: '2026-06-03T19:10:00.000Z'
+last_synced: '2026-06-03T19:11:21.859Z'
 math: true
-image: ''
+image: /images/gallery/chatgpt-image-jun-3-2026-080904-pm.png
+image_vertical: /images/gallery/chatgpt-image-jun-3-2026-081013-pm.png
 ---
 # This site was created with X
 

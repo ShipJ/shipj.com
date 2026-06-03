@@ -14,7 +14,7 @@ tags:
   - supabase
   - vercel
   - vibe-coding
-author: Jack
+author: ''
 length: Quick Read
 sector: Tech
 read_time: 5
@@ -24,9 +24,10 @@ type: blog
 draft: false
 notion_id: 3617fd6b-fd0d-804f-91a9-c09821f28ede
 created_at: '2026-05-15T13:22:00.000Z'
-last_edited_at: '2026-06-01T23:13:00.000Z'
-last_synced: '2026-06-01T23:13:50.113Z'
+last_edited_at: '2026-06-03T18:49:00.000Z'
+last_synced: '2026-06-03T18:49:29.382Z'
 math: true
-image: ''
+image: /images/gallery/chatgpt20260603194858.png
+image_vertical: /images/gallery/chatgpt-image-jun-3-2026-073356-pm.png
 ---
 Some content…

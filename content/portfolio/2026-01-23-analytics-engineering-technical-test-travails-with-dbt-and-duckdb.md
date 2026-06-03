@@ -38,7 +38,7 @@ tags:
   - SQL
   - python
   - DuckDB
-author: Jack
+author: ''
 length: Short (1-2 weeks)
 sector: Transport
 read_time: 5
@@ -48,10 +48,11 @@ type: portfolio
 draft: false
 notion_id: 3177fd6b-fd0d-809c-a546-f113f328e96f
 created_at: '2026-03-02T21:58:00.000Z'
-last_edited_at: '2026-06-01T08:14:00.000Z'
-last_synced: '2026-06-01T08:14:10.250Z'
+last_edited_at: '2026-06-03T19:25:00.000Z'
+last_synced: '2026-06-03T19:25:51.522Z'
 math: true
-image: ''
+image: /images/gallery/chatgpt-image-jun-3-2026-082328-pm.png
+image_vertical: /images/gallery/chatgpt-image-jun-3-2026-082510-pm.png
 ---
 # **It’s a tough market**
 
