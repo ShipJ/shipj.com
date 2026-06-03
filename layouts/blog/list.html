@@ -78,6 +78,7 @@
       data-list-view-key="blog"
       data-filter-clear-url="{{ .RelPermalink }}"
     >
+      {{ $blogURL := .RelPermalink }}
 
       {{/* ---- Editorial hero (full width above the feature + rail) ---- */}}
       <div class="editorial-list-hero">
@@ -93,21 +94,21 @@
             <p class="section-kicker">Featured</p>
             {{ with $heroPost }}
             {{ $heroImg := index $placeholders 0 }}
-            <a class="blog-hero-card" href="{{ .RelPermalink }}">
+            <div class="blog-hero-card cursor-pointer" data-card-link="{{ .RelPermalink }}">
               <div class="blog-hero-media">
                 {{ partial "image" (dict "Src" $heroImg "Context" .Page "Alt" .Title "Size" "1200x630 webp" "Command" "Fill" "Class" "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
               </div>
               <div class="blog-hero-body">
                 <div class="blog-hero-meta">
-                  <span class="blog-hero-date">{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
+                  <span class="blog-hero-date">{{ .Date.Format "02 Jan" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
                 </div>
-                <h2 class="blog-hero-title">{{ .Title }}</h2>
+                <h2 class="blog-hero-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
                 {{ with (.Params.description | default (.Summary | plainify | truncate 220)) }}
                   <p class="blog-hero-summary">{{ . }}</p>
                 {{ end }}
-                {{ partial "components/card-chips" (dict "Page" .) }}
+                {{ partial "components/card-chips" (dict "Page" . "Filterable" true "FilterBase" $blogURL) }}
               </div>
-            </a>
+            </div>
             {{ end }}
 
             {{ if $popularPosts }}
@@ -115,189 +116,132 @@
               <p class="section-kicker">Popular</p>
               <div class="card-grid">
                 {{ range $popularPosts }}
-                {{ partial "components/post-card" . }}
+                {{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}
                 {{ end }}
               </div>
             </div>
             {{ end }}
           </div>
           {{ end }}
+
+          {{/* ---- Coming soon / Tutorials / News (latest of each, 3 across) ---- */}}
+          {{ $comingSoonRail := first 1 (where (where site.RegularPages "Section" "blog") "Params.coming_soon" true) }}
+          {{ $tutorialsRail := first 1 (where (where $livePages "Params.tags" "intersect" (slice "tutorial")) "RelPermalink" "not in" $excludedPermalinks) }}
+          {{ $newsRail := first 1 (where (where $livePages "Params.tags" "intersect" (slice "news")) "RelPermalink" "not in" $excludedPermalinks) }}
+          {{ if or $comingSoonRail $tutorialsRail $newsRail }}
+          <div class="blog-popular-rails">
+            {{ if $comingSoonRail }}
+            <div class="rail-card-group">
+              <p class="section-kicker">Coming soon</p>
+              {{ range $comingSoonRail }}{{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}{{ end }}
+            </div>
+            {{ end }}
+            {{ if $tutorialsRail }}
+            <div class="rail-card-group">
+              <p class="section-kicker">Tutorials</p>
+              {{ range $tutorialsRail }}{{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}{{ end }}
+            </div>
+            {{ end }}
+            {{ if $newsRail }}
+            <div class="rail-card-group">
+              <p class="section-kicker">News</p>
+              {{ range $newsRail }}{{ partial "components/post-card" (dict "Page" . "HideYear" true "Filterable" true "FilterBase" $blogURL) }}{{ end }}
+            </div>
+            {{ end }}
+          </div>
+          {{ end }}
         </div>
 
-        {{ $recentRail := first 18 (where $livePages "RelPermalink" "not in" $excludedPermalinks) }}
-        {{ $excludedAfterRecent := $excludedPermalinks }}
-        {{ range $recentRail }}{{ $excludedAfterRecent = $excludedAfterRecent | append .RelPermalink }}{{ end }}
+        {{/* ---- Right column: filters above + scrollable "all content" box ---- */}}
+        <div class="blog-allcontent">
+        <div class="blog-allcontent-inner">
 
-        {{ $tutorialsPool := where $livePages "Params.tags" "intersect" (slice "tutorial") }}
-        {{ $tutorialsRail := first 6 (where $tutorialsPool "RelPermalink" "not in" $excludedAfterRecent) }}
-
-        {{ $comingSoonRail := first 5 (where (where site.RegularPages "Section" "blog") "Params.coming_soon" true) }}
-        {{ if or $recentRail $tutorialsRail $comingSoonRail }}
-        <aside class="blog-list-rail">
-          {{ if $comingSoonRail }}
-          <div class="home-quick-reads-group">
-            <p class="section-kicker">Coming soon</p>
-            <div class="home-quick-reads is-coming-soon">
-              {{ range $comingSoonRail }}
-              <span class="home-quick-read is-coming-soon">
-                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
-                <span class="hqr-sep">·</span>
-                <span class="hqr-title">{{ .Title }}</span>
-              </span>
-              {{ end }}
-            </div>
-          </div>
-          {{ end }}
-          {{ if $recentRail }}
-          <div class="home-quick-reads-group">
-            <p class="section-kicker">Recent</p>
-            <div class="home-quick-reads">
-              {{ range $recentRail }}
-              <a class="home-quick-read" href="{{ .RelPermalink }}">
-                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
-                <span class="hqr-sep">·</span>
-                <span class="hqr-title">{{ .Title }}</span>
-              </a>
-              {{ end }}
-            </div>
-          </div>
-          {{ end }}
-          {{ if $tutorialsRail }}
-          <div class="home-quick-reads-group">
-            <p class="section-kicker">Tutorials</p>
-            <div class="home-quick-reads">
-              {{ range $tutorialsRail }}
-              <a class="home-quick-read" href="{{ .RelPermalink }}">
-                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
-                <span class="hqr-sep">·</span>
-                <span class="hqr-title">{{ .Title }}</span>
-              </a>
-              {{ end }}
-            </div>
-          </div>
-          {{ end }}
-        </aside>
-        {{ end }}
+      {{/* ---- "Recent" heading, then a single box holding filters + content ---- */}}
+      <div class="blog-recent-head">
+        <p class="section-kicker">Recent</p>
       </div>
-
-      {{/* ---- Collapsible filters ---- */}}
+      <div class="blog-allcontent-box">
       <details class="filter-details" data-filter-panel>
         <summary class="filter-summary">
-          <span>all content</span>
+          <span>filters</span>
           <i class="chevron">▾</i>
           <span class="active-chips hidden" data-active-chips></span>
-          <span class="filter-match-toggle hidden" data-filter-match-toggle title="match any (or) vs match all (and) selected filters">
-            <button type="button" class="filter-match-opt on" data-filter-match-mode="or" title="show posts matching ANY selected filter">or</button>
-            <button type="button" class="filter-match-opt" data-filter-match-mode="and" title="show posts matching ALL selected filters">and</button>
-          </span>
           <a class="clear-btn hidden" href="{{ .RelPermalink }}" data-clear-filters>clear</a>
         </summary>
-        <div class="filter-body">
-          <div class="filter-row">
-            <span class="label">categories</span>
-            {{ range $catKeys }}
-              {{ $name := index $catMap . }}
-              {{ $tone := printf "category-chip-%s" (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) }}
-              {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
-              {{ $color := index $colors (partial "components/category-tone" (dict "Name" $name) | strings.TrimSpace) | default "#607a92" }}
-              <a class="filter-chip {{ $tone }}"
-                 data-filter-kind="categories"
-                 data-filter-value="{{ . }}"
-                 data-filter-label="{{ $name | lower }}"
-                 style="--cat: {{ $color }}"
-                 href="{{ partial "components/filter-url" (dict "Kind" "categories" "Value" $name) }}"><span class="chip-kind">CATEGORY</span>{{ $name | lower }}</a>
-            {{ end }}
-          </div>
-
-          {{ if gt (len $sectorKeys) 0 }}
-          <div class="filter-row">
-            <span class="label">sectors</span>
-            {{ range $sectorKeys }}
-              {{ $name := index $sectorMap . }}
-              {{ $tone := partial "components/sector-tone" (dict "Name" $name) | strings.TrimSpace }}
-              {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
-              {{ $color := index $colors $tone | default "#6a5a7a" }}
-              <a class="filter-chip category-chip-{{ $tone }}"
-                 data-filter-kind="sectors"
-                 data-filter-value="{{ . }}"
-                 data-filter-label="{{ $name | lower }}"
-                 style="--cat: {{ $color }}"
-                 href="{{ partial "components/filter-url" (dict "Kind" "sectors" "Value" $name) }}"><span class="chip-kind">SECTOR</span>{{ $name | lower }}</a>
-            {{ end }}
-          </div>
+      <div class="blog-filter-cols">
+        <div class="filter-row">
+          <span class="label">categories</span>
+          {{ $catColors := dict "ai" "#c07a2c" "career" "#c04d5e" "personal" "#2f74c9" "data-analytics" "#8a55bf" "analytics" "#8a55bf" "data-science" "#2f9e6f" "science" "#2f9e6f" "data-engineering" "#5c7390" "engineering" "#5c7390" "web-development" "#6f5fcf" }}
+          {{ range $catKeys }}
+            {{ $name := index $catMap . }}
+            {{ $color := index $catColors . | default "#607a92" }}
+            <a class="filter-chip"
+               data-filter-kind="categories"
+               data-filter-value="{{ . }}"
+               data-filter-label="{{ $name | lower }}"
+               style="--cat: {{ $color }}"
+               href="{{ partial "components/filter-url" (dict "Kind" "categories" "Value" $name) }}"><span class="chip-kind">CATEGORY</span>{{ $name | lower }}</a>
           {{ end }}
-
-          {{ if gt (len $tagList) 0 }}
-          <div class="filter-row filter-row-tags">
-            <div class="tag-head">
-              <span class="label">tags</span>
-              <div class="sort-toggle" data-tag-sort aria-label="Sort tags">
-                <button type="button" class="sort-opt on" data-sort="count" title="Sort by count">
-                  <i class="fa-solid fa-sort-numeric-down"></i>
-                </button>
-                <button type="button" class="sort-opt" data-sort="alpha" title="Sort alphabetically">
-                  <i class="fa-solid fa-sort-alpha-down"></i>
-                </button>
-              </div>
-            </div>
-            <span class="tag-chip-list" data-tag-list>
-              {{ range $tagList }}
-                <a class="filter-chip"
-                   data-filter-kind="tags"
-                   data-filter-value="{{ .Key }}"
-                   data-sort-count="{{ .Count }}"
-                   data-sort-alpha="{{ .Label | lower }}"
-                   href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Label) }}"><span class="tag-text">#{{ .Label }}</span> <span class="num">{{ .Count }}</span></a>
-              {{ end }}
-            </span>
-          </div>
-          {{ end }}
-
-          <div class="filter-row filter-row-sparklines">
-            <span class="label">hot topics <button class="hot-topics-info" data-tip="% change in posts: last 4 weeks vs. avg of last 26 weeks">i</button></span>
-            {{ partial "components/rising-topics" (dict "Page" . "Minimal" true) }}
-          </div>
         </div>
-      </details>
 
-      {{/* ---- Month groups ---- */}}
-      <div data-filter-results>
-        {{/* Build month-level tag counts once */}}
-        {{ $monthTags := dict }}
-        {{ range $pages }}
-          {{ $mk := .Date.Format "2006-01" }}
-          {{ $existingMap := index $monthTags $mk | default dict }}
-          {{ range (.Params.tags | default (slice)) }}
-            {{ $tn := . }}
-            {{ $c := index $existingMap $tn | default 0 }}
-            {{ $existingMap = merge $existingMap (dict $tn (add $c 1)) }}
+        {{ if gt (len $sectorKeys) 0 }}
+        <div class="filter-row">
+          <span class="label">sectors</span>
+          {{ $secColors := dict "tech" "#4a9d8e" "finance" "#3f8f3f" "general" "#7b7f8a" "retail" "#c1568f" "society" "#a9742f" "sport" "#cf5a3a" "transport" "#b58a2b" }}
+          {{ range $sectorKeys }}
+            {{ $name := index $sectorMap . }}
+            {{ $color := index $secColors . | default "#6a5a7a" }}
+            <a class="filter-chip"
+               data-filter-kind="sectors"
+               data-filter-value="{{ . }}"
+               data-filter-label="{{ $name | lower }}"
+               style="--cat: {{ $color }}"
+               href="{{ partial "components/filter-url" (dict "Kind" "sectors" "Value" $name) }}"><span class="chip-kind">SECTOR</span>{{ $name | lower }}</a>
           {{ end }}
-          {{ $monthTags = merge $monthTags (dict $mk $existingMap) }}
+        </div>
         {{ end }}
 
+        {{ if gt (len $tagList) 0 }}
+        <div class="filter-row filter-row-tags">
+          <div class="tag-head">
+            <span class="label">tags</span>
+            <div class="sort-toggle" data-tag-sort aria-label="Sort tags">
+              <button type="button" class="sort-opt on" data-sort="count" title="Sort by count">
+                <i class="fa-solid fa-sort-numeric-down"></i>
+              </button>
+              <button type="button" class="sort-opt" data-sort="alpha" title="Sort alphabetically">
+                <i class="fa-solid fa-sort-alpha-down"></i>
+              </button>
+            </div>
+          </div>
+          <span class="tag-chip-list" data-tag-list>
+            {{ range $tagList }}
+              <a class="filter-chip"
+                 data-filter-kind="tags"
+                 data-filter-value="{{ .Key }}"
+                 data-sort-count="{{ .Count }}"
+                 data-sort-alpha="{{ .Label | lower }}"
+                 href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Label) }}"><span class="tag-text">#{{ .Label }}</span> <span class="num">{{ .Count }}</span></a>
+            {{ end }}
+          </span>
+        </div>
+        {{ end }}
+      </div>
+      </details>
+
+      {{/* ---- Month groups (scrollable "all content" box) ---- */}}
+      <div class="blog-allcontent-scroll">
+      <div data-filter-results>
+        {{ $recentPages := where $livePages "RelPermalink" "not in" $excludedPermalinks }}
         {{ $prevMonth := "" }}
         {{ $openGroup := false }}
-        {{ $isFirstMonth := true }}
-        {{ range $pages }}
+        {{ range $recentPages }}
           {{ $mk := .Date.Format "2006-01" }}
           {{ if ne $mk $prevMonth }}
             {{ if $openGroup }}</div></section>{{ end }}
-            {{ $tagMap := index $monthTags $mk }}
-            {{ $tagList := slice }}
-            {{ range $tn, $c := $tagMap }}
-              {{ $tagList = $tagList | append (dict "Name" $tn "Count" $c) }}
-            {{ end }}
-            {{ $tagList = sort $tagList "Count" "desc" }}
-
             <section data-filter-group class="pt-4">
               <div class="month-meta">
                 <span>{{ .Date.Format "January 2006" }}</span>
-                {{ if gt (len $tagList) 0 }}
-                  <span class="sep">·</span>
-                  {{ range first 5 $tagList }}
-                    <a href="{{ partial "components/filter-url" (dict "Kind" "tags" "Value" .Name) }}" data-post-tag="{{ .Name | urlize }}"><span class="tag-text">#{{ .Name }}</span> <span class="num">{{ .Count }}</span></a>
-                  {{ end }}
-                {{ end }}
               </div>
               <div class="post-list">
             {{ $openGroup = true }}
@@ -316,28 +260,26 @@
             <span class="gutter"></span>
             <span class="date">{{ if $cs }}Coming soon{{ else }}{{ .Date.Format "02 Jan" }}{{ end }}</span>
             <span class="title">
-              {{ .Title }}
               <span class="chip-tag-row">
+                <span class="comfy-date">{{ if $cs }}Coming soon{{ else }}{{ .Date.Format "02 Jan" }}{{ end }}</span>
                 <span class="cat-group">
                   {{ with $cat }}
-                  {{ $tone := partial "components/category-tone" (dict "Name" .) | strings.TrimSpace }}
-                  {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
-                  {{ $color := index $colors $tone | default "#607a92" }}
-                  <span class="cat category-chip-{{ $tone }}" data-post-category="{{ . | urlize }}" style="--cat: {{ $color }}"><span class="chip-kind">CATEGORY</span>{{ . }}</span>
+                  {{ $catColors := dict "ai" "#c07a2c" "career" "#c04d5e" "personal" "#2f74c9" "data-analytics" "#8a55bf" "analytics" "#8a55bf" "data-science" "#2f9e6f" "science" "#2f9e6f" "data-engineering" "#5c7390" "engineering" "#5c7390" "web-development" "#6f5fcf" }}
+                  {{ $color := index $catColors (. | urlize | lower) | default "#607a92" }}
+                  <span class="cat" data-post-category="{{ . | urlize }}" style="--cat: {{ $color }}"><span class="chip-kind">CATEGORY</span>{{ . }}</span>
                   {{ end }}
                   {{ with .Params.sector }}
-                  {{ $tone := partial "components/sector-tone" (dict "Name" .) | strings.TrimSpace }}
-                  {{ $colors := dict "blue" "#1a6ee0" "violet" "#9230d8" "green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" }}
-                  {{ $color := index $colors $tone | default "#6a5a7a" }}
-                  <span class="cat category-chip-{{ $tone }}" data-post-sector="{{ . | urlize | lower }}" style="--cat: {{ $color }}"><span class="chip-kind">SECTOR</span>{{ . }}</span>
+                  {{ $secColors := dict "tech" "#4a9d8e" "finance" "#3f8f3f" "general" "#7b7f8a" "retail" "#c1568f" "society" "#a9742f" "sport" "#cf5a3a" "transport" "#b58a2b" }}
+                  {{ $color := index $secColors (. | urlize | lower) | default "#6a5a7a" }}
+                  <span class="cat" data-post-sector="{{ . | urlize | lower }}" style="--cat: {{ $color }}"><span class="chip-kind">SECTOR</span>{{ . }}</span>
                   {{ end }}
                 </span>
                 {{ with .Params.tags }}
-                <span class="tags">{{ range $i, $t := . }}{{- if $i }} {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
+                <span class="tags">{{ range $i, $t := first 3 . }}{{- if $i }} {{ end -}}<span class="post-tag" data-post-tag="{{ $t | urlize }}">#{{ $t }}</span>{{ end }}</span>
                 {{ end }}
               </span>
+              {{ .Title }}
               {{ with .Params.description }}<span class="post-summary">{{ . }}</span>{{ else }}{{ with .Summary }}<span class="post-summary">{{ . | plainify | truncate 160 }}</span>{{ end }}{{ end }}
-              <span class="comfy-date">{{ if $cs }}Coming soon{{ else }}{{ .Date.Format "02 Jan" }}{{ end }}</span>
             </span>
           {{ if $cs }}</span>{{ else }}</a>{{ end }}
         {{ end }}
@@ -347,6 +289,68 @@
           <p class="text-text-light dark:text-darkmode-text-light">No content matches the selected filters.</p>
         </div>
       </div>
+        </div>{{/* /.blog-allcontent-scroll */}}
+        </div>{{/* /.blog-allcontent-box */}}
+        </div>{{/* /.blog-allcontent-inner */}}
+        </div>{{/* /.blog-allcontent */}}
+      </div>{{/* /.blog-list-top */}}
+
+      {{/* ---- Hot topics charts (same as homepage) ---- */}}
+      {{ if site.Data.rising_topics }}
+      <section class="blog-hot-topics">
+        <div class="home-hot-topics">
+          <p class="section-kicker">
+            Hot topics
+            <button
+              class="hot-topics-info"
+              data-tip="% change in posts: last 4 weeks vs. avg of last 26 weeks"
+            >
+              i
+            </button>
+          </p>
+          {{ partial "components/rising-topics" (dict "Page" $ "Minimal" true) }}
+        </div>
+      </section>
+      {{ end }}
+
+      {{/* ---- Continue the series (any multi-part series, parts in order) ---- */}}
+      {{ $seriesPool := sort (where site.RegularPages "Section" "in" (slice "blog" "portfolio")) "Date" "desc" }}
+      {{ $seriesNames := slice }}
+      {{ range $seriesPool }}{{ with .Params.series }}{{ if not (in $seriesNames .) }}{{ $seriesNames = $seriesNames | append . }}{{ end }}{{ end }}{{ end }}
+      {{ $hasSeries := false }}
+      {{ range $seriesNames }}{{ if gt (len (where $seriesPool "Params.series" .)) 0 }}{{ $hasSeries = true }}{{ end }}{{ end }}
+      {{ if $hasSeries }}
+      <section class="blog-series">
+        <p class="section-kicker">Continue the series</p>
+        {{ range $seriesNames }}
+          {{ $name := . }}
+          {{ $parts := sort (where $seriesPool "Params.series" $name) "Params.series_part" "asc" }}
+          {{ if gt (len $parts) 0 }}
+          <div class="blog-series-group">
+            <h3 class="blog-series-name">{{ $name }}</h3>
+            <div class="series-track">
+              {{ range $i, $p := $parts }}
+                {{ if $i }}<span class="series-arrow" aria-hidden="true">→</span>{{ end }}
+                {{ if $p.Params.coming_soon }}
+                <span class="series-part is-coming-soon">
+                  <span class="series-part-num">Part {{ $p.Params.series_part | int }}</span>
+                  <span class="series-part-title">{{ $p.Title }}</span>
+                  <span class="series-part-date">Coming soon</span>
+                </span>
+                {{ else }}
+                <a class="series-part" href="{{ $p.RelPermalink }}">
+                  <span class="series-part-num">Part {{ $p.Params.series_part | int }}</span>
+                  <span class="series-part-title">{{ $p.Title }}</span>
+                  <span class="series-part-date">{{ $p.Date.Format "02 Jan 2006" }}{{ with $p.Params.read_time }} · {{ . }} min{{ end }}</span>
+                </a>
+                {{ end }}
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+        {{ end }}
+      </section>
+      {{ end }}
 
     </div>
   </div>
@@ -421,20 +425,24 @@
           if (ctrl) labels.push({ label: ctrl.dataset.filterLabel || ctrl.textContent.trim(), kind: 'sectors', value: v });
         });
         chipsEl.innerHTML = '';
-        labels.forEach(function (item, i) {
-          if (i > 0) chipsEl.appendChild(document.createTextNode(' · '));
+        labels.forEach(function (item) {
+          var ctrl = root.querySelector('[data-filter-kind="' + item.kind + '"][data-filter-value="' + item.value + '"]');
           var s = document.createElement('span');
-          s.className = 'active-chip-word';
-          s.textContent = item.label;
-          s.style.cursor = 'pointer';
+          s.className = 'summary-active-chip';
+          var cat = item.kind === 'tags' ? '#c85a2b' : (ctrl ? ctrl.style.getPropertyValue('--cat').trim() : '');
+          if (cat) s.style.setProperty('--cat', cat);
+          s.appendChild(document.createTextNode(item.label));
+          var x = document.createElement('span');
+          x.className = 'chip-remove';
+          x.textContent = '×';
+          s.appendChild(x);
           s.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            var chip = root.querySelector('[data-filter-kind="' + item.kind + '"][data-filter-value="' + item.value + '"]');
-            if (!chip) return;
+            if (!ctrl) return;
             var details = root.querySelector('.filter-details');
             var wasOpen = details ? details.open : false;
-            chip.click();
+            ctrl.click();
             if (details) details.open = wasOpen;
           });
           chipsEl.appendChild(s);
@@ -486,23 +494,6 @@
       });
     });
 
-    // Clicking month-meta tags toggles filters without opening the panel.
-    root.querySelectorAll('.month-meta [data-post-tag]').forEach(function (tagEl) {
-      tagEl.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var value = tagEl.dataset.postTag;
-        var chip = root.querySelector('[data-filter-kind="tags"][data-filter-value="' + value + '"]');
-        if (!chip) return;
-        var details = root.querySelector('.filter-details');
-        var wasOpen = details ? details.open : false;
-        var scrollY = window.scrollY;
-        chip.click();
-        window.scrollTo({ top: scrollY, behavior: 'instant' });
-        if (details) details.open = wasOpen;
-      });
-    });
-
     // Main.js updates URL via replaceState on chip click — re-sync highlights after.
     root.querySelectorAll('[data-filter-kind][data-filter-value]').forEach(function (ctrl) {
       ctrl.addEventListener('click', function () {
@@ -514,21 +505,20 @@
       window.setTimeout(syncActiveHighlights, 0);
     });
 
-  })();
-</script>
+    // Hot topics info-tip toggle (matches homepage behaviour).
+    root.querySelectorAll('.hot-topics-info').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        btn.classList.toggle('is-open');
+      });
+    });
+    document.addEventListener('click', function () {
+      root.querySelectorAll('.hot-topics-info.is-open').forEach(function (btn) {
+        btn.classList.remove('is-open');
+      });
+    });
 
-<script>
-  document.querySelectorAll('.hot-topics-info').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      btn.classList.toggle('is-open');
-    });
-  });
-  document.addEventListener('click', function() {
-    document.querySelectorAll('.hot-topics-info.is-open').forEach(function(btn) {
-      btn.classList.remove('is-open');
-    });
-  });
+  })();
 </script>
 
 {{ end }}

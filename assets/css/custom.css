@@ -4,6 +4,27 @@ pre,
   font-family: var(--font-secondary);
 }
 
+/* ---- Subtle, thin scrollbar site-wide ---- */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-border) 75%, transparent)
+    transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-border) 65%, transparent);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-text-light) 45%, transparent);
+}
+
 /* ---- Pinned banner + header ---- */
 .site-sticky-top {
   position: sticky;
@@ -817,74 +838,58 @@ pre,
   border-style: solid;
 }
 
-/* Category = solid filled pill (fill == border, no visible ring) */
+/* Category + sector: one unified filled pill; only the --cat hue differs.
+   Matches the chips on content cards so they read the same everywhere. */
 .ui-chip-category,
+.ui-chip-sector,
 .filter-row [data-filter-kind="categories"].filter-chip,
-.blog-list[data-density="comfy"] .post-row .cat:not([data-post-sector]) {
+.filter-row [data-filter-kind="sectors"].filter-chip,
+.blog-list[data-density="comfy"] .post-row .cat {
   color: color-mix(in srgb, var(--cat, var(--color-text-light)) 92%, black);
   background: color-mix(
     in srgb,
-    var(--cat, transparent) 34%,
+    var(--cat, transparent) 30%,
     var(--color-body)
   );
   border-color: color-mix(
     in srgb,
-    var(--cat, transparent) 34%,
+    var(--cat, transparent) 55%,
     var(--color-body)
   );
 }
 
-/* Sector = transparent ghost chip with a crisp colored ring */
-.ui-chip-sector,
-.filter-row [data-filter-kind="sectors"].filter-chip,
-.blog-list[data-density="comfy"] .post-row .cat[data-post-sector] {
-  color: var(--cat, var(--color-text-light));
-  background: transparent;
-  border-color: color-mix(
-    in srgb,
-    var(--cat, var(--color-border)) 60%,
-    var(--color-border)
-  );
-}
-
-/* Dark mode: lighten category text instead of darkening it, so saturated
-   tones (e.g. the violet "ai" category) stay legible on the dark fill. */
+/* Dark mode: lighten chip text so saturated tones stay legible on the fill. */
 .dark .ui-chip-category,
+.dark .ui-chip-sector,
 .dark .filter-row [data-filter-kind="categories"].filter-chip,
-.dark .blog-list[data-density="comfy"] .post-row .cat:not([data-post-sector]) {
-  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 60%, white);
+.dark .filter-row [data-filter-kind="sectors"].filter-chip,
+.dark .blog-list[data-density="comfy"] .post-row .cat {
+  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 62%, white);
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 26%,
+    var(--color-body)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--cat, transparent) 50%,
+    var(--color-body)
+  );
 }
 
-/* Hover
-   - Category (already filled): keep the fill, swap the matching border for a
-     darker solid `--cat` outline so the chip gains a defined edge.
-   - Sector (already outlined): fill the chip with a tint while keeping the
-     existing ring, so hover *adds* presence rather than changing the outline. */
+/* Hover: keep the fill, firm up the border to a solid --cat edge. */
 .ui-chip-category:hover,
+.ui-chip-sector:hover,
 .filter-row [data-filter-kind="categories"].filter-chip:hover,
-.blog-list[data-density="comfy"] .post-row .cat:not([data-post-sector]):hover {
+.filter-row [data-filter-kind="sectors"].filter-chip:hover,
+.blog-list[data-density="comfy"] .post-row .cat:hover {
   color: color-mix(in srgb, var(--cat, var(--color-text-dark)) 92%, black);
   background: color-mix(
     in srgb,
-    var(--cat, transparent) 34%,
+    var(--cat, transparent) 38%,
     var(--color-body)
   );
   border-color: var(--cat, var(--color-text-dark));
-}
-.ui-chip-sector:hover,
-.filter-row [data-filter-kind="sectors"].filter-chip:hover,
-.blog-list[data-density="comfy"] .post-row .cat[data-post-sector]:hover {
-  color: var(--cat, var(--color-text-dark));
-  background: color-mix(
-    in srgb,
-    var(--cat, transparent) 24%,
-    var(--color-body)
-  );
-  border-color: color-mix(
-    in srgb,
-    var(--cat, var(--color-border)) 60%,
-    var(--color-border)
-  );
 }
 
 /* Active / selected */
@@ -1461,34 +1466,367 @@ pre,
   margin-top: 14px;
 }
 
+/* Right column holding the filters + scrollable "all content" box. */
+.blog-allcontent {
+  min-width: 0;
+}
+
+/* "Recent" heading row (lines up with "Featured" on the left). */
+.blog-recent-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.blog-recent-head .clear-btn {
+  color: var(--color-text-light);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition:
+    color 120ms,
+    border-color 120ms;
+}
+.blog-recent-head .clear-btn:hover {
+  color: var(--color-text-dark);
+  border-color: var(--color-text-dark);
+}
+.blog-recent-head .clear-btn.hidden {
+  display: none;
+}
+
+/* Category / sector / tag filters stacked, each on a single line:
+   "categories: c1, c2 …". */
+/* Single outer box wrapping the filters + the scrollable content, so the
+   right column reads as one card aligned with the featured block on the left. */
+.blog-allcontent-box {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px;
+}
+/* Collapsible filters live inside the box: no card border of their own, just a
+   divider above the content. */
+.blog-allcontent-box .filter-details {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 0 4px;
+  margin: 0 0 12px;
+}
+.blog-allcontent-box .filter-details:not([open]):hover {
+  background: transparent;
+}
+.blog-allcontent-box .filter-details:not([open]) {
+  padding-bottom: 0;
+}
+.blog-filter-cols {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 4px 0 6px;
+}
+.blog-filter-cols .chip-kind {
+  display: none;
+}
+.blog-filter-cols .filter-row,
+.blog-filter-cols .filter-row + .filter-row,
+.blog-filter-cols .filter-row-tags {
+  margin: 0;
+  padding-top: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+.blog-filter-cols .filter-row .label {
+  width: auto;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 9px;
+}
+/* Fixed-width labels so the first chip of categories + sectors lines up. */
+.blog-filter-cols .filter-row:not(.filter-row-tags) .label {
+  width: 70px;
+}
+/* Keep the tag label + sort toggle inline with the wrapping chip list. */
+.blog-filter-cols .filter-row-tags .tag-head {
+  flex: 0 0 auto;
+}
+.blog-filter-cols .filter-row-tags .tag-chip-list {
+  flex-wrap: wrap;
+  width: auto;
+  flex: 1 1 auto;
+  gap: 8px;
+}
+/* Smaller chips + type throughout the filter area. */
+.blog-filter-cols .filter-row [data-filter-kind="categories"].filter-chip,
+.blog-filter-cols .filter-row [data-filter-kind="sectors"].filter-chip {
+  font-size: 10px;
+  padding: 3px 8px;
+}
+.blog-filter-cols .filter-row [data-filter-kind="tags"].filter-chip {
+  font-size: 10px;
+}
+
 @media (min-width: 1024px) {
   .blog-list-top {
     /* Break out of the narrower header container to match the portfolio page's
        80vw width. The header above keeps the inset; this row spans wider. */
     margin-inline: calc(50% - 40vw);
-    grid-template-columns: minmax(0, 1fr) minmax(400px, 0.7fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 28px;
     align-items: stretch;
   }
-  .blog-list-rail {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .blog-list-rail .home-quick-reads-group {
-    display: flex;
-    flex-direction: column;
+  /* Right column matches the left column's height; the inner layer is taken
+     out of flow so the long "Recent" list doesn't drive the row taller. */
+  .blog-allcontent {
+    position: relative;
     min-height: 0;
-    flex: 0 0 auto;
   }
-  .blog-list-rail .home-quick-reads-group:last-child {
+  .blog-allcontent-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .blog-allcontent-box {
+    display: flex;
+    flex-direction: column;
     flex: 1;
+    min-height: 0;
   }
-  .blog-list-rail .home-quick-reads {
+  .blog-allcontent-scroll {
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
-    min-height: 0;
-    flex: 1;
   }
+}
+
+/* Subtle, thin scrollbar for the "all content" box. */
+.blog-allcontent-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-border) 75%, transparent)
+    transparent;
+}
+.blog-allcontent-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.blog-allcontent-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.blog-allcontent-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-border) 65%, transparent);
+  border-radius: 999px;
+}
+.blog-allcontent-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-text-light) 45%, transparent);
+}
+
+/* Match the chips in the "all content" list to the filter chips exactly. */
+.blog-list[data-density="comfy"] .blog-allcontent-scroll .post-row .cat {
+  font-size: 9px;
+  padding: 2px 7px;
+}
+.blog-list[data-density="comfy"] .blog-allcontent-scroll .post-row .title {
+  font-size: 16px;
+  letter-spacing: 0.015em;
+}
+.blog-allcontent-scroll .post-row .cat-group {
+  flex: 0 0 auto;
+}
+.blog-list[data-density="comfy"]
+  .blog-allcontent-scroll
+  .post-row
+  .title
+  .tags {
+  font-size: 11px;
+  margin-left: 0;
+  gap: 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
+}
+.blog-allcontent-scroll .post-list {
+  gap: 0;
+}
+/* Lighten Recent rows: hairline dividers instead of per-row card borders. */
+.blog-list[data-density="comfy"] .blog-allcontent-scroll .post-row {
+  border: none;
+  border-radius: 6px;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-border) 55%, transparent);
+}
+.blog-allcontent-scroll .post-list > .post-row:last-child {
+  border-bottom: none;
+}
+.blog-allcontent-scroll section[data-filter-group] {
+  padding-top: 14px;
+}
+.blog-allcontent-scroll section[data-filter-group]:first-child {
+  padding-top: 0;
+}
+.blog-allcontent-scroll .month-meta {
+  padding: 4px 0 6px;
+}
+.blog-allcontent-scroll .post-row .title .post-summary {
+  font-size: 13px;
+  line-height: 1.4;
+}
+.blog-list[data-density="comfy"]
+  .blog-allcontent-scroll
+  .post-row
+  .chip-tag-row {
+  gap: 8px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+/* Hot topics charts section beneath the editorial top. */
+.blog-hot-topics {
+  margin-top: 44px;
+}
+.blog-hot-topics .home-hot-topics::before {
+  display: none;
+}
+
+/* Continue the series: per-series horizontal track of ordered parts. */
+.blog-series {
+  margin-top: 44px;
+}
+/* Match the featured row (.blog-list-top), which breaks out to an 80vw span via
+   margin-inline: calc(50% - 40vw). Same containing block (.blog-list), so the
+   same value aligns these sections' left/right edges with the featured content.
+   Applied to the Hot topics section too so both share that span. */
+@media (min-width: 1024px) {
+  .blog-series,
+  .blog-hot-topics .home-hot-topics {
+    margin-inline: calc(50% - 40vw);
+  }
+}
+.blog-series-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+.blog-series-name {
+  flex: 0 0 130px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.series-track {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-auto-flow: column;
+  /* Cards (odd columns) are a fixed 220px; the auto columns in between hold the
+     guiding arrows and size to their glyph. */
+  grid-auto-columns: 220px auto;
+  align-items: stretch;
+  justify-content: start;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-border) 75%, transparent)
+    transparent;
+}
+.series-track::-webkit-scrollbar {
+  height: 6px;
+}
+.series-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+.series-track::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-border) 65%, transparent);
+  border-radius: 999px;
+}
+.series-track::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-text-light) 45%, transparent);
+}
+.series-part {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 104px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: var(--color-body);
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.series-part:hover {
+  border-color: var(--color-text-dark);
+}
+.series-arrow {
+  align-self: center;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-accent);
+  user-select: none;
+}
+.series-part-num {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.series-part-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-dark);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.series-part-date {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  color: var(--color-text-light);
+  margin-top: auto;
+}
+.series-part.is-coming-soon {
+  border-style: dashed;
+  opacity: 0.7;
+  cursor: default;
+}
+.series-part.is-coming-soon:hover {
+  border-color: var(--color-border);
+}
+
+/* Coming soon / Tutorials / News rails, 3 across beneath Popular. */
+.blog-popular-rails {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.blog-popular-rails .rail-card-group {
+  display: flex;
+  flex-direction: column;
+}
+.blog-popular-rails .rail-card-group .section-kicker {
+  margin-bottom: 8px;
+}
+/* Larger section headings on the blog list page (Featured, Popular, Recent…). */
+.blog-list-page .section-kicker {
+  font-size: 14px;
+  letter-spacing: 0.1em;
 }
 
 /* ---- Site-wide content alignment ----
@@ -2413,8 +2751,8 @@ pre,
   text-transform: uppercase;
 }
 .filter-summary > span:first-child {
-  font-size: 14px;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  letter-spacing: 0.08em;
   color: var(--color-text-light);
 }
 .dark .filter-summary > span:first-child {
@@ -2479,19 +2817,66 @@ pre,
   transform: rotate(180deg);
 }
 .filter-summary .active-chips {
-  color: var(--color-accent);
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: 0;
-  font-size: 12px;
-  text-decoration: none;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
   max-width: 32rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
-.filter-summary .active-chip-word {
-  text-decoration: none;
+.summary-active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid
+    color-mix(in srgb, var(--cat, transparent) 55%, var(--color-body));
+  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 92%, black);
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 30%,
+    var(--color-body)
+  );
+  cursor: pointer;
+  transition:
+    color 120ms,
+    border-color 120ms,
+    background 120ms;
+}
+.summary-active-chip:hover {
+  border-color: var(--cat, var(--color-text-dark));
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 38%,
+    var(--color-body)
+  );
+}
+.dark .summary-active-chip {
+  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 62%, white);
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 26%,
+    var(--color-body)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--cat, transparent) 50%,
+    var(--color-body)
+  );
+}
+.summary-active-chip .chip-remove {
+  font-size: 11px;
+  line-height: 1;
+  opacity: 0.7;
+}
+.summary-active-chip:hover .chip-remove {
+  opacity: 1;
 }
 .filter-summary .clear-btn {
   color: var(--color-text-light);
@@ -2735,8 +3120,8 @@ pre,
 /* ---- Month group meta row ---- */
 .month-meta {
   font-family: var(--font-secondary);
-  font-size: 12px;
-  letter-spacing: 0.02em;
+  font-size: 11px;
+  letter-spacing: 0.07em;
   color: var(--color-text-light);
   text-transform: uppercase;
   display: flex;
@@ -2783,7 +3168,7 @@ pre,
 .blog-list[data-density="comfy"] .post-row {
   grid-template-columns: 1fr;
   gap: 0;
-  padding: 14px 18px;
+  padding: 10px 16px;
   align-items: start;
 }
 .blog-list[data-density="comfy"] .post-row .gutter {
@@ -2793,27 +3178,34 @@ pre,
   display: none;
 }
 .blog-list[data-density="comfy"] .comfy-date {
-  display: block;
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-secondary);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
   color: color-mix(in srgb, var(--color-text-light) 65%, var(--color-border));
-  order: 3;
+  order: 0;
+}
+.blog-list[data-density="comfy"] .comfy-date::after {
+  content: "·";
+  margin-left: 8px;
+  color: var(--color-border);
 }
 
 .blog-list[data-density="comfy"] .post-row .title {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   white-space: normal;
   overflow: visible;
-  gap: 10px;
+  gap: 5px;
   min-width: 0;
 }
 .chip-tag-row {
@@ -3118,12 +3510,19 @@ a.card-chip:hover {
   color: var(--color-text-light);
 }
 .blog-hero-title {
-  font-size: clamp(22px, 2.4vw, 30px);
+  font-size: clamp(26px, 2.9vw, 36px);
   line-height: 1.15;
   letter-spacing: -0.02em;
   font-weight: 600;
   margin: 0;
   text-wrap: balance;
+}
+.blog-hero-title a {
+  color: inherit;
+  text-decoration: none;
+}
+.blog-hero-title a:hover {
+  text-decoration: underline;
 }
 .blog-hero-summary {
   font-size: 14px;
@@ -3150,8 +3549,72 @@ a.card-chip:hover {
   }
 }
 
+/* On large screens the homepage hero title hits its 36px cap, making the
+   featured card (and the equal-height "latest" cards beside it) too tall. Match
+   the compact size used on laptops so the row stays shorter. */
+@media (min-width: 1536px) {
+  .home-featured-col-main .blog-hero-title {
+    font-size: 28px;
+  }
+}
+
 .blog-popular {
   margin-top: 14px;
+}
+/* Three compact popular cards in a row beneath the featured hero. */
+.blog-popular .card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.blog-popular .post-card-body,
+.blog-popular-rails .post-card-body {
+  padding: 9px 10px 11px;
+  gap: 5px;
+}
+.blog-popular .post-card-meta,
+.blog-popular-rails .post-card-meta {
+  font-size: 10px;
+}
+.blog-popular .post-card-title,
+.blog-popular-rails .post-card-title {
+  font-size: 18px;
+  line-height: 1.25;
+  letter-spacing: 0.015em;
+}
+.blog-popular .post-card-summary,
+.blog-popular-rails .post-card-summary {
+  display: none;
+}
+.blog-popular .card-chip,
+.blog-popular-rails .card-chip {
+  font-size: 11px;
+  padding: 3px 10px;
+}
+.blog-hero-body .card-chip {
+  font-size: 12px;
+  padding: 4px 12px;
+}
+
+/* On laptop-class widths (incl. 13"/14" MacBooks, which report ~1280–1512px)
+   the 2-col layout makes the rail/popular cards narrow, so shrink the title +
+   chip type to keep them proportional. Large desktops (≥1536px) keep full size. */
+@media (max-width: 1535px) {
+  .blog-hero-title {
+    font-size: clamp(20px, 4.6vw, 28px);
+  }
+  .blog-hero-body .card-chip {
+    font-size: 10px;
+    padding: 3px 9px;
+  }
+  .blog-popular .post-card-title,
+  .blog-popular-rails .post-card-title {
+    font-size: 15px;
+  }
+  .blog-popular .card-chip,
+  .blog-popular-rails .card-chip {
+    font-size: 9.5px;
+    padding: 2px 8px;
+  }
 }
 
 /* ---- Unified content card (portfolio / taxonomy / related) ---- */
@@ -3247,6 +3710,12 @@ a.card-chip:hover {
 }
 .post-card.is-coming-soon {
   opacity: 0.72;
+  border-style: dashed;
+  border-color: color-mix(
+    in srgb,
+    var(--color-border) 80%,
+    var(--color-text-light)
+  );
 }
 .post-card.is-coming-soon .post-card-media {
   filter: grayscale(0.4);
