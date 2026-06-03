@@ -2984,6 +2984,86 @@ pre,
   );
 }
 
+/* ---- Clickable card chips (portfolio filters) ---- */
+a.card-chip {
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    box-shadow 120ms ease,
+    filter 120ms ease;
+}
+a.card-chip:hover {
+  filter: brightness(1.04);
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--cat, transparent) 60%, transparent);
+}
+.card-chip.ui-chip-active {
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 55%,
+    var(--color-body)
+  );
+  border-color: var(--cat, transparent);
+  box-shadow: 0 0 0 1px var(--cat, transparent);
+}
+
+/* ---- Portfolio active-filter bar ---- */
+/* :not(.hidden) so the `hidden` utility can override this unlayered rule. */
+.portfolio-active-filters:not(.hidden) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.portfolio-active-filters .label {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-light);
+}
+.portfolio-active-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+.portfolio-active-chips .card-chip.is-active-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.portfolio-active-chips .chip-remove {
+  font-size: 13px;
+  line-height: 1;
+  opacity: 0.7;
+}
+.portfolio-active-chips .card-chip.is-active-filter:hover .chip-remove {
+  opacity: 1;
+}
+.portfolio-active-filters .clear-btn {
+  color: var(--color-text-light);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition:
+    color 120ms,
+    border-color 120ms;
+}
+.portfolio-active-filters .clear-btn:hover {
+  color: var(--color-text-dark);
+  border-color: var(--color-text-dark);
+}
+
 /* ---- Blog feature block: hero card + popular row ---- */
 .blog-feature-block {
   margin: 0;

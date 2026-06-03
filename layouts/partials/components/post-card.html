@@ -2,12 +2,13 @@
 · read time, and a short text preview. Used for portfolio, taxonomy, and
 related-post grids. Accepts a Page directly or a dict with "Page". Falls back to
 a gallery placeholder (deterministic per post) when the post has no image set.
-*/ -}} {{ $page := . }} {{ if reflect.IsMap . }}{{ $page = .Page }}{{ end }} {{
-$cs := $page.Params.coming_soon }} {{ $placeholders := slice
-"images/gallery/01.jpg" "images/gallery/02.jpg" "images/gallery/03.jpg"
-"images/gallery/04.jpg" "images/gallery/05.jpg" "images/gallery/06.jpg" }} {{
-$img := $page.Params.image }} {{ if not $img }}{{ $img = index $placeholders
-(mod (hash.FNV32a $page.RelPermalink) (len $placeholders)) }}{{ end }}
+*/ -}} {{ $page := . }} {{ $filterable := false }} {{ if reflect.IsMap . }}{{
+$page = .Page }}{{ $filterable = .Filterable }}{{ end }} {{ $cs :=
+$page.Params.coming_soon }} {{ $placeholders := slice "images/gallery/01.jpg"
+"images/gallery/02.jpg" "images/gallery/03.jpg" "images/gallery/04.jpg"
+"images/gallery/05.jpg" "images/gallery/06.jpg" }} {{ $img := $page.Params.image
+}} {{ if not $img }}{{ $img = index $placeholders (mod (hash.FNV32a
+$page.RelPermalink) (len $placeholders)) }}{{ end }}
 
 <article
   class="post-card{{ if $cs }} is-coming-soon{{ end }}{{ if not $cs }} cursor-pointer{{ end }}"
@@ -33,6 +34,7 @@ $img := $page.Params.image }} {{ if not $img }}{{ $img = index $placeholders
     {{ with ($page.Params.description | default ($page.Summary | plainify |
     truncate 160)) }}
     <p class="post-card-summary">{{ . }}</p>
-    {{ end }} {{ partial "components/card-chips" (dict "Page" $page) }}
+    {{ end }} {{ partial "components/card-chips" (dict "Page" $page "Filterable"
+    $filterable) }}
   </div>
 </article>

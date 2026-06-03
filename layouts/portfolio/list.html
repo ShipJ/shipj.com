@@ -9,12 +9,18 @@
 >
   <div class="site-container">
     <div class="pt-6">
+      <div class="portfolio-active-filters hidden" data-portfolio-filters>
+        <span class="label">Filtering by</span>
+        <span class="portfolio-active-chips" data-active-chips></span>
+        <a class="clear-btn" href="{{ .RelPermalink }}" data-clear-filters>clear all</a>
+      </div>
+
       <div class="card-grid">
         {{ range .RegularPages.ByDate.Reverse }}
           <div data-filter-item
                data-filter-categories="{{ delimit (apply (.Params.categories | default (slice)) "urlize" ".") "|" }}"
                data-filter-sectors="{{ with .Params.sector }}{{ . | urlize | lower }}{{ end }}">
-            {{ partial "components/post-card" (dict "Page" .) }}
+            {{ partial "components/post-card" (dict "Page" . "Filterable" true) }}
           </div>
         {{ end }}
       </div>
@@ -26,4 +32,66 @@
 
   </div>
 </section>
+
+<script>
+  (function () {
+    var root = document.querySelector(".portfolio-list-page");
+    if (!root) return;
+    var bar = root.querySelector("[data-portfolio-filters]");
+    var chipsEl = root.querySelector("[data-active-chips]");
+    if (!bar || !chipsEl) return;
+
+    function sync() {
+      var params = new URLSearchParams(window.location.search);
+      var active = [];
+      params.getAll("categories").forEach(function (v) {
+        active.push({ kind: "categories", value: v });
+      });
+      params.getAll("sectors").forEach(function (v) {
+        active.push({ kind: "sectors", value: v });
+      });
+
+      chipsEl.innerHTML = "";
+      active.forEach(function (item) {
+        var ctrl = root.querySelector(
+          '[data-filter-kind="' + item.kind + '"][data-filter-value="' + item.value + '"]',
+        );
+        if (!ctrl) return;
+        var chip = ctrl.cloneNode(true);
+        chip.removeAttribute("href");
+        chip.removeAttribute("data-filter-kind");
+        chip.removeAttribute("data-filter-value");
+        chip.classList.add("is-active-filter");
+        chip.title = "Remove filter";
+        var x = document.createElement("span");
+        x.className = "chip-remove";
+        x.textContent = "×";
+        chip.appendChild(x);
+        chip.addEventListener("click", function (e) {
+          e.preventDefault();
+          ctrl.click();
+        });
+        chipsEl.appendChild(chip);
+      });
+
+      bar.classList.toggle("hidden", chipsEl.children.length === 0);
+    }
+
+    sync();
+
+    root
+      .querySelectorAll("[data-filter-kind][data-filter-value]")
+      .forEach(function (ctrl) {
+        ctrl.addEventListener("click", function () {
+          window.setTimeout(sync, 0);
+        });
+      });
+
+    var clearBtn = root.querySelector("[data-clear-filters]");
+    if (clearBtn)
+      clearBtn.addEventListener("click", function () {
+        window.setTimeout(sync, 0);
+      });
+  })();
+</script>
 {{ end }}
