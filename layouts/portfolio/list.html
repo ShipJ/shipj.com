@@ -9,13 +9,12 @@
 >
   <div class="site-container">
     <div class="pt-6">
-      <div class="row">
+      <div class="card-grid">
         {{ range .RegularPages.ByDate.Reverse }}
-          <div class="mb-5 md:col-6 lg:col-4"
-               data-filter-item
+          <div data-filter-item
                data-filter-categories="{{ delimit (apply (.Params.categories | default (slice)) "urlize" ".") "|" }}"
                data-filter-sectors="{{ with .Params.sector }}{{ . | urlize | lower }}{{ end }}">
-            {{ partial "components/portfolio-card" (dict "Page" .) }}
+            {{ partial "components/post-card" (dict "Page" .) }}
           </div>
         {{ end }}
       </div>

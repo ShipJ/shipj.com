@@ -4,6 +4,65 @@ pre,
   font-family: var(--font-secondary);
 }
 
+/* ---- Pinned banner + header ---- */
+.site-sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+/* Header already ships position:sticky; let the wrapper own the pinning so the
+   two don't both stick at top:0 and overlap. position:relative keeps it the
+   positioning context for the absolutely-placed .reading-progress bar. */
+.site-sticky-top .header {
+  position: relative;
+  top: auto;
+  z-index: auto;
+}
+
+/* ---- Work-in-progress banner ---- */
+.wip-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 7px 16px;
+  font-family: var(--font-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-accent) 80%, black);
+  background: color-mix(in srgb, var(--color-accent) 14%, var(--color-body));
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-accent) 35%, var(--color-body));
+}
+.dark .wip-banner {
+  color: color-mix(in srgb, var(--color-accent) 75%, white);
+  background: color-mix(in srgb, var(--color-accent) 18%, var(--color-body));
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--color-accent) 40%,
+    var(--color-body)
+  );
+}
+.wip-banner-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex: 0 0 auto;
+  animation: wip-pulse 2s ease-in-out infinite;
+}
+@keyframes wip-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
 .content blockquote {
   background: color-mix(
     in srgb,
@@ -2857,7 +2916,7 @@ pre,
   min-width: 0;
 }
 .home-featured-col > .blog-hero-card,
-.home-featured-col > .home-mini-card {
+.home-featured-col > .post-card {
   flex: 1;
   min-height: 0;
 }
@@ -2870,57 +2929,6 @@ pre,
     column-gap: 24px;
     align-items: stretch;
   }
-}
-
-.home-mini-card {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--color-body, #fff);
-  transition:
-    border-color 160ms ease,
-    background-color 160ms ease;
-}
-.home-mini-card:hover {
-  border-color: var(--color-accent);
-  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-body));
-}
-.home-mini-media {
-  flex: 1;
-  min-height: 140px;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--color-border) 40%, transparent);
-}
-.home-mini-media .img,
-.home-mini-media .home-mini-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.home-mini-body {
-  padding: 14px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-.home-mini-title {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  margin: 0;
-  text-wrap: balance;
-}
-.home-mini-date {
-  font-family: var(--font-secondary);
-  font-size: 11px;
-  color: var(--color-text-light);
 }
 
 /* ---- Card chips (category + sector) used on featured / mini cards ---- */
@@ -2945,31 +2953,34 @@ pre,
 .card-chip .chip-kind {
   display: none;
 }
-/* Category = filled */
-.card-chip-category {
+/* Category + sector share the same filled + bordered treatment;
+   only their --cat hue differs. */
+.card-chip-category,
+.card-chip-sector {
   color: color-mix(in srgb, var(--cat, var(--color-text-light)) 92%, black);
   background: color-mix(
     in srgb,
-    var(--cat, transparent) 34%,
+    var(--cat, transparent) 30%,
     var(--color-body)
   );
   border-color: color-mix(
     in srgb,
-    var(--cat, transparent) 34%,
+    var(--cat, transparent) 55%,
     var(--color-body)
   );
 }
-.dark .card-chip-category {
-  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 60%, white);
-}
-/* Sector = outline */
-.card-chip-sector {
-  color: var(--cat, var(--color-text-light));
-  background: transparent;
+.dark .card-chip-category,
+.dark .card-chip-sector {
+  color: color-mix(in srgb, var(--cat, var(--color-text-light)) 62%, white);
+  background: color-mix(
+    in srgb,
+    var(--cat, transparent) 26%,
+    var(--color-body)
+  );
   border-color: color-mix(
     in srgb,
-    var(--cat, var(--color-border)) 60%,
-    var(--color-border)
+    var(--cat, transparent) 50%,
+    var(--color-body)
   );
 }
 
@@ -3062,62 +3073,103 @@ pre,
 .blog-popular {
   margin-top: 14px;
 }
-.blog-popular-row {
+
+/* ---- Unified content card (portfolio / taxonomy / related) ---- */
+.card-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
 }
-@media (min-width: 640px) {
-  .blog-popular-row {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-.blog-popular-card {
+.post-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  text-decoration: none;
-  color: inherit;
+  height: 100%;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   background: var(--color-body, #fff);
   transition:
     border-color 160ms ease,
-    background-color 160ms ease;
+    background-color 160ms ease,
+    box-shadow 160ms ease;
 }
-.blog-popular-card:hover {
+.post-card:hover {
   border-color: var(--color-accent);
   background: color-mix(in srgb, var(--color-accent) 6%, var(--color-body));
+  box-shadow: 0 2px 14px
+    color-mix(in srgb, var(--color-text-dark) 7%, transparent);
 }
-.blog-popular-media {
-  aspect-ratio: 3 / 2;
+.post-card-media {
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: color-mix(in srgb, var(--color-border) 40%, transparent);
 }
-.blog-popular-media .blog-popular-img,
-.blog-popular-media .img {
+.post-card-media .post-card-img,
+.post-card-media .img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 320ms ease;
 }
-.blog-popular-body {
-  padding: 4px 12px 14px;
+.post-card:hover .post-card-media .img {
+  transform: scale(1.03);
+}
+.post-card-body {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  flex: 1;
 }
-.blog-popular-date {
-  font-family: var(--font-secondary);
-  font-size: 11px;
-  color: var(--color-text-light);
+.post-card-body .card-chips,
+.blog-hero-body .card-chips {
+  margin-top: auto;
+  padding-top: 4px;
+  width: 100%;
+  flex-wrap: nowrap;
 }
-.blog-popular-title {
-  font-size: 14px;
+.post-card-body .card-chip-sector,
+.blog-hero-body .card-chip-sector {
+  margin-left: auto;
+}
+.post-card-title {
+  font-size: 16px;
+  font-weight: 600;
   line-height: 1.3;
-  font-weight: 500;
-  color: var(--color-text);
+  margin: 0;
+  color: var(--color-text-dark);
+}
+.post-card-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.post-card-title a:hover {
+  color: var(--color-accent);
+}
+.post-card-meta {
+  font-family: var(--font-secondary);
+  font-size: 11.5px;
+  color: var(--color-text-light);
+  margin: 0;
+}
+.post-card-summary {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-light);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.post-card.is-coming-soon {
+  opacity: 0.72;
+}
+.post-card.is-coming-soon .post-card-media {
+  filter: grayscale(0.4);
 }
 
 /* ---- Portfolio card ---- */

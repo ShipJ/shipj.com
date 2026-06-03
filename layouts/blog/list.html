@@ -98,13 +98,13 @@
                 {{ partial "image" (dict "Src" $heroImg "Context" .Page "Alt" .Title "Size" "1200x630 webp" "Command" "Fill" "Class" "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
               </div>
               <div class="blog-hero-body">
+                <div class="blog-hero-meta">
+                  <span class="blog-hero-date">{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
+                </div>
                 <h2 class="blog-hero-title">{{ .Title }}</h2>
                 {{ with (.Params.description | default (.Summary | plainify | truncate 220)) }}
                   <p class="blog-hero-summary">{{ . }}</p>
                 {{ end }}
-                <div class="blog-hero-meta">
-                  <span class="blog-hero-date">{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{ . }} min{{ end }}</span>
-                </div>
                 {{ partial "components/card-chips" (dict "Page" .) }}
               </div>
             </a>
@@ -113,18 +113,9 @@
             {{ if $popularPosts }}
             <div class="blog-popular">
               <p class="section-kicker">Popular</p>
-              <div class="blog-popular-row">
-                {{ range $i, $p := $popularPosts }}
-                {{ $img := index $placeholders (mod (add $i 1) (len $placeholders)) }}
-                <a class="blog-popular-card" href="{{ .RelPermalink }}">
-                  <div class="blog-popular-media">
-                    {{ partial "image" (dict "Src" $img "Context" .Page "Alt" .Title "Size" "480x320 webp" "Command" "Fill" "Class" "blog-popular-img") }}
-                  </div>
-                  <div class="blog-popular-body">
-                    <span class="blog-popular-date">{{ .Date.Format "02 Jan" }}</span>
-                    <span class="blog-popular-title">{{ .Title }}</span>
-                  </div>
-                </a>
+              <div class="card-grid">
+                {{ range $popularPosts }}
+                {{ partial "components/post-card" . }}
                 {{ end }}
               </div>
             </div>
@@ -149,7 +140,7 @@
             <div class="home-quick-reads is-coming-soon">
               {{ range $comingSoonRail }}
               <span class="home-quick-read is-coming-soon">
-                <span class="hqr-date">TBD</span>
+                <span class="hqr-date">{{ .Date.Format "02 Jan" }}</span>
                 <span class="hqr-sep">·</span>
                 <span class="hqr-title">{{ .Title }}</span>
               </span>

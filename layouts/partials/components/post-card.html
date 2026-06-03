@@ -1,0 +1,38 @@
+{{- /* Unified content card: image, category + sector chips, title, publish date
+· read time, and a short text preview. Used for portfolio, taxonomy, and
+related-post grids. Accepts a Page directly or a dict with "Page". Falls back to
+a gallery placeholder (deterministic per post) when the post has no image set.
+*/ -}} {{ $page := . }} {{ if reflect.IsMap . }}{{ $page = .Page }}{{ end }} {{
+$cs := $page.Params.coming_soon }} {{ $placeholders := slice
+"images/gallery/01.jpg" "images/gallery/02.jpg" "images/gallery/03.jpg"
+"images/gallery/04.jpg" "images/gallery/05.jpg" "images/gallery/06.jpg" }} {{
+$img := $page.Params.image }} {{ if not $img }}{{ $img = index $placeholders
+(mod (hash.FNV32a $page.RelPermalink) (len $placeholders)) }}{{ end }}
+
+<article
+  class="post-card{{ if $cs }} is-coming-soon{{ end }}{{ if not $cs }} cursor-pointer{{ end }}"
+  data-card-link="{{ if not $cs }}{{ $page.RelPermalink }}{{ end }}"
+>
+  <div class="post-card-media">
+    {{ partial "image" (dict "Src" $img "Context" $page "Alt" $page.Title "Size"
+    "640x360 webp" "Command" "Fill" "Class" "post-card-img") }}
+  </div>
+
+  <div class="post-card-body">
+    <p class="post-card-meta">
+      {{ if $cs }}Coming soon{{ else }}{{ $page.Date.Format "02 Jan 2006" }}{{
+      with $page.Params.read_time }} · {{ . }} min{{ end }}{{ end }}
+    </p>
+
+    <h3 class="post-card-title">
+      {{ if $cs }}{{ $page.Title }}{{ else }}<a href="{{ $page.RelPermalink }}"
+        >{{ $page.Title }}</a
+      >{{ end }}
+    </h3>
+
+    {{ with ($page.Params.description | default ($page.Summary | plainify |
+    truncate 160)) }}
+    <p class="post-card-summary">{{ . }}</p>
+    {{ end }} {{ partial "components/card-chips" (dict "Page" $page) }}
+  </div>
+</article>

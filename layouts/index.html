@@ -67,18 +67,17 @@
             "blog-hero-img" "Loading" "eager" "FetchPriority" "high") }}
           </div>
           <div class="blog-hero-body">
-            <h2 class="blog-hero-title">{{ .Title }}</h2>
-            {{ with (.Params.description | default (.Summary | plainify |
-            truncate 220)) }}
-            <p class="blog-hero-summary">{{ . }}</p>
-            {{ end }}
             <div class="blog-hero-meta">
               <span class="blog-hero-date"
                 >{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} ·
                 {{ . }} min{{ end }}</span
               >
             </div>
-            {{ partial "components/card-chips" (dict "Page" .) }}
+            <h2 class="blog-hero-title">{{ .Title }}</h2>
+            {{ with (.Params.description | default (.Summary | plainify |
+            truncate 220)) }}
+            <p class="blog-hero-summary">{{ . }}</p>
+            {{ end }} {{ partial "components/card-chips" (dict "Page" .) }}
           </div>
         </a>
         {{ end }}
@@ -87,40 +86,12 @@
       {{ with $latestPost }}
       <div class="home-featured-col">
         <p class="section-kicker">Latest post</p>
-        <a class="home-mini-card" href="{{ .RelPermalink }}">
-          <div class="home-mini-media">
-            {{ partial "image" (dict "Src" "images/gallery/02.jpg" "Context"
-            .Page "Alt" .Title "Size" "480x320 webp" "Command" "Fill" "Class"
-            "home-mini-img") }}
-          </div>
-          <div class="home-mini-body">
-            <h3 class="home-mini-title">{{ .Title }}</h3>
-            <span class="home-mini-date"
-              >{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{
-              . }} min{{ end }}</span
-            >
-            {{ partial "components/card-chips" (dict "Page" .) }}
-          </div>
-        </a>
+        {{ partial "components/post-card" . }}
       </div>
       {{ end }} {{ with $latestProject }}
       <div class="home-featured-col">
         <p class="section-kicker">Latest project</p>
-        <a class="home-mini-card" href="{{ .RelPermalink }}">
-          <div class="home-mini-media">
-            {{ partial "image" (dict "Src" "images/gallery/03.jpg" "Context"
-            .Page "Alt" .Title "Size" "480x320 webp" "Command" "Fill" "Class"
-            "home-mini-img") }}
-          </div>
-          <div class="home-mini-body">
-            <h3 class="home-mini-title">{{ .Title }}</h3>
-            <span class="home-mini-date"
-              >{{ .Date.Format "02 Jan 2006" }}{{ with .Params.read_time }} · {{
-              . }} min{{ end }}</span
-            >
-            {{ partial "components/card-chips" (dict "Page" .) }}
-          </div>
-        </a>
+        {{ partial "components/post-card" . }}
       </div>
       {{ end }}
     </div>

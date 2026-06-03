@@ -123,15 +123,9 @@
             <p class="ui-kicker mb-2">More work</p>
             <h2 class="h3">{{ T "related_posts" }}</h2>
           </div>
-          <div class="row">
+          <div class="card-grid">
             {{ range . }}
-              <div class="lg:col-4 md:col-6 mb-8">
-                {{ if eq .Section "portfolio" }}
-                  {{ partial "components/portfolio-card-related" . }}
-                {{ else }}
-                  {{ partial "components/blog-card-related" . }}
-                {{ end }}
-              </div>
+              {{ partial "components/post-card" . }}
             {{ end }}
           </div>
         {{ end }}

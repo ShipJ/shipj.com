@@ -1,20 +1,23 @@
-{{- /* Renders category + sector chips for a card. Category = filled pill.
-Sector = outline pill. Usage: {{ partial "components/card-chips" (dict "Page" .)
-}} */ -}} {{- $page := .Page -}} {{- $cat := "" -}}{{- with
-$page.Params.categories -}}{{- $cat = index . 0 -}}{{- end -}} {{- $sector :=
-$page.Params.sector -}} {{- $colors := dict "blue" "#1a6ee0" "violet" "#9230d8"
-"green" "#28bb28" "orange" "#e87820" "red" "#e03030" "slate" "#c8a000" -}} {{-
-if or $cat $sector }}
+{{- /* Renders category + sector chips for a card. Both use the same filled +
+bordered pill style; the only difference is colour (and position: category left,
+sector right). Each category and each sector has its own unique colour so no two
+chips share a hue. Usage: {{ partial "components/card-chips" (dict "Page" .) }}
+*/ -}} {{- $page := .Page -}} {{- $cat := "" -}}{{- with $page.Params.categories
+-}}{{- $cat = index . 0 -}}{{- end -}} {{- $sector := $page.Params.sector -}}
+{{- $catColors := dict "ai" "#c07a2c" "career" "#c04d5e" "personal" "#2f74c9"
+"data-analytics" "#8a55bf" "analytics" "#8a55bf" "data-science" "#2f9e6f"
+"science" "#2f9e6f" "data-engineering" "#5c7390" "engineering" "#5c7390"
+"web-development" "#6f5fcf" -}} {{- $secColors := dict "tech" "#4a9d8e"
+"finance" "#3f8f3f" "general" "#7b7f8a" "retail" "#c1568f" "society" "#a9742f"
+"sport" "#cf5a3a" "transport" "#b58a2b" -}} {{- if or $cat $sector }}
 <div class="card-chips">
-  {{- with $cat -}} {{- $tone := partial "components/category-tone" (dict "Name"
-  .) | strings.TrimSpace -}} {{- $color := index $colors $tone | default
-  "#607a92" -}}
+  {{- with $cat -}} {{- $color := index $catColors (. | urlize | lower) |
+  default "#607a92" -}}
   <span class="card-chip card-chip-category" style="--cat: {{ $color }}"
     >{{ . }}</span
   >
-  {{- end -}} {{- with $sector -}} {{- $tone := partial "components/sector-tone"
-  (dict "Name" .) | strings.TrimSpace -}} {{- $color := index $colors $tone |
-  default "#6a5a7a" -}}
+  {{- end -}} {{- with $sector -}} {{- $color := index $secColors (. | urlize |
+  lower) | default "#6a5a7a" -}}
   <span class="card-chip card-chip-sector" style="--cat: {{ $color }}"
     >{{ . }}</span
   >

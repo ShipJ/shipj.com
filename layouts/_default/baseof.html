@@ -30,9 +30,12 @@
     <!-- announcement -->
     {{ partialCached "announcement.html" . }}
 
-    <!-- header (don't cache it) -->
-    {{ partial "essentials/header.html" . }} {{ partial "search-modal.html"
-    (dict "Context" . ) }}
+    <!-- pinned banner + header (don't cache it) -->
+    <div class="site-sticky-top">
+      {{ partial "components/wip-banner.html" . }} {{ partial
+      "essentials/header.html" . }}
+    </div>
+    {{ partial "search-modal.html" (dict "Context" . ) }}
 
     <!-- header resize menu -->
     {{ partial "essentials/header_script.html" . }} {{ partial
