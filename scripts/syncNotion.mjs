@@ -323,7 +323,7 @@ function renderRichText(richText = [], idToContentPath) {
 }
 
 // Notion block -> markdown line(s)
-function blockToMarkdown(b, idToContentPath) {
+async function blockToMarkdown(b, idToContentPath) {
   const t = b.type;
   const r = b[t];
   const rt = renderRichText(r?.rich_text ?? [], idToContentPath);
@@ -351,9 +351,17 @@ function blockToMarkdown(b, idToContentPath) {
       return [`\`\`\`${lang}\n${codeText}\n\`\`\``, ""];
     }
     case "image": {
-      const url =
-        b.image.type === "external" ? b.image.external.url : b.image.file.url;
-      return [`![](${url})`, ""];
+      // External images are stable public URLs; keep them inline. Notion-hosted
+      // images arrive as short-lived presigned S3 URLs that embed temporary AWS
+      // credentials and expire within the hour — download them so we never write
+      // those credentials into committed markdown.
+      if (b.image.type === "external")
+        return [`![](${b.image.external.url})`, ""];
+      const { publicPath } = await downloadGallery(
+        b.image.file,
+        `inline-${b.id}`,
+      );
+      return [`![](${publicPath})`, ""];
     }
     case "equation":
       return [`$$\n${b.equation?.expression ?? ""}\n$$`, ""];
@@ -521,7 +529,7 @@ async function fetchPageMarkdown(pageId, idToContentPath) {
       start_cursor,
     });
     for (const b of res.results)
-      lines.push(...blockToMarkdown(b, idToContentPath));
+      lines.push(...(await blockToMarkdown(b, idToContentPath)));
     if (!res.has_more) break;
     start_cursor = res.next_cursor;
   }
