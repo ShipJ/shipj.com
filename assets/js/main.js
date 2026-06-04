@@ -626,6 +626,10 @@
       .forEach(function (el) {
         el.addEventListener("click", function () {
           rail.classList.toggle("is-collapsed");
+          rail.style.setProperty(
+            "--toc-rail-half",
+            rail.offsetHeight / 2 + "px",
+          );
         });
       });
   })();
@@ -637,9 +641,16 @@
     if (!toc) return;
     var col = document.querySelector(".toc-rail-col");
     var content = document.querySelector(".content");
+    var railAnchor = document.querySelector(".jump-to-toc") || content;
+    var railEl = document.querySelector(".toc-rail");
     var pips = document.querySelectorAll(".toc-rail-pip");
     function positionRail() {
-      if (col && content) col.style.top = content.offsetTop + "px";
+      if (col && railAnchor) col.style.top = railAnchor.offsetTop + "px";
+      if (railEl)
+        railEl.style.setProperty(
+          "--toc-rail-half",
+          railEl.offsetHeight / 2 + "px",
+        );
     }
     positionRail();
     window.addEventListener("resize", positionRail);
