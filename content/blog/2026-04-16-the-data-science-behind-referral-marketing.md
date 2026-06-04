@@ -31,7 +31,7 @@ draft: false
 notion_id: 3597fd6b-fd0d-80af-9553-e3589cebd291
 created_at: '2026-05-07T13:05:00.000Z'
 last_edited_at: '2026-06-04T13:15:00.000Z'
-last_synced: '2026-06-04T13:16:11.746Z'
+last_synced: '2026-06-04T13:42:59.625Z'
 math: true
 image: /images/gallery/chatgpt-image-jun-3-2026-080249-pm.png
 image_vertical: /images/gallery/chatgpt-image-jun-3-2026-080011-pm.png
@@ -50,7 +50,7 @@ Side note - books I highly recommend:
 
 I particularly focused on creating my own framework to discuss. Test.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/7477fd6b-fd0d-8131-b590-00030cf82e1a/0e826684-0abd-4906-a492-7603233c0ee1/image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4663JAUAKSX%2F20260604%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260604T131612Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCAiw3RaMrXticH2kk45cTVvGo5qW%2FTvw7XduaL9fFJNQIgP6E3FmPTwr6%2F2Gg22Jn6HfsbFF1AA%2BLSqQrUgzihFNcq%2FwMIVRAAGgw2Mzc0MjMxODM4MDUiDFw22sWY6IwAwm903SrcA7eHDMxZcCO3n9JwmjCDEvfI0iJVWFomyRQdRwWkUTxTmjNDhar8fIO6%2BBkauxzxAdcY4faDM%2Fmvzi3EI6GDpniVtkakjM8fHjsgdsroww9jw5Oaial1N5IR1VVqsxcOJOkvTbffyTFfaOovCxi1IMhzzMOYuxRoMX2gpagFz7TioH16CQsz698IB29p4VFM6yqD%2FwczLTA8HwXVnMQ4Wflz6sp8DtX%2Fj5xmYFzB14B8U3rPpqpEZDXJLWJFQtnvYlXP%2Fm5P1Mxk%2B8b%2BaR8GhlS5L2w8QXP8We3OnL3WNoecDL%2B9vOEV4G7fxNZU6Tpn5ym0%2FwqG%2F81jqa%2Btzk1p%2BlysWRuRXG1nWD1UkkdiX2w6ttmMv5OhuclBp7z9Q1WqFNRUspcqM0gAV%2FdaO%2BCI%2BiBzBEv60uLj5h9HcINAOsYkqkqgjkhMgCk8Dfd3%2B8g9IEXlYNWkLYeq8vFzXFIuOuWTNS13LCNj1E%2BoA85eAJy8fWGKycQTjmhOTrK%2FSiZ9EnFAsh6SX5H2eRVDo9OT9VKqg8WbQwYOUQibrE6EbA4KH5wtjwqe8VvH9P4Q0ReH9tCrqvLTjyJF8raOLpDFyZXVv1Ta%2F7DTuouSpfBsMdCLR6%2B5HQoTNb%2FfQTI6MOfVhdEGOqUB3DadiFUDY10GZ2iQoHbHOZIAOxRXTme1m4hF7GN2Y6nfhp9Y%2FsJuijMbf1BkoYKr39r4cQZbSbqQyXKti4bxCB0RBGGu%2FCbpe4K4lNb%2FgC7IizucWKmXgPzS5Hj16M8weFRsuLYUrtUO6yjo39gcu399hv6L2pr41N%2FpEaq3f6DN50bzg8D2wSP3p5gEJwBEN%2FhnhlcOvpvT%2FcxhZjflCA5gl29r&X-Amz-Signature=4115035d62124a3c5e0a84a41c2cf9cc85228b25d3465ab8b0dbec4f2383145e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](/images/gallery/inline-3617fd6b-fd0d-8003-a496-e9c7e047a7bc.png)
 
 # Technical details
 
