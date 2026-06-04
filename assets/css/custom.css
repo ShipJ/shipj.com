@@ -3586,6 +3586,26 @@ a.card-chip:hover {
   }
 }
 
+/* The blog featured card is a 50/50 media|body grid. The featured image is
+   portrait, so on wide screens its natural height (≈ column width × 1.33) drives
+   the card tall — not the text. Cap the media to a definite, responsive height
+   so the image crops via object-fit instead of dictating the card height; the
+   body (with its full-size title) centres within. A 13" laptop stays below this
+   breakpoint and is unaffected. */
+@media (min-width: 1536px) {
+  .blog-feature-block .blog-hero-media {
+    height: clamp(260px, 19vw, 340px);
+    min-height: 0;
+  }
+  .blog-feature-block .blog-hero-summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+}
+
 .blog-popular {
   margin-top: 14px;
 }
