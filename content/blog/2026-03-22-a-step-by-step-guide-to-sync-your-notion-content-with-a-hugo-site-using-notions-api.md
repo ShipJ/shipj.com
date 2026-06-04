@@ -15,7 +15,7 @@ slug: >-
   a-step-by-step-guide-to-sync-your-notion-content-with-a-hugo-site-using-notions-api
 published_at: '2026-03-22'
 categories:
-  - Web Development
+  - Web Dev
 tags:
   - Notion
   - Hugo
@@ -33,8 +33,8 @@ type: blog
 draft: false
 notion_id: 3187fd6b-fd0d-8055-9e3f-e1f79643cb61
 created_at: '2026-03-03T09:11:00.000Z'
-last_edited_at: '2026-06-03T19:22:00.000Z'
-last_synced: '2026-06-03T19:25:47.617Z'
+last_edited_at: '2026-06-04T09:29:00.000Z'
+last_synced: '2026-06-04T09:30:10.404Z'
 math: true
 image: /images/gallery/chatgpt-image-jun-3-2026-082136-pm.png
 image_vertical: /images/gallery/chatgpt-image-jun-3-2026-081626-pm.png

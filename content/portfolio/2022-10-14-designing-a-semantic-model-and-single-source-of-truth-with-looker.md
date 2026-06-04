@@ -16,7 +16,7 @@ intro: >-
 slug: designing-a-semantic-model-and-single-source-of-truth-with-looker
 published_at: '2022-10-14'
 categories:
-  - Data Analytics
+  - BI
 tags:
   - Looker
   - dbt
@@ -33,10 +33,11 @@ type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-80f1-9751-e0cf8d2ebf76
 created_at: '2026-03-01T14:23:00.000Z'
-last_edited_at: '2026-06-03T17:41:00.000Z'
-last_synced: '2026-06-03T17:41:37.559Z'
+last_edited_at: '2026-06-04T09:29:00.000Z'
+last_synced: '2026-06-04T09:30:11.631Z'
 math: true
 image: ''
+image_vertical: ''
 ---
 # Objective
 

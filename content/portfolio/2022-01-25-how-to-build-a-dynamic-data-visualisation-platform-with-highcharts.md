@@ -9,7 +9,7 @@ tldr: >-
 slug: how-to-build-a-dynamic-data-visualisation-platform-with-highcharts
 published_at: '2022-01-25'
 categories:
-  - Data Analytics
+  - BI
 tags:
   - FastAPI
   - Highcharts
@@ -25,10 +25,11 @@ type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-80c1-9bc1-e10cad0ba788
 created_at: '2026-03-01T14:04:00.000Z'
-last_edited_at: '2026-06-03T17:41:00.000Z'
-last_synced: '2026-06-03T17:41:42.189Z'
+last_edited_at: '2026-06-04T09:29:00.000Z'
+last_synced: '2026-06-04T09:30:13.736Z'
 math: true
 image: ''
+image_vertical: ''
 ---
 <br>
 

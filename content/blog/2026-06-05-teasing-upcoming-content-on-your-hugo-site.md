@@ -8,7 +8,7 @@ description: >-
 slug: teasing-upcoming-content-on-your-hugo-site
 published_at: '2026-06-05'
 categories:
-  - Web Development
+  - Web Dev
 tags:
   - Hugo
   - Notion
@@ -23,8 +23,8 @@ type: blog
 draft: false
 notion_id: 3617fd6b-fd0d-8073-83de-df92e0f8b5ea
 created_at: '2026-05-15T12:59:00.000Z'
-last_edited_at: '2026-06-03T18:51:00.000Z'
-last_synced: '2026-06-03T18:56:38.391Z'
+last_edited_at: '2026-06-04T09:29:00.000Z'
+last_synced: '2026-06-04T09:30:08.945Z'
 math: true
 image: /images/gallery/chatgpt-image-jun-3-2026-064725-pm.png
 image_vertical: /images/gallery/chatgpt-image-jun-3-2026-064725-pm.png

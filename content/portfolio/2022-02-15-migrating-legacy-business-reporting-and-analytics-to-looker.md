@@ -18,7 +18,7 @@ intro: >-
 slug: migrating-legacy-business-reporting-and-analytics-to-looker
 published_at: '2022-02-15'
 categories:
-  - Data Analytics
+  - BI
 tags:
   - Looker
   - BigQuery
@@ -35,10 +35,11 @@ type: portfolio
 draft: false
 notion_id: 3167fd6b-fd0d-8077-839d-e90a57c8f299
 created_at: '2026-03-01T14:22:00.000Z'
-last_edited_at: '2026-06-03T17:41:00.000Z'
-last_synced: '2026-06-03T17:41:37.861Z'
+last_edited_at: '2026-06-04T09:29:00.000Z'
+last_synced: '2026-06-04T09:30:12.144Z'
 math: true
 image: ''
+image_vertical: ''
 ---
 # Objective
 

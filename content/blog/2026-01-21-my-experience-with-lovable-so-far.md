@@ -8,7 +8,7 @@ description: >-
 slug: my-experience-with-lovable-so-far
 published_at: '2026-01-21'
 categories:
-  - Web Development
+  - Web Dev
 tags:
   - lovable
   - supabase
@@ -23,10 +23,11 @@ type: blog
 draft: false
 notion_id: 3597fd6b-fd0d-8044-a148-c68a0b3da4e4
 created_at: '2026-05-07T13:55:00.000Z'
-last_edited_at: '2026-06-03T17:41:00.000Z'
-last_synced: '2026-06-03T17:41:34.472Z'
+last_edited_at: '2026-06-04T09:29:00.000Z'
+last_synced: '2026-06-04T09:30:09.245Z'
 math: true
 image: ''
+image_vertical: ''
 ---
 A friend recently pitched a new business idea and I was intrigued (and unemployed) enough to say: *“let’s give it a go”.*
 

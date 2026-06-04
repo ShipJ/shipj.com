@@ -14,7 +14,7 @@ tags:
   - about-me
   - interviews
   - productivity
-author: Jack
+author: ''
 length: Quick Read
 sector: Tech
 read_time: 5
@@ -24,16 +24,17 @@ type: blog
 draft: false
 notion_id: 3167fd6b-fd0d-8057-b381-c6d9813142ab
 created_at: '2026-03-01T10:42:00.000Z'
-last_edited_at: '2026-06-01T21:52:00.000Z'
-last_synced: '2026-06-01T21:52:47.561Z'
+last_edited_at: '2026-06-04T12:52:00.000Z'
+last_synced: '2026-06-04T12:52:26.850Z'
 math: true
 image: ''
+image_vertical: ''
 ---
 After a gruelling 4-year Maths and Computer Science , and a brief stint in the research lab, my professional career began at Ascential (WGSN's parent company), where I joined as its first Data Scientist in May 2017. My boss quit by the end of the year and I was left to fend for myself. 
 
-Link on its own: [Migrating legacy business reporting & analytics to Looker](https://www.notion.so/3167fd6bfd0d8077839de90a57c8f299) 
+Link on its own: [Migrating legacy business reporting & analytics to Looker](hugo-ref:portfolio/2022-02-15-migrating-legacy-business-reporting-and-analytics-to-looker.md) 
 
-At our annual conference in , I was asked to join WGSN from CEO Carla Buzasi. What had I done... Here I was, squinting at prints and patterns, trying to make sense of what gingham was as opposed to .
+At our annual conference in , I was asked to join WGSN from CEO. What had I done... Here I was, squinting at prints and patterns, trying to make sense of what gingham was as opposed to .
 
 Outside of that, I like long/slow books, odd maps, and trying to learn things the hard way.
 

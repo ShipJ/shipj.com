@@ -21,15 +21,16 @@ length: Quick Read
 sector: Real Estate
 read_time: 10
 series: A new career
-series_part: '7'
+series_part: '6'
 type: blog
 draft: false
 notion_id: 3597fd6b-fd0d-8077-8b83-cadc90878e18
 created_at: '2026-05-07T13:26:00.000Z'
-last_edited_at: '2026-06-03T17:41:00.000Z'
-last_synced: '2026-06-03T17:41:34.893Z'
+last_edited_at: '2026-06-04T13:16:00.000Z'
+last_synced: '2026-06-04T13:16:10.670Z'
 math: true
 image: ''
+image_vertical: ''
 ---
 I recently applied for a *‘data engineering lead’* role, and job description was wild. Data engineering, systems architecture, analytics engineering, data science, stakeholder management, and what sounded like some AI work all rolled into one. I hesitated when speaking with the recruiter because the scope of the role felt extremely broad. It seemed less of a defined position and more like a wishlist of everything the company might need.
 
@@ -73,7 +74,7 @@ The job description had not clearly positioned the role as hands-on AI engineeri
 
 The following week, I received the following feedback:
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/7477fd6b-fd0d-8131-b590-00030cf82e1a/5bc9783d-75b2-4f29-8486-5d768d9b5267/image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466QI5P76GA%2F20260603%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260603T174135Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHoaCXVzLXdlc3QtMiJIMEYCIQD9oKu7Trqz2wlTfChR5yRXmFSD8NAK3bAw2HKrJjPIswIhALrFXZCmShhG2%2Fv8QXDRyjoviAOB%2FPYQU84JmbFGCzD2Kv8DCEMQABoMNjM3NDIzMTgzODA1Igz1rsWbclVk4d%2B1Ypcq3AO6Ckp4oZ%2BcvCYX60ZLU4oAYGGfGu9HwXx5Q8fRmb5aO23bJzmBb3I6ucYZe2FjQqhq8RxG2jdKpnitHnJloGYYS1nM3kx7bGWuvxBmgiRbXqdtk8irH055%2FPTNrGUnIhehGEHyWGwVI8nR3IkktuYY344XA1aqF79OpYZszL2doJHvrn152fwJTpnZgCX9dVU2x8%2FD%2FGgkFB77oMYLCEVlgCqTHAlJmVtzXnbjiX7gTl0bM8lC4Imfh6nput%2FGu%2BFFzCBb4nWcB1Ezi%2FaQOwCQjchs1WObxE4eIizy7tnZoEh67pq1jeG2kc6nGL4n9ZpqEYb6F7Lyhq8UahF7bsgoNTs78VdduwG01ETVh1s8rwdRs1q7u7lCJ1YMqJ%2BFyl5r12Kxyz8czWfAul%2FOXlg7J3M8h2zwrZenoSjJ767toHDhTbkWMA2eKKzmsfOm8HKiW4k1nxhNqsgmacy2kG5u%2FteMAEtatzv6uaIuU6O1x9t9Z5bWlMbuMWFoHg2CEXJeJwlVVur0i4%2BueAwAadMwTtYzyoyi4iWRp09mJIW2qMAT5iHzQTiLoSkpglQVzu9CFpMmwsX0ukSgH9wg%2BU202DiooRw08Bby0zJtSl6QfVSwnXyBldgQmkCRljCpy4HRBjqkAXlAOnzeRZ3P4beTOJVFvq2NVzEirYus%2B6DOZvm1NTAHFz51ExP6le4TZi3fE7ewarSaorFu8c%2BG3JtQvUVf9qqzU2qpFWSiKQygxgrnvXdwLLb2nBDwvpNFivvHcwn2dJQ9MpPQFvVTDmFcpoMl2j6wFRQRoCcHcDFKu7X48zLP7dmg%2FmBrZlH0yJc2qbpZCYGR%2BsKVfiUHDVDUxPvMJr1Kdnq0&X-Amz-Signature=2fd6f1eb33c61587ac04ad5eecc0e780e8694a23cbae8d831df20a852f668390&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/7477fd6b-fd0d-8131-b590-00030cf82e1a/5bc9783d-75b2-4f29-8486-5d768d9b5267/image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466V43MIWBR%2F20260604%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260604T131610Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQC5EsNuGWk3UMcigdkI%2B7hRJb3LRROQxx7eJrBNP2e%2B0gIgRO0hYOeukbegNbmoGUWHkhcvJv%2BMy5UL7o%2FoJ1Y6ycMq%2FwMIVRAAGgw2Mzc0MjMxODM4MDUiDLjBC1IxzkIfdqEd7yrcAywJgAMwu0xO2UmkK%2Fhj4b94jEFGb%2BwdEOX2a9AA1G8y3IcYChGJ%2BWscuxVvhyA6bCEJnPfF7i7jK8nHwkjWKD9lFa8y9QQ4PrIOBeSQsJg%2FxJnaHRs4%2BNt4xVYVqXcO75gUOUUxLiCDdWi%2BJycaYX4P3vAzN3xViV2TeLywGtfnimrsI3NZ3xOFfleUxQiohhAABckDlH7t8cXBBAH20ycSgg8mquR9U%2BA1CQPLtFrqKrMZIBYEI7Abz4Jsr7HfIJFr1a3XodqPqB6JrCzCzDWMUSHen8IZ3P6qiS6Dak9quJDc2vGsYzt6aFkSYNk8pZO%2Fdw69QFZwB3YAFA4a6scb3qCzSCJZil12r6bHy6BBZTmf6dbP6KR6Gj22xhvRRhMJYf6mP2BVfSWnZdIOge9%2Bbba3pYhLD0%2FOn55BPQzj1Z0%2BNINEnnCaw9LKNo4dt8tUmWAvzz9UkCtFr2Hs73qXC9HDiF04g8vTNp5AHPS9rLnuG%2FvcEPGzbVLih46lz%2FXlnpjmvkzxp2KAVpDwhjgBuKBAA%2FEAMei0o0BXfJzkdyjW0dXCqvNs2%2BbHEtf9QCIRcLOJ3w7ejf8T4z7Whe3svE8PVb3KXjcS9qJOjqBSoXN%2F9p82bMj8LEYiMPzVhdEGOqUB2lcj8Pn%2B1N4oTF7Ya%2B8%2F%2FJWRgKEIb%2Bvh1haPF8f%2FLP3tBgxHgMlAuOcLcS8ilHOLhR8L%2BFUiTB6hyioXJrI9PN8BHyS%2BLkVYLmAx3WfpIkdayZ26NMGt1T%2BahG%2F%2BhEUw7MzdGPGtTKMm5P%2B6zLK9QTvpCqdtSznMe6JlVuZBm0%2FK7clr8S5xngDrowGQeVFkJBs6dJvR%2BcF1jcanEqgLM4QqVa%2Fb&X-Amz-Signature=8d28e87c9cd55e9971f13d17aa1266e76ce5d96790b91fe2e0297d15998b3908&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 I wasn’t really sure how to take that. I obviously said something to give that impression; but of all things I would have rejected me, that probably wouldn’t be it! Most people in data, engineering, or analytics are constantly learning - it’s part of the job. But there is a difference between being unwilling to upskill and not being told that a role is looking for a specific AI skillset until the final stage of the process.
 
