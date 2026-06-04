@@ -1,87 +1,167 @@
-{{ define "main" }}
-{{ partial "page-header" . }}
-
-{{ with .Params.consulting }}
+{{ define "main" }} {{ partial "page-header" . }} {{ with .Params.consulting }}
 <section class="section-sm pt-0">
   <div class="site-container">
-
-    <!-- Merged intro -->
+    <!-- Intro -->
     <div class="mb-12">
-      <div class="content mb-4">{{ $.Content }}</div>
-      <p class="text-lg text-text-dark dark:text-darkmode-text-dark mb-6">{{ .intro }}</p>
+      <div class="content mb-6">{{ $.Content }}</div>
+      <p class="text-lg text-text-dark dark:text-darkmode-text-dark mb-6">
+        {{ .intro }}
+      </p>
       <div class="text-center">
-        <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-primary mr-4 work-cta">
+        <a
+          href="{{ strings.TrimPrefix `/` .cta_primary_link | relURL }}"
+          class="btn btn-primary mr-4 work-cta"
+        >
           {{ .cta_primary_label }}
           <i class="fa fa-arrow-right pl-2"></i>
         </a>
-        <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-outline-primary work-cta">
+        <a
+          href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}"
+          class="btn btn-outline-primary work-cta"
+        >
           {{ .cta_secondary_label }}
         </a>
       </div>
     </div>
 
-    <!-- Services + Engagements -->
-    <div class="row mb-12">
-      <div class="lg:col-6 mb-8 lg:mb-0">
-        <div class="ui-card h-full">
-          <h4 class="mb-5">What I do</h4>
-          <ul class="space-y-3">
-            {{ range .services }}
-            <li class="relative pl-6 text-sm">
-              <i class="fa fa-check absolute left-0 top-1 text-primary dark:text-darkmode-primary"></i>
-              {{ . | markdownify }}
-            </li>
-            {{ end }}
-          </ul>
+    <!-- Sections below the intro span the full header band width -->
+    <div class="services-wide">
+      <!-- What I do -->
+      {{ with .capabilities }}
+      <div class="mb-14">
+        <h2 class="h4 mb-6">What I can help with</h2>
+        <div class="row">
+          {{ range . }}
+          <div class="md:col-4 mb-6">
+            <div class="ui-card h-full">
+              {{ with .icon }}<i
+                class="fa {{ . }} text-2xl text-primary dark:text-darkmode-primary mb-4"
+              ></i
+              >{{ end }}
+              <h3 class="h6 mb-4">{{ .title }}</h3>
+              <ul class="space-y-3">
+                {{ range .items }}
+                <li class="relative pl-6 text-sm">
+                  <i
+                    class="fa fa-check absolute left-0 top-1 text-primary dark:text-darkmode-primary"
+                  ></i>
+                  {{ . | markdownify }}
+                </li>
+                {{ end }}
+              </ul>
+            </div>
+          </div>
+          {{ end }}
         </div>
       </div>
-      <div class="lg:col-6">
-        <div class="ui-card h-full">
-          <h4 class="mb-5">How we can work together</h4>
-          <div class="space-y-4">
-            {{ range .engagements }}
-            <div class="rounded-2xl border border-border bg-body p-4 dark:border-darkmode-border dark:bg-darkmode-body">
-              <p class="font-semibold text-sm mb-1">{{ .label }}</p>
+      {{ end }}
+
+      <!-- How it works -->
+      {{ with .process }}
+      <div class="mb-14">
+        <h2 class="h4 mb-6">The high-level plan</h2>
+        <div class="row">
+          {{ range $i, $step := . }}
+          <div class="md:col-3 mb-6">
+            <div class="ui-card-compact h-full">
+              <div
+                class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary dark:bg-darkmode-primary text-white dark:text-darkmode-body font-bold text-sm"
+              >
+                {{ add $i 1 }}
+              </div>
+              <p class="font-semibold text-sm mb-1">{{ $step.step }}</p>
+              <p class="text-xs opacity-75">{{ $step.description }}</p>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+
+      <!-- How we can work together -->
+      {{ with .engagements }}
+      <div class="mb-14">
+        <h2 class="h4 mb-6">Some options to explore</h2>
+        <div class="row">
+          {{ range . }}
+          <div class="md:col-6 mb-6">
+            <div class="ui-card-compact h-full">
+              <p class="font-semibold mb-2">{{ .label }}</p>
               <p class="text-sm opacity-75">{{ .description }}</p>
             </div>
-            {{ end }}
           </div>
+          {{ end }}
         </div>
       </div>
-    </div>
+      {{ end }}
 
-    <!-- Process -->
-    {{ with .process }}
-    <div class="mb-12">
-      <h4 class="mb-6">How it works</h4>
-      <div class="row">
-        {{ range $i, $step := . }}
-        <div class="md:col-3 mb-6">
-          <div class="ui-card-compact h-full">
-            <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary dark:bg-darkmode-primary text-white dark:text-darkmode-body font-bold text-sm">
-              {{ add $i 1 }}
+      <!-- Selected work -->
+      {{ with .work }}
+      <div class="mb-14">
+        <h2 class="h4 mb-6">Selected projects</h2>
+        <div class="row">
+          {{ range . }}
+          <div class="md:col-4 mb-6">
+            <div class="ui-card-compact ui-card-hover h-full">
+              <p class="font-semibold text-sm mb-1">{{ .title }}</p>
+              <p class="text-xs text-primary dark:text-darkmode-primary mb-3">
+                {{ .meta }}
+              </p>
+              <p class="text-sm opacity-75">{{ .outcome }}</p>
             </div>
-            <p class="font-semibold text-sm mb-1">{{ $step.step }}</p>
-            <p class="text-xs opacity-75">{{ $step.description }}</p>
           </div>
+          {{ end }}
         </div>
+        {{ with $.Params.consulting.work_cta_link }}
+        <a
+          href="{{ strings.TrimPrefix `/` . | relURL }}"
+          class="font-medium text-primary dark:text-darkmode-primary hover:underline"
+        >
+          {{ $.Params.consulting.work_cta_label | default "See more" }}
+          <i class="fa fa-arrow-right pl-1 text-xs"></i>
+        </a>
         {{ end }}
       </div>
-    </div>
-    {{ end }}
+      {{ end }}
 
-    <div class="text-center mb-12">
-      <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-primary mr-4 work-cta">
-        {{ .cta_primary_label }}
-        <i class="fa fa-arrow-right pl-2"></i>
-      </a>
-      <a href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}" class="btn btn-outline-primary work-cta">
-        {{ .cta_secondary_label }}
-      </a>
-    </div>
+      <!-- Evidence -->
+      {{ with .results }}
+      <div class="mb-14">
+        <h2 class="h4 mb-6">The evidence</h2>
+        <div class="row">
+          {{ range . }}
+          <div class="md:col-4 mb-6">
+            <div class="ui-card-compact h-full text-center">
+              <p
+                class="text-3xl font-bold text-primary dark:text-darkmode-primary mb-2"
+              >
+                {{ .value }}
+              </p>
+              <p class="text-xs opacity-75">{{ .label }}</p>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
 
+      <!-- Final CTA -->
+      <div class="text-center mb-12">
+        <a
+          href="{{ strings.TrimPrefix `/` .cta_primary_link | relURL }}"
+          class="btn btn-primary mr-4 work-cta"
+        >
+          {{ .cta_primary_label }}
+          <i class="fa fa-arrow-right pl-2"></i>
+        </a>
+        <a
+          href="{{ strings.TrimPrefix `/` .cta_secondary_link | relURL }}"
+          class="btn btn-outline-primary work-cta"
+        >
+          {{ .cta_secondary_label }}
+        </a>
+      </div>
+    </div>
   </div>
 </section>
-{{ end }}
-
-{{ end }}
+{{ end }} {{ end }}
